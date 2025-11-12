@@ -11,7 +11,7 @@ export class Usuario extends BaseEntity {
     idUsuario?: number;
 
     @Column({name: 'NOME', type: 'string', length: 50})
-    nome: string = '';
+    nomeUsuario: string = '';
 
     @Column({name: 'EMAIL_USUARIO', type: 'string', length: 100})
     emailUsuario: string = '';
@@ -23,7 +23,7 @@ export class Usuario extends BaseEntity {
     fotoUsuario: string = '';
 
     @Column({name: 'TIPO_USUARIO', type: 'number'})
-    tipoUsuario: number;
+    tipoUsuario: number = 0;
 
     @Column({name: 'CPF_USUARIO', type: 'string', length: 14})
     cpfUsuario: string = '';
