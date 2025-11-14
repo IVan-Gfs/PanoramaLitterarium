@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/commons/entity/base.entity";
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CON_USUARIO')
 export class Usuario extends BaseEntity {
@@ -10,28 +10,28 @@ export class Usuario extends BaseEntity {
     })
     idUsuario?: number;
 
-    @Column({name: 'NOME', type: 'string', length: 50})
+    @Column({name: 'NOME_USUARIO', type: 'varchar2', length: 50})
     nomeUsuario: string = '';
 
-    @Column({name: 'EMAIL_USUARIO', type: 'string', length: 100})
+    @Column({name: 'EMAIL_USUARIO', type: 'varchar2', length: 255})
     emailUsuario: string = '';
 
-    @Column({name: 'SENHA_USUARIO', type: 'string', length: 100})
+    @Column({name: 'SENHA_USUARIO', type: 'varchar2', length: 32})
     senhaUsurio: string = '';
 
-    @Column({name: 'FOTO_USUARIO', type: 'string', length: 255})
+    @Column({name: 'FOTO_USUARIO', type: 'varchar2', length: 255, nullable: true})
     fotoUsuario: string = '';
 
     @Column({name: 'TIPO_USUARIO', type: 'number'})
     tipoUsuario: number = 0;
 
-    @Column({name: 'CPF_USUARIO', type: 'string', length: 14})
+    @Column({name: 'CPF_USUARIO', type: 'varchar2', length: 14, nullable: true})
     cpfUsuario: string = '';
 
-    @Column({name: 'CNPJ_USUARIO', type: 'string', length: 14})
+    @Column({name: 'CNPJ_USUARIO', type: 'varchar2', length: 14, nullable: true})
     cnpjUsuario: string = '';
 
-    @Column({name: 'TEL_USUARIO', type: 'string', length: 15})
+    @Column({name: 'TEL_USUARIO', type: 'varchar2', length: 15})
     telUsuario: string = '';
 
     constructor(data: Partial<Usuario> = {}){

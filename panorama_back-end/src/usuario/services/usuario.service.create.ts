@@ -12,7 +12,7 @@ export class UsuarioServiceCreate {
 
   constructor (
     @InjectRepository(Usuario) 
-     private usuarioRepository: Repository<Usuario>
+    private usuarioRepository: Repository<Usuario>
     ){}
 
   async create(createUsuarioRequest: CreateUsuarioResquest): Promise<UsuarioResponse>{
