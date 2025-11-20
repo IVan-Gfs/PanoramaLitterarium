@@ -4,11 +4,11 @@ import CadastrarUsuario from "../views/Usuario/cadastrar";
 
 export const routes: RouteObject[] = [
     {
-        path: '/panorama',
+        path: "/panorama",
         element: <Layout/>,
         children: [
             {
-                path: 'cadastrar',
+                path: "/panorama/login",
                 element: <CadastrarUsuario/> 
             }
         ]

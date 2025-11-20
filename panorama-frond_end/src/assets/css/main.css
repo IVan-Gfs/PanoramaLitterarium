@@ -1,0 +1,41 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+header {
+  /*background-color: #C3E8F9ff;*/
+  background-color: rgb(195, 232, 249,1);
+  display: flex;
+}
+
+#navbar{
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 20px;
+  width: 30vw;
+}
+.Logo{
+  width: 200px;
+  padding: 20px;
+}
+
+li{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+li img{
+  width: 30px;
+}
+.itemMenu{
+  text-decoration: none;
+  color: black;
+  font-family:'Courier New', Courier, monospace;
+  font-family: 'Jost';
+  font-size: 1.2em ;
+}
