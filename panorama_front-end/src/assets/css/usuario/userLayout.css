@@ -1,0 +1,53 @@
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Jost';
+}
+
+.logo{
+    width: 300px;
+    margin: auto;
+    display: block;
+    margin-top: 80px;
+}
+
+/*Interface de login de usuário*/
+.container{
+    margin: auto;
+    margin-top: 30px;
+    background-color: #C3E8F9;
+    width: 300px;
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
+   
+}
+.container form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/*Interface de cadastro de usuários*/
+
+
+.container-cadastro{
+    width: 800px;
+    padding: 50px 50px 30px 50px;
+    margin: auto;
+}
+
+.container-cadastro input{
+    width: 50%; 
+}
+
+.form-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 20px;
+
+ 
+}
+
+

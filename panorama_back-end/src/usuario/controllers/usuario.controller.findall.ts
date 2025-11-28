@@ -6,14 +6,16 @@ import { Result } from "src/commons/mensagem/mensagem";
 import { UsuarioResponse } from "../dto/response/usuario.response";
 import { MensagemSistema } from "src/commons/mensagem/mensagem.sistema";
 
-@Controller(ROTA.USUARIO.LIST)
+@Controller(ROTA.USUARIO.BASE)
 export class UsuarioControllerFindAll {
 
+   
    constructor(private readonly usuarioServiceFindALl: UsuarioServiceFindAll){}
 
    @HttpCode(HttpStatus.OK)
    @Get(ROTA.USUARIO.LIST)
-   async findAll(@Req() req: Request):Promise<Result<UsuarioResponse>>{
+
+   async findAll(@Req() req: Request):Promise<Result<UsuarioResponse[]>>{
 
       const response = await this.usuarioServiceFindALl.findAll();
 

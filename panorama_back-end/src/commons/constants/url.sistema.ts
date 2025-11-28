@@ -3,7 +3,7 @@ import { JURADO, ORGANIZACAO, PARTICIPANTE, USUARIO } from "./constants.sistema"
 
 export const SERVIDOR = 'http://localhost:8000';
 
-const ROTA_SISTEMA = 'rest/panoramalitterarium';
+const ROTA_SISTEMA = 'rest/panorama';
 const ROTA_AUTH = 'rest/auth';   
 
 const LIST = 'listar';
@@ -17,8 +17,8 @@ function gerarRotasSistema(entity: string){
 
     return {
           BASE: base,
-          LIST: `${LIST}`,
-          CREATE: `${CREATE}`,
+          LIST: `/${LIST}`,
+          CREATE: `/${CREATE}`,
           BY_ID: `${BY_ID}`,
           UPDATE: `${UPDATE}`,
           DELETE: `${DELETE}`

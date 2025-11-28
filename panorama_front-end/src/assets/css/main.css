@@ -1,33 +1,41 @@
-*{
-  padding: 0;
-  margin: 0;
-}
-
 
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
-header {
+*{
+  padding: 0;
+  margin: 0;
+  font-family: 'Jost';
+}
+
+
+
+#HeaderHome {
   /*background-color: #C3E8F9ff;*/
   background-color: rgb(195, 232, 249,1);
   display: flex;
+  align-items:center;
 }
+
 
 #navbar{
   display: flex;
   gap: 20px;
   list-style: none;
-  padding: 20px;
-  width: 30vw;
+  
+  width: 80vw;
+  height: 40px;
+  
+
 }
 .Logo{
   width: 200px;
-  padding: 20px;
+  padding: 10px;
 }
 
 li{
   display: flex;
-  align-items: center;
   gap: 5px;
+  align-items: center;
 }
 li img{
   width: 30px;
@@ -35,7 +43,10 @@ li img{
 .itemMenu{
   text-decoration: none;
   color: black;
-  font-family:'Courier New', Courier, monospace;
   font-family: 'Jost';
-  font-size: 1.2em ;
+  font-size: 1.3em;
+ 
+}
+#item-login{
+  margin-left: auto;
 }

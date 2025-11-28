@@ -1,0 +1,26 @@
+.card-user{
+    display: flex;
+    margin: 20px;
+    background-color: #FFF;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    
+    text-decoration: none;
+    color: black;
+}
+
+.card-user:hover{
+    cursor: pointer;
+}
+
+.card-user img{
+    width: 40px;
+    
+}
+
+.card-user p{
+    font-size: 1.2em;
+    
+}
