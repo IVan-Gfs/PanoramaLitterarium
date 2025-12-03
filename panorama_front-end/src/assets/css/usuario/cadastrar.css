@@ -35,3 +35,15 @@
     background-color: #dcdddc;
 }
 
+label{
+    font-size: 1.2em;
+}
+#tipoOrg{
+    width: 103%;
+    padding: 2px;
+    border-radius: 4px;
+}
+.asterisco{
+    color: #580202;
+}
+

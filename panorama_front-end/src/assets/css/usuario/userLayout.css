@@ -4,7 +4,14 @@
     margin: 0;
     font-family: 'Jost';
 }
-
+.goBack{
+    width: 60px;
+    position: absolute;
+    left: 20%;
+}
+.goBack:hover{
+    cursor: pointer;
+}
 .logo{
     width: 300px;
     margin: auto;
@@ -12,6 +19,10 @@
     margin-top: 80px;
 }
 
+.title{
+    margin-bottom: 30px;
+    text-align: center;
+}
 /*Interface de login de usuário*/
 .container{
     margin: auto;
@@ -29,13 +40,19 @@
     gap: 25px;
 }
 
+.input{
+    font-size: 1.2em;
+}
+
+
 /*Interface de cadastro de usuários*/
 
 
 .container-cadastro{
     width: 800px;
-    padding: 50px 50px 30px 50px;
+    padding: 30px 50px 30px 50px;
     margin: auto;
+    margin-top: 30px;
 }
 
 .container-cadastro input{

@@ -1,0 +1,31 @@
+
+.success{
+  width: 350px;
+  padding: 30px;
+}
+.feedback-message{
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.icon-success{
+  width: 100px;
+  display: block;
+  margin: auto;
+}
+
+.ok{
+    width: 30%;
+    display: block;
+    height: 35px;
+    margin: auto;
+    background-color: #C8F8CB;
+    border-radius: 3px;
+    border: 1px gray solid;
+}
+
+
+.ok:hover{
+  cursor: pointer;
+  background-color: #C5F5C8;
+}
