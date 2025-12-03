@@ -1,6 +1,6 @@
-import "../../../assets/css/usuario/cadastrar.css";  
-import "../../../assets/css/usuario/userLayout.css"
-import "../../../assets/css/usuario/cadastroSuccess.css"
+import "../../assets/css/usuario/cadastrar.css";  
+import "../../assets/css/usuario/userLayout.css"
+import "../../assets/css/usuario/cadastroSuccess.css"
 import { useState } from "react";
 
 export default function CadastrarUsuarioOrganizacao() {
@@ -30,7 +30,7 @@ function UserForm({ next }: { next: () => void }) {
       <div className="form-grid">
         <div>
           <label htmlFor="nomeUsuario"><span className="asterisco">*</span>Nome de Usuário:</label>
-          <input type="text" name="nomeUsuario" className="input" placeholder="" />
+          <input type="text" name="nomeUsuario" className="input" placeholder="" required/>
         </div>
         <div>
           <label htmlFor="email"><span className="asterisco">*</span>Email:</label>
