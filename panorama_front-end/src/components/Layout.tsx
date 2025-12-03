@@ -9,7 +9,7 @@ export default function Layout(){
         <div id="defaultLayout">
             
             <header id='HeaderHome'>
-                <Link to="/inicio">
+                <Link to="/">
                     <img src="../../public/logo.svg " alt="logo.svg" className='Logo' />
                 </Link>
                 
@@ -17,14 +17,14 @@ export default function Layout(){
                     <li>
                     
                         
-                        <Link to="/inicio"><img src="../../public/imgs/inicio.png" alt="inicio" /></Link>
-                        <Link to="/inicio" className='itemMenu'>Inicio</Link>
+                        <Link to="/"><img src="../../public/imgs/inicio.png" alt="inicio" /></Link>
+                        <Link to="/" className='itemMenu'>Inicio</Link>
                         
                     </li>
                     <li >
                         
-                        <Link to="/inicio/concursos"><img src="../../public/imgs/concurso.png" alt="concursos"/></Link>
-                        <Link to="/inicio/concursos" className='itemMenu'>Concursos</Link>
+                        <Link to="/concursos"><img src="../../public/imgs/concurso.png" alt="concursos"/></Link>
+                        <Link to="/concursos" className='itemMenu'>Concursos</Link>
                         
                     </li>
                     <li id='item-login'>   

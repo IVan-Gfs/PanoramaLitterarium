@@ -13,11 +13,11 @@ import CriarConta from "../views/Usuario/cadastrar.usuario";
 
 export const routes: RouteObject[] = [
     {
-        path: "/inicio",
+        path: "/",
         element: <Layout/>,
         children: [
             {
-                path: "/inicio/concursos",
+                path: "/concursos",
                 element: <ConsultarConcursos/>
             }
         ]
