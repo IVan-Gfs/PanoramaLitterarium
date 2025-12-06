@@ -11,7 +11,7 @@ export default function User(){
             <header id="headerLogin">
                
                 <img className="goBack" src="../../public/imgs/arrow-back.png" alt="Voltar" onClick={() => navigate(-1)} />
-                <Link to="/inicio">
+                <Link to="/">
                     <img src="../../public/logo.svg" alt="logo" className="logo" />
                 </Link>
                 

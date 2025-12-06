@@ -7,7 +7,7 @@ import Login from "../views/Usuario/login";
 
 //CONCURSOS
 import ConsultarConcursos from "../views/concursos/consultar";
-import CadastrarUsuarioOrganizacao from "../views/Usuario/cad-organizacao/cadastrar.usuario.organizacao";
+import CadastrarUsuarioOrganizacao from "../views/Usuario/cadastrar.usuario.organizacao";
 import CriarConta from "../views/Usuario/cadastrar.usuario";
 
 
