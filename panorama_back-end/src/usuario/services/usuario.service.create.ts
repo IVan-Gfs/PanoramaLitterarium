@@ -1,31 +1,36 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Usuario } from '../entity/usuario.entity';
-import { Repository } from 'typeorm';
-import { CreateUsuarioResquest } from '../dto/request/create.usuario.request';
-import { UsuarioResponse } from '../dto/response/usuario.response';
-import { ConverterUsuario } from '../dto/converter/usuario.converter';
+import { BadRequestException, ConflictException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
+
+import { PrismaService } from "src/prisma/prisma.service";
+import { UsuarioRequest } from "../dto/usuario.request";
+import { UsuarioResponse } from "../dto/usuario.response";
+import { ConverterUsuario } from "../dto/usuario.converter";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioServiceCreate {
-  
 
-  constructor (
-    @InjectRepository(Usuario) 
-    private usuarioRepository: Repository<Usuario>
-    ){}
+    constructor (private readonly prismaService: PrismaService){}
 
-  async create(createUsuarioRequest: CreateUsuarioResquest): Promise<UsuarioResponse>{
-    let usuario = ConverterUsuario.toUsuario(createUsuarioRequest)
+    async create(usuarioRequest: UsuarioRequest): Promise<UsuarioResponse>{
 
-    const usuarioCadastrado = await this.usuarioRepository.createQueryBuilder('con_usuario').where('con_usuario.emailUsuario =: email', {email: usuario.emailUsuario}).getOne()
+        const usuarioExistente = await this.prismaService.usuario.findUnique({
+            where: {email: usuarioRequest.email}
+        })
 
-    if(usuarioCadastrado){
-      throw new HttpException('O email informado já está cadastardo', HttpStatus.BAD_REQUEST)
+        if(usuarioExistente){
+            throw new ConflictException('O email informado já está cadastrado');
+        }
+
+        const data = ConverterUsuario.toPrismaModel({
+            ...usuarioRequest,
+            senha: await bcrypt.hash(usuarioRequest.senha, 10),
+        })
+
+        const usuario = await this.prismaService.usuario.create({
+            data
+        })
+
+        return ConverterUsuario.toDTOResponse(usuario)
     }
 
-    usuario = await this.usuarioRepository.save(usuario)
-
-    return ConverterUsuario.toUsuarioResponse(usuario)
-  }
 }

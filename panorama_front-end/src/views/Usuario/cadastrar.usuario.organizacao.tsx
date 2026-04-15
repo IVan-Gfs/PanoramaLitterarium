@@ -34,15 +34,15 @@ function UserForm({ next }: { next: () => void }) {
         </div>
         <div>
           <label htmlFor="email"><span className="asterisco">*</span>Email:</label>
-          <input type="email" name="email" className="input" placeholder="" />
+          <input type="email" name="email" className="input" placeholder="" required />
         </div>
         <div>
           <label htmlFor="senha"><span className="asterisco">*</span>Senha:</label>
-          <input type="email" name="senha" className="input" placeholder="" />
+          <input type="email" name="senha" className="input" placeholder="" required />
         </div>
         <div>
           <label htmlFor="confirmarSenha"><span className="asterisco">*</span>Confirmar Senha:</label>
-          <input type="email" name="confirmarSenha" className="input" placeholder="" />
+          <input type="email" name="confirmarSenha" className="input" placeholder="" required />
         </div>
         <div>
           <label htmlFor="telefone"><span className="asterisco">*</span>Confirmar Senha:</label>
@@ -94,9 +94,10 @@ function OrgForm({ next, back }: { next: () => void; back: () => void }) {
           <select name="tipoOrg" id="tipoOrg" className="input" required>
             <option value="" disabled selected>Selecione</option>
             <option value="editora">Editora</option>
-            <option value="ensino">Instituição de Ensino</option>
-            <option value="orgaoPublico">Órgão Público</option>
+            <option value="assocLiteraria">Livraria</option>
+            <option value="ensino">Instituição de Ensino</option>  
             <option value="assocLiteraria">Associação Literária</option>
+            <option value="orgaoPublico">Órgão Público</option>
             <option value="outro">Outro</option>
           </select>
 

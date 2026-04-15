@@ -1,0 +1,323 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  moduleFormat  = "cjs"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+}
+
+
+
+//ENUM
+enum TipoPessoa { //pessoa física ou jurídica
+  PF
+  PJ
+}
+
+ enum TipoUsuario { //papel do usuário no sistema
+  ADMIN
+  JURADO
+  PARTICIPANTE
+  ORGANIZACAO
+
+}
+
+enum StatusInscricao { //status da inscrição do participante
+  PENDENTE
+  CONFIRMADA
+  CANCELADA
+}
+
+enum StatusSubmissao { //status da submissão da obra
+    PENDENTE
+    APROVADA
+    DESCLASSIFICADA
+}
+
+enum StatusPagamento { //pagamento da inscrição
+  PENDENTE
+  PAGO
+  ISENTO
+}
+
+enum StatusAnalise { //status da analise doo jurado sobre a obra
+  PENDENTE
+  FINALIZADA
+}
+
+model Usuario {
+  id    BigInt     @id @default(autoincrement())
+  email String  @unique
+  senha String
+  tipo   TipoUsuario
+
+  Pessoa Pessoa?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Pessoa {
+  id           BigInt @id @default(autoincrement())
+  nome         String
+  foto         String?
+  documento    String? @unique
+  tipoPessoa   TipoPessoa?
+  tel          String?
+
+  usuarioId    BigInt @unique
+  usuario      Usuario @relation(fields: [usuarioId], references: [id])
+
+  organizao Organizacao?
+  jurado    Jurado?
+  participante Participante?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Participante {
+  id           BigInt @id @default(autoincrement())
+  pseudonimo   String?
+
+  pessoaId     BigInt @unique
+  pessoa       Pessoa @relation(fields: [pessoaId], references: [id])
+
+  obras        Obra[]
+  inscricao    Inscricao[]
+}
+
+model Jurado {
+  id        BigInt @id @default(autoincrement())
+  profissao String?
+  formacao  String?
+  biografia String?
+
+  pessoaId BigInt @unique
+  usuario   Pessoa @relation(fields: [pessoaId], references: [id])
+
+  bancas    Banca[]
+}
+
+model Organizacao {
+  id            BigInt @id @default(autoincrement())
+  nomeFantasia  String?
+  razaoSocial   String?
+  tipo          String?
+  cep           BigInt?
+  endereco      String?
+  municipio     String?
+  uf            String? @db.Char(2)
+
+  pessoaId     BigInt @unique
+  pessoa       Pessoa @relation(fields: [pessoaId], references: [id])
+
+  gruposCriterio GrupoCriterio[]
+  concursos Concurso[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model GrupoCriterio {
+  id            BigInt @id @default(autoincrement())
+  nome          String?
+
+  organizacaoId BigInt
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id])
+
+  criterios     Criterio[]
+  concursos     Concurso[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Criterio {
+  id              BigInt @id @default(autoincrement())
+  nome            String?
+  descricao       String?
+  pontuacaoMax    Float?
+
+  grupoCriterioId BigInt
+  grupoCriterio   GrupoCriterio @relation(fields: [grupoCriterioId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  notas Nota[]
+}
+
+model Concurso {
+  id               BigInt @id @default(autoincrement())
+  titulo           String?
+  imgCapa          String?
+  descricao        String?
+  generoLiterario  String? @default("DIVERSOS")
+  qtdVencedores    Int?
+  taxaInscricao    Decimal?
+  tema             String? @default("LIVRE")
+  municipio        String?
+  uf               String? @db.Char(2)
+  premiacao        String?
+  prazoInscricao   DateTime?
+  limiteObras      Int? @default(1)
+  restricao        String? @default("NENHUMA")
+  etapaAtual       Int? @default(1)
+  linkEdital       String?
+  pdfEdital        String?
+  dataFinalizacao  DateTime?
+  organizacaoId    BigInt
+  organizacao      Organizacao @relation(fields: [organizacaoId], references: [id])
+
+  grupoCriterioId  BigInt
+  grupoCriterio    GrupoCriterio @relation(fields: [grupoCriterioId], references: [id])
+
+  banca Banca[]
+  inscricao Inscricao[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Banca {
+  id          BigInt @id @default(autoincrement())
+
+  juradoId    BigInt
+  jurado      Jurado @relation(fields: [juradoId], references: [id])
+
+  concursoId  BigInt
+  concurso    Concurso @relation(fields: [concursoId], references: [id])
+
+  analiseAv AnaliseAvaliacao[] 
+
+  @@unique([juradoId, concursoId])
+}
+
+model Obra {
+  id              BigInt @id @default(autoincrement())
+  titulo          String?
+  tema            String?
+  texto           String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  participanteId  BigInt?
+  participante    Participante? @relation(fields: [participanteId], references: [id])
+
+  submissoes     Submissao[]
+
+  
+}
+
+model Inscricao {
+  id           BigInt   @id @default(autoincrement())
+
+  concursoId   BigInt
+  participanteId BigInt
+
+  status        StatusInscricao @default(CONFIRMADA)
+  statusPagamento StatusPagamento @default(ISENTO)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  
+  concurso     Concurso     @relation(fields: [concursoId], references: [id])
+  participante Participante @relation(fields: [participanteId], references: [id])
+
+  submissoes Submissao[]
+
+  
+  @@unique([concursoId, participanteId])
+}
+
+model Submissao {
+  id           BigInt @id @default(autoincrement())
+
+  obraId       BigInt
+  inscricaoId  BigInt
+  status       StatusSubmissao @default(PENDENTE)
+  notaFinal    Decimal @db.Decimal(5,2)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  obra         Obra      @relation(fields: [obraId], references: [id])
+  inscricao    Inscricao @relation(fields: [inscricaoId], references: [id])
+
+  analiseAv AnaliseAvaliacao[]
+
+  @@unique([obraId, inscricaoId]) // impedir duplicidade
+}
+
+
+model AnaliseAvaliacao {
+  id            BigInt @id @default(autoincrement())
+
+  anotacaoGeral String?
+  fase Int
+  status StatusAnalise @default(PENDENTE)
+
+  submissaoId   BigInt
+  bancaId       BigInt
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relacionamentos
+  submissao     Submissao @relation(fields: [submissaoId], references: [id])
+  banca         Banca     @relation(fields: [bancaId], references: [id])
+
+  notas         Nota[]
+  anotacoes     Anotacao[]
+
+  // impedir avaliação duplicada
+  @@unique([submissaoId, bancaId, fase])
+}
+
+
+model Nota {
+  id              BigInt @id @default(autoincrement())
+
+  justificativa   String?
+  valor           Decimal @db.Decimal(5,2)
+
+  analiseId       BigInt
+  criterioId      BigInt
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  analise         AnaliseAvaliacao @relation(fields: [analiseId], references: [id])
+  criterio        Criterio         @relation(fields: [criterioId], references: [id])
+
+  // evitar repetir critério na mesma análise
+  @@unique([analiseId, criterioId])
+}
+
+model Anotacao {
+  id        BigInt @id @default(autoincrement())
+
+  texto     String
+
+  inicio    Int    // posição inicial no texto
+  fim       Int    // posição final
+
+  analiseId BigInt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  analise   AnaliseAvaliacao @relation(fields: [analiseId], references: [id])
+}

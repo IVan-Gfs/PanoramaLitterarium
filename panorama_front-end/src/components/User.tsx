@@ -10,9 +10,9 @@ export default function User(){
         <div id="LayoutLogin">
             <header id="headerLogin">
                
-                <img className="goBack" src="../../public/imgs/arrow-back.png" alt="Voltar" onClick={() => navigate(-1)} />
+                <img className="goBack" src="/imgs/arrow-back.png" alt="Voltar" onClick={() => navigate(-1)} />
                 <Link to="/">
-                    <img src="../../public/logo.svg" alt="logo" className="logo" />
+                    <img src="/logo.svg" alt="logo" className="logo" />
                 </Link>
                 
             </header>

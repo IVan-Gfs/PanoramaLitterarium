@@ -7,20 +7,30 @@ export default function CriarConta ( ){
         <h2>Selecione o tipo de conta: </h2>
 
         <Link to="" className="card-user">
-            
-                <p>PARTICIPANTE</p>
-                <img src="../../public/imgs/arrow_enter.png" alt="" />
-            
-        </Link>
 
-        <Link to="/user/cadastrar/organização" className="card-user">          
-                <p>ORGANIZAÇÃO</p>
-                <img src="../../public/imgs/arrow_enter.png" alt="" />
+                <div className="card-user-flex"> 
+                        <p>PARTICIPANTE</p>
+                        <img src="../../public/imgs/arrow_enter.png" alt="" />
+                </div>
+                <legend>Participe de seleções literárias</legend>
         </Link>
+        
+        <Link to="/user/cadastrar/organização" className="card-user">
+                
+                <div className="card-user-flex"> 
+                        <p>ORGANIZAÇÃO</p>
+                        <img src="../../public/imgs/arrow_enter.png" alt="" />
+                </div>
+                <legend>Publique seleções literárias</legend>
+        </Link>
+        
 
         <Link to="" className="card-user">
-                <p>JURADO</p>
-                <img src="../../public/imgs/arrow_enter.png" alt="" />
+                <div className="card-user-flex"> 
+                        <p>JURADO</p>
+                        <img src="../../public/imgs/arrow_enter.png" alt="" />
+                </div>
+                <legend>Seja avaliador em seleções literárias</legend>    
         </Link>
         
     </div> 

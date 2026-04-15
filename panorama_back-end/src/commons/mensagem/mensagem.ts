@@ -1,3 +1,8 @@
+export interface Link {
+  href: string;
+  method?: string;
+}
+
 export interface Result<T> {
   status: number;
   timestamp: string;
