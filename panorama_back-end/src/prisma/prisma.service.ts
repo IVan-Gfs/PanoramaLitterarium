@@ -20,7 +20,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         connectionLimit: 5,
         };
 
-        // LOG DE DEPURAÇÃO: Verifique se isso aparece no terminal com os dados certos
+        
         console.log('Conectando ao MariaDB em:', dbConfig.host, 'DB:', dbConfig.database);
 
         const adapter = new PrismaMariaDb(dbConfig);
