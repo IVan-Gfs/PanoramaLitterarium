@@ -12,7 +12,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
     constructor(){
         const dbConfig = {
+<<<<<<< HEAD
         host: process.env.DATABASE_HOST || '127.0.0.1', 
+=======
+        host: process.env.DATABASE_HOST || '127.0.0.1',
+>>>>>>> 46099dca52fbec3e87049377969449d241a43152
         user: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
