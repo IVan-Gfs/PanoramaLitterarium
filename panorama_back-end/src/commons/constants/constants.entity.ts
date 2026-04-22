@@ -23,9 +23,9 @@ export function criarMensagemOperacao(ENTITY_NAME: string) {
       NAO_LOCALIZADO: `O código informado para o cadastro de ${ENTITY_NAME} na foi localizado no sistema`,
     },
     LISTAR: {
-      ACAO: `Listagem do cadastro de ${ENTITY_NAME} no sistema`,
-      SUCESSO: `A consulta dos cadastros de ${ENTITY_NAME}s foi realizada com sucesso`,
-      ERRO: `Falha na consulta dos cadastros de ${ENTITY_NAME}s no sistema`,
+      ACAO: `Listagem de ${ENTITY_NAME} no sistema`,
+      SUCESSO: `Listagem de ${ENTITY_NAME}s realizada com sucesso!`,
+      ERRO: `Falha na listagem de ${ENTITY_NAME}s no sistema`,
     },
   };
 }
