@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import '../assets/css/usuario/userLayout.css'
+import '../../assets/css/usuario/userLayout.css';
 
 
 

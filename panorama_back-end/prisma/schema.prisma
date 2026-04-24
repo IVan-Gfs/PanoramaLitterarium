@@ -5,53 +5,54 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
-model analiseavaliacao {
-  id            BigInt                  @id @default(autoincrement())
+model AnaliseAvaliacao {
+  id            BigInt                    @id @default(autoincrement())
   anotacaoGeral String?
   fase          Int
-  status        analiseavaliacao_status @default(PENDENTE)
+  status        AnaliseAvaliacaoStatus   @default(PENDENTE)
   submissaoId   BigInt
   bancaId       BigInt
-  createdAt     DateTime                @default(now())
-  updatedAt     DateTime
-  banca         banca                   @relation(fields: [bancaId], references: [id], map: "AnaliseAvaliacao_bancaId_fkey")
-  submissao     submissao               @relation(fields: [submissaoId], references: [id], map: "AnaliseAvaliacao_submissaoId_fkey")
-  anotacao      anotacao[]
-  nota          nota[]
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+  banca         Banca                    @relation(fields: [bancaId], references: [id], map: "AnaliseAvaliacao_bancaId_fkey")
+  submissao     Submissao                @relation(fields: [submissaoId], references: [id], map: "AnaliseAvaliacao_submissaoId_fkey")
+  anotacao      Anotacao[]
+  nota          Nota[]
 
   @@unique([submissaoId, bancaId, fase], map: "AnaliseAvaliacao_submissaoId_bancaId_fase_key")
   @@index([bancaId], map: "AnaliseAvaliacao_bancaId_fkey")
 }
 
-model anotacao {
-  id               BigInt           @id @default(autoincrement())
+model Anotacao {
+  id               BigInt            @id @default(autoincrement())
   texto            String
   inicio           Int
   fim              Int
   analiseId        BigInt
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime
-  analiseavaliacao analiseavaliacao @relation(fields: [analiseId], references: [id], map: "Anotacao_analiseId_fkey")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  analiseavaliacao AnaliseAvaliacao  @relation(fields: [analiseId], references: [id], map: "Anotacao_analiseId_fkey")
 
   @@index([analiseId], map: "Anotacao_analiseId_fkey")
 }
 
-model banca {
-  id               BigInt             @id @default(autoincrement())
+model Banca {
+  id               BigInt              @id @default(autoincrement())
   juradoId         BigInt
   concursoId       BigInt
-  analiseavaliacao analiseavaliacao[]
-  concurso         concurso           @relation(fields: [concursoId], references: [id], map: "Banca_concursoId_fkey")
-  jurado           jurado             @relation(fields: [juradoId], references: [id], map: "Banca_juradoId_fkey")
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  analiseavaliacao AnaliseAvaliacao[]
+  concurso         Concurso            @relation(fields: [concursoId], references: [id], map: "Banca_concursoId_fkey")
+  jurado           Jurado              @relation(fields: [juradoId], references: [id], map: "Banca_juradoId_fkey")
 
   @@unique([juradoId, concursoId], map: "Banca_juradoId_concursoId_key")
   @@index([concursoId], map: "Banca_concursoId_fkey")
 }
 
-model concurso {
+model Concurso {
   id              BigInt        @id @default(autoincrement())
   titulo          String?
   imgCapa         String?
@@ -72,198 +73,203 @@ model concurso {
   organizacaoId   BigInt
   grupoCriterioId BigInt
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime
+  updatedAt       DateTime      @updatedAt
   descricao       String?
-  banca           banca[]
-  grupocriterio   grupocriterio @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
-  organizacao     organizacao   @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
-  inscricao       inscricao[]
+  banca           Banca[]
+  grupoCriterio   GrupoCriterio @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
+  organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
+  inscricao       Inscricao[]
 
   @@index([grupoCriterioId], map: "Concurso_grupoCriterioId_fkey")
   @@index([organizacaoId], map: "Concurso_organizacaoId_fkey")
 }
 
-model criterio {
+model Criterio {
   id              BigInt        @id @default(autoincrement())
   nome            String?
   descricao       String?
   pontuacaoMax    Float?
   grupoCriterioId BigInt
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime
-  grupocriterio   grupocriterio @relation(fields: [grupoCriterioId], references: [id], map: "Criterio_grupoCriterioId_fkey")
-  nota            nota[]
+  updatedAt       DateTime      @updatedAt
+  grupoCriterio   GrupoCriterio @relation(fields: [grupoCriterioId], references: [id], map: "Criterio_grupoCriterioId_fkey")
+  nota            Nota[]
 
   @@index([grupoCriterioId], map: "Criterio_grupoCriterioId_fkey")
 }
 
-model grupocriterio {
+model GrupoCriterio {
   id            BigInt      @id @default(autoincrement())
   nome          String?
   organizacaoId BigInt
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime
-  concurso      concurso[]
-  criterio      criterio[]
-  organizacao   organizacao @relation(fields: [organizacaoId], references: [id], map: "GrupoCriterio_organizacaoId_fkey")
+  updatedAt     DateTime    @updatedAt
+  concurso      Concurso[]
+  criterio      Criterio[]
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], map: "GrupoCriterio_organizacaoId_fkey")
 
   @@index([organizacaoId], map: "GrupoCriterio_organizacaoId_fkey")
 }
 
-model inscricao {
-  id              BigInt                    @id @default(autoincrement())
-  concursoId      BigInt
-  participanteId  BigInt
-  status          inscricao_status          @default(CONFIRMADA)
-  statusPagamento inscricao_statusPagamento @default(ISENTO)
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime
-  concurso        concurso                  @relation(fields: [concursoId], references: [id], map: "Inscricao_concursoId_fkey")
-  participante    participante              @relation(fields: [participanteId], references: [id], map: "Inscricao_participanteId_fkey")
-  submissao       submissao[]
+model Inscricao {
+  id               BigInt                     @id @default(autoincrement())
+  concursoId       BigInt
+  participanteId   BigInt
+  status           InscricaoStatus            @default(CONFIRMADA)
+  statusPagamento  InscricaoStatusPagamento   @default(ISENTO)
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  concurso         Concurso                  @relation(fields: [concursoId], references: [id], map: "Inscricao_concursoId_fkey")
+  participante     Participante              @relation(fields: [participanteId], references: [id], map: "Inscricao_participanteId_fkey")
+  submissao        Submissao[]
 
   @@unique([concursoId, participanteId], map: "Inscricao_concursoId_participanteId_key")
   @@index([participanteId], map: "Inscricao_participanteId_fkey")
 }
 
-model jurado {
-  id        BigInt  @id @default(autoincrement())
-  profissao String?
-  formacao  String?
-  biografia String?
-  pessoaId  BigInt  @unique(map: "Jurado_pessoaId_key")
-  banca     banca[]
-  pessoa    pessoa  @relation(fields: [pessoaId], references: [id], map: "Jurado_pessoaId_fkey")
+model Jurado {
+  id         BigInt  @id @default(autoincrement())
+  profissao  String?
+  formacao   String?
+  biografia  String?
+  pessoaId   BigInt  @unique(map: "Jurado_pessoaId_key")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  banca      Banca[]
+  pessoa     Pessoa  @relation(fields: [pessoaId], references: [id], map: "Jurado_pessoaId_fkey")
 }
 
-model nota {
-  id               BigInt           @id @default(autoincrement())
+model Nota {
+  id               BigInt            @id @default(autoincrement())
   justificativa    String?
-  valor            Decimal          @db.Decimal(5, 2)
+  valor            Decimal           @db.Decimal(5, 2)
   analiseId        BigInt
   criterioId       BigInt
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime
-  analiseavaliacao analiseavaliacao @relation(fields: [analiseId], references: [id], map: "Nota_analiseId_fkey")
-  criterio         criterio         @relation(fields: [criterioId], references: [id], map: "Nota_criterioId_fkey")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  analiseavaliacao AnaliseAvaliacao  @relation(fields: [analiseId], references: [id], map: "Nota_analiseId_fkey")
+  criterio         Criterio          @relation(fields: [criterioId], references: [id], map: "Nota_criterioId_fkey")
 
   @@unique([analiseId, criterioId], map: "Nota_analiseId_criterioId_key")
   @@index([criterioId], map: "Nota_criterioId_fkey")
 }
 
-model obra {
-  id             BigInt        @id @default(autoincrement())
-  titulo         String?
-  tema           String?
-  texto          String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime
-  participanteId BigInt?
-  participante   participante? @relation(fields: [participanteId], references: [id], map: "Obra_participanteId_fkey")
-  submissao      submissao[]
+model Obra {
+  id              BigInt        @id @default(autoincrement())
+  titulo          String?
+  tema            String?
+  texto           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  participanteId  BigInt?
+  participante    Participante? @relation(fields: [participanteId], references: [id], map: "Obra_participanteId_fkey")
+  submissao       Submissao[]
 
   @@index([participanteId], map: "Obra_participanteId_fkey")
 }
 
-model organizacao {
-  id            BigInt          @id @default(autoincrement())
-  nomeFantasia  String?
-  razaoSocial   String?
-  tipo          String?
-  cep           BigInt?
-  endereco      String?
-  municipio     String?
-  uf            String?         @db.Char(2)
-  pessoaId      BigInt          @unique(map: "Organizacao_pessoaId_key")
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime
-  concurso      concurso[]
-  grupocriterio grupocriterio[]
-  pessoa        pessoa          @relation(fields: [pessoaId], references: [id], map: "Organizacao_pessoaId_fkey")
+model Organizacao {
+  id             BigInt          @id @default(autoincrement())
+  nomeFantasia   String?
+  razaoSocial    String?
+  tipo           String?
+  cep            BigInt?
+  endereco       String?
+  municipio      String?
+  uf             String?         @db.Char(2)
+  pessoaId       BigInt          @unique(map: "Organizacao_pessoaId_key")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  concurso       Concurso[]
+  grupoCriterio  GrupoCriterio[]
+  pessoa         Pessoa          @relation(fields: [pessoaId], references: [id], map: "Organizacao_pessoaId_fkey")
 }
 
-model participante {
+model Participante {
   id         BigInt      @id @default(autoincrement())
   pseudonimo String?
   pessoaId   BigInt      @unique(map: "Participante_pessoaId_key")
-  inscricao  inscricao[]
-  obra       obra[]
-  pessoa     pessoa      @relation(fields: [pessoaId], references: [id], map: "Participante_pessoaId_fkey")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  inscricao  Inscricao[]
+  obra       Obra[]
+  pessoa     Pessoa      @relation(fields: [pessoaId], references: [id], map: "Participante_pessoaId_fkey")
 }
 
-model pessoa {
+model Pessoa {
   id           BigInt             @id @default(autoincrement())
   nome         String
   foto         String?
   documento    String?            @unique(map: "Pessoa_documento_key")
-  tipoPessoa   pessoa_tipoPessoa?
+  tipoPessoa   PessoaTipoPessoa?
   tel          String?
   usuarioId    BigInt             @unique(map: "Pessoa_usuarioId_key")
   createdAt    DateTime           @default(now())
-  updatedAt    DateTime
-  jurado       jurado?
-  organizacao  organizacao?
-  participante participante?
-  usuario      usuario            @relation(fields: [usuarioId], references: [id], map: "Pessoa_usuarioId_fkey")
+  updatedAt    DateTime           @updatedAt
+  jurado       Jurado?
+  organizacao  Organizacao?
+  participante Participante?
+  usuario      Usuario            @relation(fields: [usuarioId], references: [id], map: "Pessoa_usuarioId_fkey")
 }
 
-model submissao {
+model Submissao {
   id               BigInt             @id @default(autoincrement())
   obraId           BigInt
   inscricaoId      BigInt
-  status           submissao_status   @default(PENDENTE)
+  status           SubmissaoStatus    @default(PENDENTE)
   notaFinal        Decimal            @db.Decimal(5, 2)
   createdAt        DateTime           @default(now())
-  updatedAt        DateTime
-  analiseavaliacao analiseavaliacao[]
-  inscricao        inscricao          @relation(fields: [inscricaoId], references: [id], map: "Submissao_inscricaoId_fkey")
-  obra             obra               @relation(fields: [obraId], references: [id], map: "Submissao_obraId_fkey")
+  updatedAt        DateTime           @updatedAt
+  analiseavaliacao AnaliseAvaliacao[]
+  inscricao        Inscricao          @relation(fields: [inscricaoId], references: [id], map: "Submissao_inscricaoId_fkey")
+  obra             Obra               @relation(fields: [obraId], references: [id], map: "Submissao_obraId_fkey")
 
   @@unique([obraId, inscricaoId], map: "Submissao_obraId_inscricaoId_key")
   @@index([inscricaoId], map: "Submissao_inscricaoId_fkey")
 }
 
-model usuario {
+model Usuario {
   id        BigInt       @id @default(autoincrement())
   email     String       @unique(map: "Usuario_email_key")
   senha     String
-  tipo      usuario_tipo
+  tipo      TipoUsuario
   createdAt DateTime     @default(now())
-  updatedAt DateTime
-  pessoa    pessoa?
+  updatedAt DateTime     @updatedAt
+  pessoa    Pessoa?
 }
 
-enum analiseavaliacao_status {
+enum AnaliseAvaliacaoStatus {
   PENDENTE
   FINALIZADA
 }
 
-enum inscricao_status {
+enum InscricaoStatus {
   PENDENTE
   CONFIRMADA
   CANCELADA
 }
 
-enum submissao_status {
+enum SubmissaoStatus {
   PENDENTE
   APROVADA
   DESCLASSIFICADA
 }
 
-enum usuario_tipo {
+enum TipoUsuario {
   ADMIN
   JURADO
   PARTICIPANTE
   ORGANIZACAO
 }
 
-enum inscricao_statusPagamento {
+enum InscricaoStatusPagamento {
   PENDENTE
   PAGO
   ISENTO
 }
 
-enum pessoa_tipoPessoa {
+enum PessoaTipoPessoa {
   PF
   PJ
 }

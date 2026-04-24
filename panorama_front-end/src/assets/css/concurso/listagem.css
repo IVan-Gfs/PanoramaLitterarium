@@ -1,0 +1,95 @@
+:root{
+    --primary: #bfe6f7;
+    --primary-dark: #7cc7e6;
+    --bg: #ffffff;
+    --surface: #f7f9fb;
+    --text: #1f1f1f;
+    --bg-title: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #22c55e;
+    --success-soft: #e8f7ee;
+}
+
+
+.listagem-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 100px;
+    
+    
+   
+}
+h1 {
+    text-align: center;
+    margin: 30px;
+}
+.item-concurso {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #E8F6FD;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-concurso:hover {
+  transform: translateY(-4px);
+  transition: 0.2s;
+}
+
+.titulo-concurso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3em;
+    padding: 10px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, var(--bg-title), #0f172a);
+    color: #FAF6F6;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+.capa-concurso {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.footer-concurso {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--surface);
+  color: var(--text);
+  font-weight: bold;
+}
+
+.prazo-inscricao {
+    color: var(--success);
+}
+
+.categoria{
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+
+@media (max-width: 1024px) {
+  .listagem-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .listagem-container {
+    grid-template-columns: 1fr;
+  }
+}

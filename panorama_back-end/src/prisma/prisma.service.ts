@@ -19,7 +19,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         port: Number(process.env.DATABASE_PORT) || 3306,
         connectionLimit: 10,
         };
-
+ 
         
         console.log('Conectando ao MariaDB em:', dbConfig.host, 'DB:', dbConfig.database);
 
