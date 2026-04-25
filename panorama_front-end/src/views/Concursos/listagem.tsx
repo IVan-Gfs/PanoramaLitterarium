@@ -1,61 +1,50 @@
+import { useEffect, useState } from 'react';
 import '../../assets/css/concurso/listagem.css';
 import { Link } from "react-router-dom";
+import { ROTA } from '../../services/router/url';
+import { apiGetConcursos } from '../../services/entities/concurso/api/api.concurso';
+import type { Concurso } from '../../services/entities/concurso/type/Concurso';
+import { REST_CONFIG } from '../../services/constants/sistema.constants';
+import { formatarData } from '../../utils/date';
+
 
 export default function ConsultarConcursos ( ){
 
-    const concursosMock = [
-  {
-    id: 1,
-    titulo: "Poemas do Eu – 2025",
-    imagem: "",
-    prazo: "31/08/2025",
-    categoria: "Poemas"
-  },
-  {
-    id: 2,
-    titulo: "37ª Noite da Poesia",
-    imagem: "https://via.placeholder.com/300x180",
-    prazo: "01/09/2026",
-    categoria: "Poesias"
-  },
-  {
-    id: 3,
-    titulo: "Prêmio Rio de Letras – 2026 ",
-    imagem: "http://localhost:8000/uploads/concursos/edital-capa-premio-rio-de-letras-121343.webp",
-    prazo: "17/07/2026",
-    categoria: "Contos"
-  },
-  {
-    id: 4,
-    titulo: "Concurso tempo das palavras - primeira edição 2026",
-    imagem: "https://localhost:8000/uploads/image2",
-    prazo: "17/10/2026",
-    categoria: "Crônicas"
-  },
-  {
-    id: 5,
-    titulo: "A Menina que Sabia os Finais (Antologia) ",
-    imagem: "http://localhost:8000/uploads/concursos/edital-capa-antologia-cartola-a-menina-que-sabia-os-finais-21344.webp",
-    prazo: "03/05/2026",
-    categoria: "Contos"
+    
+  const [concursos, setConcursos] = useState<Concurso[]>([]);
+  const [loading, setLoading] = useState(true);
+  const img_path = `${REST_CONFIG.BASE_URL}${ROTA.CONCURSO.IMAGE_PATH}`;
+
+  useEffect(() => {
+    async function fetchConcursos() {
+
+      try {
+        const response = await apiGetConcursos(`${ROTA.CONCURSO.LISTAR}`, {});
+        setConcursos(response.data.dados.content);
+        
+      }catch(error){
+        console.error("Erro ao buscar concursos:", error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchConcursos();
+  }, []);
+
+  if(loading){
+    return <div>Carregando concursos...</div>;
   }
 
-  
-  
-];
-
     return (     
-
      <div>
-
-        <h1>Encontre os concursos disponíveis</h1>
+        <h1>Encontre os Concursos Disponíveis</h1>
 
         <div className="listagem-container">
-            {concursosMock.map((c) => (
+            {concursos.map((c) => (
                 <Link key={c.id} to={`./detalhes`} className='item-concurso'>
                     <h2 className='titulo-concurso'>{c.titulo}</h2>
                     <img
-                        src={c.imagem || "/logo_default.svg"}
+                        src={img_path+c.imgCapa || "/logo_default.svg"}
                         alt="capa-concurso"
                         className='capa-concurso'
                         onError={(e) => {
@@ -64,8 +53,8 @@ export default function ConsultarConcursos ( ){
                         }}
                     />
                     <div className="footer-concurso">
-                        <legend className="prazo-inscricao">Inscrições até {c.prazo}</legend>
-                        <legend className="categoria">{c.categoria.toLocaleUpperCase()}</legend>
+                        <legend className="prazo-inscricao">Inscrições até {formatarData(c.prazoInscricao)}</legend>
+                        <legend className="categoria">{c.generoLiterario.toLocaleUpperCase()}</legend>
                     </div>
                 </Link>
             ))}

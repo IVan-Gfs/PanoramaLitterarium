@@ -1,5 +1,5 @@
 :root{
-    --primary: #bfe6f7;
+    --primary: #C3E8F9;
     --primary-dark: #7cc7e6;
     --bg: #ffffff;
     --surface: #f7f9fb;
@@ -7,8 +7,10 @@
     --bg-title: #111827;
     --muted: #6b7280;
     --border: #e5e7eb;
-    --success: #22c55e;
+    --footer: #ebf0f3;
+    --legend: #094352;
     --success-soft: #e8f7ee;
+  
 }
 
 
@@ -29,7 +31,8 @@ h1 {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: #E8F6FD;
+    width: 368px;
+    background: var(--surface);
     border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
@@ -64,18 +67,19 @@ h1 {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--surface);
+  background-color: var(--footer);
   color: var(--text);
   font-weight: bold;
 }
 
 .prazo-inscricao {
-    color: var(--success);
+    color: var(--legend);
 }
 
 .categoria{
     background: #e0f2fe;
     color: #0369a1;
+    border: 1px solid #0369a1;
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 12px;
