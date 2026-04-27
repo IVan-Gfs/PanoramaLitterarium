@@ -79,14 +79,38 @@ model Concurso {
   grupoCriterio   GrupoCriterio @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
   organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
   inscricao       Inscricao[]
+  categoria       CategoriaConcurso[]
 
   @@index([grupoCriterioId], map: "Concurso_grupoCriterioId_fkey")
   @@index([organizacaoId], map: "Concurso_organizacaoId_fkey")
 }
 
+model  Categoria {
+  id          BigInt      @id @default(autoincrement())
+  nome        String
+  descricao   String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  concurso     CategoriaConcurso[]
+}
+
+model CategoriaConcurso {
+  id          BigInt      @id @default(autoincrement())
+  concursoId   BigInt
+  categoriaId  BigInt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  concurso     Concurso    @relation(fields: [concursoId], references: [id], map: "CategoriaConcurso_concursoId_fkey")
+  categoria    Categoria   @relation(fields: [categoriaId], references: [id], map: "CategoriaConcurso_categoriaId_fkey")
+
+  @@unique([concursoId, categoriaId], map: "CategoriaConcurso_concursoId_categoriaId_key")
+  @@index([concursoId], map: "CategoriaConcurso_concursoId_fkey")
+  @@index([categoriaId], map: "CategoriaConcurso_categoriaId_fkey")
+}
+
 model Criterio {
   id              BigInt        @id @default(autoincrement())
-  nome            String?
+  nome            String
   descricao       String?
   pontuacaoMax    Float?
   grupoCriterioId BigInt

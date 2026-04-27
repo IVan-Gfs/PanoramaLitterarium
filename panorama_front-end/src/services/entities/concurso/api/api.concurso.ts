@@ -1,7 +1,7 @@
 import api from "../../../axios/config.axios";
 import { ROTA } from "../../../router/url";
 
-export interface SerarchParams {
+export interface SearchParams {
     page?: number;
     pageSize?: number;
     props?: string;
@@ -9,7 +9,7 @@ export interface SerarchParams {
     search?: string;
 }
 
-export const apiGetConcursos = async (url: string, params: SerarchParams) =>{
+export const apiGetConcursos = async (url: string, params: SearchParams) =>{
     const response = await api.get(url, {params});
     return response;
 }

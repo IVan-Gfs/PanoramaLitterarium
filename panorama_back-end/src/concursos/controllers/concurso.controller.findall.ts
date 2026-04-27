@@ -36,6 +36,8 @@ export class ConcursoControllerFindAll {
             search,
         );
 
+        console.log(page)
+
         const MENSAGENS = criarMensagemOperacao(CONCURSO.ENTITY)
         const mensagem = response.content.length > 0 ?  MENSAGENS.LISTAR.SUCESSO : MENSAGENS.LISTAR.ERRO;
 

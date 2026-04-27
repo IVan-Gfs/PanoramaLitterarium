@@ -20,7 +20,7 @@ export class Page<T> {
        this.totalElements = totalElements;
        this.pageSize = pageSize;
        this.page = page;
-        this.totalPages = totalPages;
+       this.totalPages = totalPages;
        this.lastPage = page >= totalPages;
     }
 

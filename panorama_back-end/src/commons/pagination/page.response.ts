@@ -8,7 +8,7 @@ export class Pageable {
 
     constructor(
         page: number = 1, 
-        pageSize: number = 5, 
+        pageSize: number = 6, 
         props?: string,
         order?: string,
         private readonly allowedProps: string[] = [],

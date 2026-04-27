@@ -1,4 +1,5 @@
-import { Expose, Transform } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
+import { CategoriaResponseDTO } from "src/categoria/dto/categoria.response.dto";
 
 //DADOS BÁSICOS DO CONCURSO
 export class ConcursoBaseReponseDTO {
@@ -16,5 +17,8 @@ export class ConcursoBaseReponseDTO {
   @Expose()
   generoLiterario?: string | null;
 
+  @Expose()
+  @Type(() => CategoriaResponseDTO)
+  categorias?: CategoriaResponseDTO[] | null;
 
 }

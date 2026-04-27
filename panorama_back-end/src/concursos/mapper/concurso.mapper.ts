@@ -33,8 +33,12 @@
       });
     }
 
-    static toDTOList<T>(DtoClass: ClassConstructor<T>, concursos: Partial<Concurso>[]): T[] {
-      return plainToInstance(DtoClass, concursos, {
+    static toDTOList<T>(DtoClass: ClassConstructor<T>, concursos: any[]): T[] {
+      const concursosDTO = concursos.map(concurso => ({
+        ...concurso,
+        categorias: concurso.categoria?.map((catCon: any) => catCon.categoria) // extrai as categorias reais
+      }));
+      return plainToInstance(DtoClass, concursosDTO, {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
       });
