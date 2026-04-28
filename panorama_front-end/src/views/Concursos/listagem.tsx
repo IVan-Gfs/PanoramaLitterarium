@@ -23,8 +23,9 @@ export default function ConsultarConcursos ( ){
   const [totalElements, setTotalElements] = useState<number>(0);
 
   //Filtragem
-  const [props, setProps] = useState<string>("id");
+  const [props, setProps] = useState<string>("titulo");
   const [order, setOrder] = useState<string>("asc");
+  const [orderBy, setOrderBy] = useState<string>("id");
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ export default function ConsultarConcursos ( ){
         pageSize: pageSize,
         props: props,
         order: order,
+        orderBy: orderBy,
         searchTerm: searchTerm === '' ? null : searchTerm
       };
       const data = await buscarTodosConcursos(params);
@@ -91,7 +93,7 @@ export default function ConsultarConcursos ( ){
      <div>
       <h1>Encontre os Concursos Disponíveis</h1>
 
-       <FiltroConcursos/>
+       <FiltroConcursos onSearch={setSearchTerm}/>
 
         <div className='filtro'></div>
 

@@ -4,9 +4,10 @@ import type { Categoria, CategoriaReponse } from "../../services/entities/catego
 import { apiGetCategoria } from "../../services/entities/categoria/api/api.categoria";
 import { ROTA } from "../../services/router/url";
 
-export const FiltroConcursos: React.FC = () => {
+export const FiltroConcursos: React.FC<{onSearch: (termo: string)=> void}> = ({onSearch}) => {
 
   const [abrirFiltros, setAbrirFiltros] = useState(false);
+  const [busca, setBusca] = useState("");
   const [categorias, setCategorias] = useState<Categoria[]>([])
 
   const buscarTodasCategorias = useCallback(
@@ -22,6 +23,14 @@ export const FiltroConcursos: React.FC = () => {
   )
 
   useEffect(()=>{
+    const timeout = setTimeout(()=>{
+      onSearch(busca)
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  },[busca, onSearch])
+
+  useEffect(()=>{
     async function fetchCategoria(){
       const data = await buscarTodasCategorias()
       if(data){
@@ -32,8 +41,6 @@ export const FiltroConcursos: React.FC = () => {
     }
     fetchCategoria()
   },[])
-
-  console.log(categorias)
   return (
     <div className="filtro-container">
       <div className="filtro-linha">
@@ -43,6 +50,8 @@ export const FiltroConcursos: React.FC = () => {
           <label>Buscar por título</label>
           <input
             type="text"
+            value={busca}
+            onChange={ e => setBusca(e.target.value)}
             placeholder="Digite o título do concurso..."
           />
         </div>
@@ -51,7 +60,7 @@ export const FiltroConcursos: React.FC = () => {
         <div className="filtro-item select">
           <label>Categoria</label>
           <select>
-            <option>TODAS</option>
+            <option value="">TODAS</option>
             {categorias.map((cat) => (<option key={cat.id}>{cat.nome}</option>))}
           </select>
         </div>
