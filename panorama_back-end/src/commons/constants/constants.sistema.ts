@@ -12,6 +12,7 @@ export const ORGANIZACAO = 'organizations'; // ORGANIZAÇÕES (instituições)
 // =====================
 export const CONCURSO = 'contests'; // CONCURSOS LITERÁRIOS
 export const BANCA = 'panels'; // BANCAS (jurados do concurso)
+export const CATEGORIA = 'category';
 
 // =====================
 // OBRAS / INSCRIÇÕES

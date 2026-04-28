@@ -14,7 +14,8 @@ import {
   NOTA,
   ANOTACAO,
   CRITERIO,
-  GRUPO_CRITERIO
+  GRUPO_CRITERIO,
+  CATEGORIA
 } from "./constants.sistema";
 
 export const SERVIDOR = 'http://localhost:8000';
@@ -47,9 +48,10 @@ export const ROTA = {
   ORGANIZACAO: gerarRotasSistema(ORGANIZACAO),
   JURADO: gerarRotasSistema(JURADO),
   PARTICIPANTE: gerarRotasSistema(PARTICIPANTE),
-
+  
   CONCURSO: gerarRotasSistema(CONCURSO),
   BANCA: gerarRotasSistema(BANCA),
+  CATEGORIA: gerarRotasSistema(CATEGORIA),
 
   OBRA: gerarRotasSistema(OBRA),
   INSCRICAO: gerarRotasSistema(INSCRICAO),

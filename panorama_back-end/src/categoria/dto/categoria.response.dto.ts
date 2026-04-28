@@ -10,6 +10,6 @@ export class CategoriaResponseDTO {
     @Expose()
     nome!: string | null;
 
-    @Expose()
-    descricao!: string | null;
+    // @Expose()
+    // descricao!: string | null;
 }
