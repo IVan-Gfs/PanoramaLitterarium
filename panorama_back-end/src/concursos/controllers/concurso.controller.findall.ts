@@ -37,7 +37,7 @@ export class ConcursoControllerFindAll {
             props ? props : CONCURSO.TABLE_FIELDS.TITULO,
             order ? order : PAGINATION.ASC,
             search,
-            orderBy ? orderBy : CONCURSO.TABLE_FIELDS.ID,
+            orderBy ? orderBy : CONCURSO.TABLE_FIELDS.TITULO,
             categorias,
         );
 
