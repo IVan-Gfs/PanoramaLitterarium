@@ -4,6 +4,7 @@ export class Pageable {
     readonly page: number;
     readonly pageSize: number;
     readonly props: string;
+    readonly orderBy: string;
     readonly order: 'ASC' | 'DESC';
 
     constructor(
@@ -11,13 +12,19 @@ export class Pageable {
         pageSize: number = 6, 
         props?: string,
         order?: string,
-        private readonly allowedProps: string[] = [],
+        orderBy?: string,
+
+        private readonly allowedProps: string[] = ['titulo','descricao','tema'],
+        private readonly allowedPropsOrder: string[] = ['id', 'prazoInscricao', 'titulo','createdAt','dataFinalizacao']
     ) {
         this.page = page < 1 ? 1 : page;
         this.pageSize = pageSize > 100 ? 100 : pageSize;
+
         const defaultField = allowedProps[0];
+        const defaultFieldOrder = allowedPropsOrder[0];
         this.props = allowedProps.includes(props ?? '') ? props! : defaultField;
         this.order = order?.toLocaleUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+        this.orderBy = allowedPropsOrder.includes(orderBy ?? '') ? orderBy! : defaultFieldOrder; 
     }
 
     get offset(): number {

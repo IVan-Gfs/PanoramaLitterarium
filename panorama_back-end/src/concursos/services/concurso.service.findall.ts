@@ -17,30 +17,47 @@ export class ConcursoServiceFindAll {
         pageSize: number,
         props: string,
         order: 'ASC' | 'DESC',
-        search?: string
+        search?: string,
+        orderBy?: string,
+        categorias?: string,
     ): Promise<Page<ConcursoListParticDTO>> {
 
+          
+        
     //Instancia o objeto Pageable, que encapsula as informações de paginação e ordenação, validando os campos permitidos    
-    const pageable = new Pageable(page, pageSize, props, order, fieldsConcurso); 
+    const pageable = new Pageable(page, pageSize, props, order, orderBy, fieldsConcurso); 
 
     //Prepara a cláusula WHERE para busca, usando o campo especificado em pageable.props
-    const where = search ? { 
-    [pageable.props]: {
-        contains: search,
-    },
-   } : undefined;
+    const where: any = {}
+    const categoriasArray = categorias ? categorias.split(',').map(id => Number(id)).filter(id => !isNaN(id)) : []; 
+
+    if(search){
+        where[pageable.props] = {
+            contains: search,
+        };
+    }
+
+    if(categoriasArray.length > 0){
+        where.categoria = {
+            some: {
+                categoriaId: {
+                    in: categoriasArray,
+                }
+            }
+        }
+    }
 
    //Executa as consultas para obter os concursos e contar o total de itens, usando Promise.all para otimizar a performance
-   const [concursos, totalitems] = await Promise.all([
-    this.prismaService.concurso.findMany({
-        skip: pageable.offset,
-        take: pageable.limit,
-        include: { categoria: { include: { categoria: true } } },
-        where,
-        orderBy: { 
-            [pageable.props]: pageable.order.toLowerCase(),
-        }
-    }),
+    const [concursos, totalitems] = await Promise.all([
+        this.prismaService.concurso.findMany({
+            skip: pageable.offset,
+            take: pageable.limit,
+            include: { categoria: { include: { categoria: true } } },
+            where,
+            orderBy: { 
+                [pageable.orderBy]: pageable.order.toLowerCase(),
+            }
+        }),
     this.prismaService.concurso.count({ where })
    ])
    //Converte os resultados obtidos para o formato DTO usando o mapper da listagens de concursos

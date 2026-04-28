@@ -11,7 +11,7 @@ export const CONCURSO = {
 
   TABLE_FIELDS:{
     ID: 'id',
-    NOME: 'nome',
+    TITULO: 'titulo',
     DESCRICAO: 'descricao',
     DATA_INICIO: 'data_inicio',
     DATA_FIM: 'data_fim',

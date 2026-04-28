@@ -24,19 +24,22 @@ export class ConcursoControllerFindAll {
         @Query('page') page?: string,
         @Query('pageSize') pageSize?: string,
         @Query('props') props?: string,
-        @Query('order') order?: 'ASC' | 'DESC',
         @Query('searchTerm') search?: string,
+        @Query('categorias') categorias?: string,
+        @Query('orderBy') orderBy?: string,
+        @Query('order') order?: 'ASC' | 'DESC',
+        
     ): Promise<Result<Page<ConcursoListParticDTO>>>{
 
         const response = await this.concursoServiceFindAll.findAll( //
             page ? Number(page): PAGINATION.PAGE,
             pageSize ? Number(pageSize): PAGINATION.PAGESIZE,
-            props ? props : CONCURSO.TABLE_FIELDS.DATA_PUBLICACAO,
-            order ? order : PAGINATION.DESC,
+            props ? props : CONCURSO.TABLE_FIELDS.TITULO,
+            order ? order : PAGINATION.ASC,
             search,
+            orderBy ? orderBy : CONCURSO.TABLE_FIELDS.ID,
+            categorias,
         );
-
-        console.log(page)
 
         const MENSAGENS = criarMensagemOperacao(CONCURSO.ENTITY)
         const mensagem = response.content.length > 0 ?  MENSAGENS.LISTAR.SUCESSO : MENSAGENS.LISTAR.ERRO;
