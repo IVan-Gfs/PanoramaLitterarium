@@ -7,7 +7,7 @@ const ENTITY_NAME = "Concurso";
 export const CONCURSO = {
   ENTITY: ENTITY_NAME,
   UPLOAD_FOLDER: "concursos", // Para construção da URL de acesso à imagem de capa
-  ALIAS: "contests",
+  ALIAS: "contests",  
 
   DADOS_INCIAIS: {
     id: 0,

@@ -1,9 +1,39 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../../assets/css/concurso/filtroConcurso.css";
+import type { Categoria, CategoriaReponse } from "../../services/entities/categoria/type/Categoria";
+import { apiGetCategoria } from "../../services/entities/categoria/api/api.categoria";
+import { ROTA } from "../../services/router/url";
 
 export const FiltroConcursos: React.FC = () => {
 
   const [abrirFiltros, setAbrirFiltros] = useState(false);
+  const [categorias, setCategorias] = useState<Categoria[]>([])
+
+  const buscarTodasCategorias = useCallback(
+    async (): Promise<CategoriaReponse| null> =>{
+      try{
+        const response = await apiGetCategoria(ROTA.CATEGORIA.LISTAR)
+        return response.data
+      }catch(error: any){
+        console.log("Erro ao buscar concursos:", error);
+      }
+      return null
+    }, []
+  )
+
+  useEffect(()=>{
+    async function fetchCategoria(){
+      const data = await buscarTodasCategorias()
+      if(data){
+        setCategorias(data.dados)
+   
+        
+      }
+    }
+    fetchCategoria()
+  },[])
+
+  console.log(categorias)
   return (
     <div className="filtro-container">
       <div className="filtro-linha">
@@ -22,17 +52,7 @@ export const FiltroConcursos: React.FC = () => {
           <label>Categoria</label>
           <select>
             <option>TODAS</option>
-            <option>CONTOS</option>
-            <option>CORDEL</option>
-            <option>CRÔNICAS</option>
-            <option>ENSAIOS</option>
-            <option>POEMAS</option>
-            <option>HAICAIS</option>
-            <option>POESIAS</option>
-            <option>MICROCONTOS</option>
-             <option>SONETOS</option>
-            <option>TEATROS</option>
-            
+            {categorias.map((cat) => (<option key={cat.id}>{cat.nome}</option>))}
           </select>
         </div>
 

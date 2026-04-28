@@ -55,7 +55,6 @@ export default function ConsultarConcursos ( ){
         order: order,
         searchTerm: searchTerm === '' ? null : searchTerm
       };
-      console.log("Itens que pretendo buscar: "+pageSize)
       const data = await buscarTodosConcursos(params);
 
       if(data){

@@ -1,7 +1,4 @@
-export interface Categoria {
-  id: number;
-  nome: string;
-}
+import type { Categoria } from "../../categoria/type/Categoria";
 
 export interface Concurso {
     id: number;
