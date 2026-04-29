@@ -70,6 +70,9 @@ model Concurso {
   linkEdital      String?
   pdfEdital       String?
   dataFinalizacao DateTime?
+  gratuito        Boolean       @default(true)
+  premioEmDinheiro Boolean      @default(false)
+  valorTotalPremios Decimal?    @db.Decimal(10, 2)
   organizacaoId   BigInt
   grupoCriterioId BigInt
   createdAt       DateTime      @default(now())
