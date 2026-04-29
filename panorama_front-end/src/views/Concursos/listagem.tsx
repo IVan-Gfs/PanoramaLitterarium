@@ -8,6 +8,7 @@ import { REST_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import { FiltroConcursos } from '../../components/search/filtroConcursos';
 import Pagination from '../../components/pagination/Pagination';
+import { ItemsPerPage } from '../../components/pagination/itemsPerPage';
 
 
 export default function ConsultarConcursos ( ){
@@ -93,12 +94,15 @@ export default function ConsultarConcursos ( ){
      <div>
       <h1>Encontre os Concursos Disponíveis</h1>
 
-       <FiltroConcursos onSearch={setSearchTerm}/>
+       <FiltroConcursos 
+        onSearch={setSearchTerm}
+       />
 
         <div className='filtro'></div>
 
         <div className="listagem-container">
-            {concursos.map((c) => (
+      
+            { concursos.map((c) => (
                 <Link key={c.id} to={`./detalhes`} className='item-concurso'>
                     <h2 className='titulo-concurso'>{c.titulo}</h2>
                     <img
@@ -126,6 +130,11 @@ export default function ConsultarConcursos ( ){
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
+        />
+
+        <ItemsPerPage 
+        onChange={handleRecordsPerPageChange}
+        itemValue={recordPerPages}
         />
      </div>
 
