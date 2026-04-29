@@ -1,0 +1,95 @@
+/* FOOTER BASE */
+.footer {
+  background-color: #1c1c1c;
+  color: #f1f1f1;
+  padding: 50px 20px 20px;
+}
+
+/* CONTAINER INTERNO */
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+/* SEÇÕES */
+.footer-section h3,
+.footer-section h4 {
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+/* LINKS */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #bbb;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+  padding-left: 4px;
+}
+
+/* FORM NEWSLETTER */
+.footer-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-section input {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.footer-section button {
+  padding: 10px;
+  border: none;
+  background: #a67c52;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.footer-section button:hover {
+  background: #8c6239;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  text-align: center;
+  padding-top: 15px;
+  font-size: 13px;
+  color: #888;
+}
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+  .footer-container {
+    text-align: center;
+  }
+}
