@@ -3,7 +3,7 @@ import "../../assets/css/usuario/login.css";
 
 export default function Login ( ){
     return (
-    <div className="container">
+    <div className="authContainer">
         <form className="">
             <div>
                 <label htmlFor="email">Email: </label>

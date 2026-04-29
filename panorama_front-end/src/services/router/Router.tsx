@@ -1,9 +1,9 @@
 import type { RouteObject } from "react-router-dom";
-import Layout from "../../components/layout/Layout";
+import LayoutMain from "../../components/layouts/LayoutMain";
 
 //USUÁRIO
-import User from "../../components/layout/User";
 import Login from "../../views/Usuario/login";
+import LayoutAuth from "../../components/layouts/LayoutAuth";
 
 //CONCURSOS
 import ConsultarConcursos from "../../views/Concursos/listagem";
@@ -12,10 +12,12 @@ import CriarConta from "../../views/Usuario/cadastrar.usuario";
 import DetalhesConcurso from "../../views/Concursos/detalhes";
 
 
+
+
 export const routes: RouteObject[] = [
     {
         path: "/",
-        element: <Layout/>,
+        element: <LayoutMain/>,
         children: [
             {
                 path: "/concursos",
@@ -30,7 +32,7 @@ export const routes: RouteObject[] = [
     },
     {
         path: "/user",
-        element: <User/>,
+        element: <LayoutAuth/>,
         children: [
             {
                 path: "/user/login",

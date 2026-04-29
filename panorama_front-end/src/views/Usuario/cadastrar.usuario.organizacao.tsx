@@ -24,7 +24,7 @@ export default function CadastrarUsuarioOrganizacao() {
 // Step 1 — Dados do Usuário
 function UserForm({ next }: { next: () => void }) {
   return (
-    <div className="container container-cadastro">
+    <div className="authContainer container-cadastro">
       <h2 className="title">DADOS DO USUÁRIO</h2>
 
       <div className="form-grid">

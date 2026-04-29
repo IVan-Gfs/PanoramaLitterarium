@@ -23,8 +23,9 @@
     margin-bottom: 30px;
     text-align: center;
 }
+
 /*Interface de login de usuário*/
-.container{
+.authContainer{
     margin: auto;
     margin-top: 30px;
     background-color: #C3E8F9;
@@ -34,25 +35,20 @@
     box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
    
 }
-.container form{
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.input{
-    font-size: 1.2em;
-}
 
 
 /*Interface de cadastro de usuários*/
-
-
 .container-cadastro{
     width: 800px;
     padding: 30px 50px 30px 50px;
     margin: auto;
     margin-top: 30px;
+}
+
+.container-cadastro form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
 .container-cadastro input{

@@ -1,8 +1,21 @@
 
-.container label{
+
+
+.authContainer form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+.authContainer label{
     display: block;
 }
-.container input{
+
+.input{
+    font-size: 1.2em;
+}
+.authContainer input{
     display: block;
     height: 25px;
     width: 100%;
@@ -10,7 +23,7 @@
     border-radius: 4px;
     padding: 5px;
 }
-.container input:focus{
+.authContainer input:focus{
     outline: 0;
     border: 2px solid #4CAFaa;
 }

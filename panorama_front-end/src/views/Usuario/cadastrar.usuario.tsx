@@ -3,7 +3,7 @@ import "../../assets/css/usuario/tipoUsuario.css";
 
 export default function CriarConta ( ){
     return (
-    <div className="container">
+    <div className="authContainer">
         <h2>Selecione o tipo de conta: </h2>
 
         <Link to="" className="card-user">

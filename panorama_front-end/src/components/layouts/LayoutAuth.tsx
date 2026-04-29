@@ -1,9 +1,9 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import '../../assets/css/usuario/userLayout.css';
+import '../../assets/css/usuario/LayoutAuth.css';
 
 
 
-export default function User(){
+export default function LayoutAuth(){
 
     const navigate = useNavigate();
     return (
