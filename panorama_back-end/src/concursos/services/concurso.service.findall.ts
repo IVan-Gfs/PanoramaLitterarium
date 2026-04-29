@@ -3,7 +3,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { ConcursoMapper } from "../mapper/concurso.mapper";
 import { ConcursoListParticDTO } from "../dto/response/concurso.list.partic.dto";
 import { Pageable } from "src/commons/pagination/page.response";
-import { fieldsConcurso } from "../constants/concurso.constants";
+import { searchFieldsConcurso, orderFieldsConcurso } from "../constants/concurso.constants";
 import { Page } from "src/commons/pagination/page.sistema";
 
 
@@ -25,7 +25,7 @@ export class ConcursoServiceFindAll {
           
         
     //Instancia o objeto Pageable, que encapsula as informações de paginação e ordenação, validando os campos permitidos    
-    const pageable = new Pageable(page, pageSize, props, order, orderBy, fieldsConcurso); 
+    const pageable = new Pageable(page, pageSize, props, order, orderBy, searchFieldsConcurso, orderFieldsConcurso); 
 
     //Prepara a cláusula WHERE para busca, usando o campo especificado em pageable.props
     const where: any = {}

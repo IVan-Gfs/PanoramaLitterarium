@@ -21,13 +21,18 @@ export const CONCURSO = {
 
   ALIAS: 'CONC',
 
-  FIELDS:{
-    DATA_PUBLICACAO: 'createdAt',
-    ID: 'id',
+  FIELDS_SEARCH:{ //campos permitidos para fazer a busca
     TITULO: 'titulo',
-    DATA_INICIO: 'data_inicio',
-    DATA_FIM: 'data_fim',
+    DESCRICAO: 'descricao',
     STATUS: 'status',
+  },
+
+  FIELDS_ORDER: { //campos permitidos para fazer a busca
+     ID: 'id',
+     PRAZO: 'prazoInscricao',
+     DATA_PUBLICACAO: 'createdAt',
+     DATA_FIM: 'data_fim',
+     TITULO: 'titulo',
   },
 
   INPUT_ERROR: {
@@ -39,4 +44,5 @@ export const CONCURSO = {
     OPERACAO: criarMensagemOperacao(ENTITY_NAME),
 };
 
-export const fieldsConcurso = Object.values(CONCURSO.FIELDS);
+export const searchFieldsConcurso = Object.values(CONCURSO.FIELDS_SEARCH);
+export const orderFieldsConcurso = Object.values(CONCURSO.FIELDS_ORDER);

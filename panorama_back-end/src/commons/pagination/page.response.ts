@@ -13,13 +13,11 @@ export class Pageable {
         props?: string,
         order?: string,
         orderBy?: string,
-
-        private readonly allowedProps: string[] = ['titulo','descricao','tema'],
-        private readonly allowedPropsOrder: string[] = ['id', 'prazoInscricao', 'titulo','createdAt','dataFinalizacao']
+        private readonly allowedProps: string[] = [],
+        private readonly allowedPropsOrder: string[] = []
     ) {
         this.page = page < 1 ? 1 : page;
         this.pageSize = pageSize > 100 ? 100 : pageSize;
-
         const defaultField = allowedProps[0];
         const defaultFieldOrder = allowedPropsOrder[0];
         this.props = allowedProps.includes(props ?? '') ? props! : defaultField;
