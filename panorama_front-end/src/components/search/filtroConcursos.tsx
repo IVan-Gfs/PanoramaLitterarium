@@ -34,9 +34,7 @@ export const FiltroConcursos: React.FC<{onSearch: (termo: string)=> void}> = ({o
     async function fetchCategoria(){
       const data = await buscarTodasCategorias()
       if(data){
-        setCategorias(data.dados)
-   
-        
+        setCategorias(data.dados)  
       }
     }
     fetchCategoria()

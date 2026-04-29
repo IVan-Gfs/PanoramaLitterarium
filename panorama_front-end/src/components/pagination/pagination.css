@@ -33,8 +33,6 @@ pagination-container {
   display: flex;
   padding-left: 0;
   list-style: none;
-  justify-content: space-between;
-  margin: 20px;
   justify-content: center;
 }
 
