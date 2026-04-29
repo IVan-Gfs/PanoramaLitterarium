@@ -1,5 +1,5 @@
 import "../../assets/css/usuario/cadastrar.css";  
-import "../../assets/css/usuario/userLayout.css"
+import "../../assets/css/usuario/LayoutAuth.css"
 import "../../assets/css/usuario/cadastroSuccess.css"
 import { useState } from "react";
 
