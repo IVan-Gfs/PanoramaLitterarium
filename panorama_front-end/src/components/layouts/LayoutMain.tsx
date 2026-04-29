@@ -1,8 +1,11 @@
 import '../../assets/css/main.css';
 import '../../assets/css/footer.css'
 import { NavLink, Outlet } from "react-router-dom";
+import { useState } from 'react';
 
 export default function LayoutMain() {
+
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div id="defaultLayout">
 
@@ -14,6 +17,11 @@ export default function LayoutMain() {
           <NavLink to="/" className="logoLink">
             <img src="/logo.svg" alt="logo" className="Logo" />
           </NavLink>
+
+        
+
+          
+         
 
           <nav id="navbar">
 
@@ -39,6 +47,19 @@ export default function LayoutMain() {
 
           </nav>
         </div>
+
+          {/* MENU MOBILE*/}
+
+        <button className="menuToggle" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+        </button>
+        <nav className={`mobileMenu ${menuOpen ? "open" : ""}`}>
+            <NavLink to="/">Início</NavLink>
+            <NavLink to="/concursos">Concursos</NavLink>
+            <NavLink to="/user/login">Entrar</NavLink>
+            <NavLink to="/user/cadastrar">Cadastrar</NavLink>
+          
+        </nav>
 
         {/* LADO DIREITO */}
 

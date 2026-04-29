@@ -1,8 +1,10 @@
-import React, { use, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../../assets/css/concurso/filtroConcurso.css";
 import type { Categoria, CategoriaReponse } from "../../services/entities/categoria/type/Categoria";
 import { apiGetCategoria } from "../../services/entities/categoria/api/api.categoria";
 import { ROTA } from "../../services/router/url";
+import Select, { type SingleValue } from "react-select";
+import customSelectStyles, { type OptionType } from "../../assets/styles/select.Style";
 
 interface BotaoProps{
   label: string;
@@ -15,8 +17,8 @@ export const FiltroConcursos: React.FC<{
   filterCategory: (categorias: number[]) => void
 }> = ({onSearch, orderByChange, filterCategory}) => {
 
-  const [abrirFiltros, setAbrirFiltros] = useState(false);
-  const [abrirFiltrosCategoria, setAbrirFiltrosCategoria] = useState(false)
+  const [dropdownAberto, setDropdownAberto] = useState<string | null>(null);
+
   const [btnCatAtivos, setBtnCatAtivos] = useState<number[]>([])
   const [busca, setBusca] = useState("");
   const [categorias, setCategorias] = useState<Categoria[]>([])
@@ -58,13 +60,38 @@ export const FiltroConcursos: React.FC<{
     }
     fetchCategoria()
   },[])
+  const options = [
+    { value: 'prazoInscricao,ASC', label: 'Prazo mais próximo' },
+    { value: 'prazoInscricao,DESC', label: 'Prazo mais distante' },
+    { value: 'createdAt,ASC', label: 'Mais recentes' },
+    { value: 'createdAt,DESC', label: 'Mais antigos' },
+    { value: 'titulo,ASC', label: 'Título A-Z' },
+    { value: 'titulo,DESC', label: 'Título Z-A' },
+  ];
+  const toggleDropdown = (nome: string) => {//Atualiza o dropdown atual
+    setDropdownAberto(prev => (prev === nome ? null : nome));
+  };
+
+  useEffect(() => {//fecha dropdown ao clicar fora
+  const handleClick = (e: MouseEvent) => {
+    if (!(e.target as HTMLElement).closest('.filtro-container')) {
+      setDropdownAberto(null);
+      
+    }
+    
+  };
+
+  document.addEventListener('click', handleClick);
+  return () => document.removeEventListener('click', handleClick);
+  }, []);
+
   return (
     <div className="filtro-container">
       <div className="filtro-linha">
         
         {/* Busca */}
         <div className="filtro-item grow">
-          <label>Buscar por título</label>
+          <label className="title-field">Buscar por título</label>
           <input
             type="text"
             value={busca}
@@ -73,60 +100,74 @@ export const FiltroConcursos: React.FC<{
           />
         </div>
 
+        {/* Ordenação */}
+        <div className="filtro-item">
+          <label className="title-field">Ordenar por:</label>
+          <Select<OptionType>
+          className=""
+          styles={
+            customSelectStyles
+          }
+          options={options}
+          onChange={(option) => {
+            if (option) orderByChange({target: {value: option.value}} as any)
+          }}
+          classNamePrefix="react-select"
+          isSearchable={false}
+          placeholder="Selecione.."
+          />
+        </div>
+        
+
+
         {/* Categoria */}
+        
         <div className="filtro-item select">
-          <label style={{ opacity: 0 }}>Ação</label>
+          <label className="title-field">Filtrar por:</label>
          <button
             className="btn-filtro"
-            onClick={() => setAbrirFiltrosCategoria(!abrirFiltrosCategoria)}
+            onClick={() => toggleDropdown('categoria')}
           >
             Categoria {btnCatAtivos.length > 0 ? "( "+btnCatAtivos.length+" )" : ''}
          </button>
-         {abrirFiltrosCategoria && (
-            <div className="filtros-dropdown">
-              <h4>Selecione as categorias</h4>
+         {dropdownAberto === 'categoria' && (
+          <div className="filtros-dropdown-categoria">
+          <h4>Selecione as categorias</h4>
 
-              {categorias.map((cat) => (
-                <button 
-                  key={cat.id} 
-                  onClick={()=> alternarCategoria(cat.id)}
-                  className={btnCatAtivos.includes(cat.id) ? 'btn-categoria-ativo' : 'btn-categoria'}
-                >
-                  {cat.nome}
-                </button>
-              ))}
-              <button className="btn-aplicar" onClick={() => filterCategory(btnCatAtivos)}>Aplicar</button>
-            </div>
+          <div className="lista-categorias">
+            {categorias.map((cat) => (
+              <button 
+                key={cat.id} 
+                onClick={()=> alternarCategoria(cat.id)}
+                className={btnCatAtivos.includes(cat.id) ? 'btn-categoria-ativo' : 'btn-categoria'}
+              >
+                {cat.nome}
+              </button>
+            ))}
+          </div>
+
+          <div className="acoes-filtro">
+            <button className="btn-limpar" onClick={() => setBtnCatAtivos([])} >Limpar</button>
+            <button className="btn-aplicar" onClick={() => {filterCategory(btnCatAtivos); toggleDropdown('')}}>Aplicar</button>
+          </div>
+        </div>
           )}
         </div>
 
 
-        {/* Ordenação */}
-        <div className="filtro-item select">
-          <label>Ordenar por</label>
-          <select onChange={orderByChange}>
-            <option value="">Selecione..</option>
-            <option value={["prazoInscricao", "ASC"]}>Prazo mais próximo</option>
-            <option value={["prazoInscricao", "DESC"]}>Prazo mais distante</option>
-            <option value={["createdAt", "ASC"]}>Mais recentes</option>
-            <option value={["createdAt", "DESC"]}>Mais antigos</option>
-            <option value={["titulo", "ASC"]}>Título A-Z</option>
-            <option value={["titulo", "DESC"]}>Título Z-A</option>
-          </select>
-        </div>
-
+        
         {/* Botão filtros */}
         <div className="filtro-item select">
-          <label style={{ opacity: 0 }}>Ação</label>
+          <label className="title-field" >Filtrar por</label>
          <button
             className="btn-filtro"
-            onClick={() => setAbrirFiltros(!abrirFiltros)}
+            onClick={() => toggleDropdown('filtros')}
           >
-            Mais filtros
+            Mais opções
          </button>
-         {abrirFiltros && (
+         {dropdownAberto === 'filtros' && (
             <div className="filtros-dropdown">
-              <h4>Filtros avançados</h4>
+              <h4>Custos e premiação</h4>
 
               <label>
                 <input type="checkbox" />
@@ -140,7 +181,7 @@ export const FiltroConcursos: React.FC<{
 
               <label>
                 <input type="checkbox" />
-                Com prêmio em dinheiro
+                Prêmio em dinheiro
               </label>
 
               <button className="btn-aplicar">Aplicar</button>
