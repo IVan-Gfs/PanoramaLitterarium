@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import '../../assets/css/concurso/listagem.css';
 import { Link } from "react-router-dom";
 import { ROTA } from '../../services/router/url';
@@ -21,13 +21,15 @@ export default function ConsultarConcursos ( ){
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(6);
   const [totalPages, setTotalPages] = useState<number>(6);
-  const [totalElements, setTotalElements] = useState<number>(0);
+  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<number[]>([]);
 
   //Filtragem
   const [props, setProps] = useState<string>("titulo");
   const [order, setOrder] = useState<string>("asc");
   const [orderBy, setOrderBy] = useState<string>("id");
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  
 
   const [loading, setLoading] = useState(true);
 
@@ -47,6 +49,7 @@ export default function ConsultarConcursos ( ){
     }, []
   );
 
+  //monitorar mudança dos elementos, disparando chamada para api
   useEffect(() => {
     async function fetchConcursos() {
 
@@ -56,22 +59,27 @@ export default function ConsultarConcursos ( ){
         props: props,
         order: order,
         orderBy: orderBy,
-        searchTerm: searchTerm === '' ? null : searchTerm
+        searchTerm: searchTerm === '' ? null : searchTerm,
+        categorias: categoriasSelecionadas.length > 0 ? categoriasSelecionadas.join(',') : undefined
       };
       const data = await buscarTodosConcursos(params);
 
       if(data){
-        const { content, page, pageSize, totalPages, totalElements } = data.dados;
+        const { content, page, pageSize, totalPages } = data.dados;
 
         setConcursos(content);
         setCurrentPage(page);
         setPageSize(pageSize);
         setTotalPages(totalPages);
-        setTotalElements(totalElements);
       }
     }
     fetchConcursos();
-  }, [currentPage, pageSize, searchTerm, order, props]);
+  }, [currentPage, pageSize, searchTerm, order, props, categoriasSelecionadas]);
+
+  if(loading){ 
+    return <div>Carregando concursos...</div>;
+  }
+
   
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(Number(pageNumber));
@@ -84,11 +92,17 @@ export default function ConsultarConcursos ( ){
     setCurrentPage(0); // volta
   }
 
-
-  if(loading){ 
-    return <div>Carregando concursos...</div>;
+  const handleOrderFieldSelect = (event: React.ChangeEvent<HTMLSelectElement> ) => {
+    const [propsOrder, order] =  event.target.value.split(',');
+    console.log(event.target.value)
+    setOrderBy(propsOrder);
+    setOrder(order);
   }
-
+  
+  const handleFilterCategory = (ids: number[]) => {
+  setCategoriasSelecionadas(ids);
+  setCurrentPage(1); // opcional: volta para a primeira página ao filtrar
+  };
 
     return (     
      <div>
@@ -96,6 +110,8 @@ export default function ConsultarConcursos ( ){
 
        <FiltroConcursos 
         onSearch={setSearchTerm}
+        orderByChange={handleOrderFieldSelect}
+        filterCategory={handleFilterCategory}
        />
 
         <div className='filtro'></div>

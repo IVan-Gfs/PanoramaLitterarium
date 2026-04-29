@@ -133,3 +133,7 @@
   color: white;
   cursor: pointer;
 }
+
+.btn-categoria{
+  border-radius: 4px;
+}

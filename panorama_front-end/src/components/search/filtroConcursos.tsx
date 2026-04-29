@@ -1,12 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 import "../../assets/css/concurso/filtroConcurso.css";
 import type { Categoria, CategoriaReponse } from "../../services/entities/categoria/type/Categoria";
 import { apiGetCategoria } from "../../services/entities/categoria/api/api.categoria";
 import { ROTA } from "../../services/router/url";
 
-export const FiltroConcursos: React.FC<{onSearch: (termo: string)=> void}> = ({onSearch}) => {
+interface BotaoProps{
+  label: string;
+  isAtivo: boolean;
+  onClickCategoria: (nome: string) => void
+}
+export const FiltroConcursos: React.FC<{
+  onSearch: (termo: string)=> void, 
+  orderByChange: (orderBy: React.ChangeEvent<HTMLSelectElement>) => void,
+  filterCategory: (categorias: number[]) => void
+}> = ({onSearch, orderByChange, filterCategory}) => {
 
   const [abrirFiltros, setAbrirFiltros] = useState(false);
+  const [abrirFiltrosCategoria, setAbrirFiltrosCategoria] = useState(false)
+  const [btnCatAtivos, setBtnCatAtivos] = useState<number[]>([])
   const [busca, setBusca] = useState("");
   const [categorias, setCategorias] = useState<Categoria[]>([])
 
@@ -21,6 +32,14 @@ export const FiltroConcursos: React.FC<{onSearch: (termo: string)=> void}> = ({o
       return null
     }, []
   )
+
+  const alternarCategoria = (cat: number) =>{ //inclui ou remove o id da categoria ao array de categorias ativas
+    if(btnCatAtivos.includes(cat)){
+      setBtnCatAtivos(btnCatAtivos.filter(item => item !== cat))
+    }else{
+      setBtnCatAtivos([...btnCatAtivos, cat])
+    }
+  }
 
   useEffect(()=>{
     const timeout = setTimeout(()=>{
@@ -56,20 +75,43 @@ export const FiltroConcursos: React.FC<{onSearch: (termo: string)=> void}> = ({o
 
         {/* Categoria */}
         <div className="filtro-item select">
-          <label>Categoria</label>
-          <select>
-            <option value="">TODAS</option>
-            {categorias.map((cat) => (<option key={cat.id}>{cat.nome}</option>))}
-          </select>
+          <label style={{ opacity: 0 }}>Ação</label>
+         <button
+            className="btn-filtro"
+            onClick={() => setAbrirFiltrosCategoria(!abrirFiltrosCategoria)}
+          >
+            Categoria {btnCatAtivos.length > 0 ? "( "+btnCatAtivos.length+" )" : ''}
+         </button>
+         {abrirFiltrosCategoria && (
+            <div className="filtros-dropdown">
+              <h4>Selecione as categorias</h4>
+
+              {categorias.map((cat) => (
+                <button 
+                  key={cat.id} 
+                  onClick={()=> alternarCategoria(cat.id)}
+                  className={btnCatAtivos.includes(cat.id) ? 'btn-categoria-ativo' : 'btn-categoria'}
+                >
+                  {cat.nome}
+                </button>
+              ))}
+              <button className="btn-aplicar" onClick={() => filterCategory(btnCatAtivos)}>Aplicar</button>
+            </div>
+          )}
         </div>
+
 
         {/* Ordenação */}
         <div className="filtro-item select">
           <label>Ordenar por</label>
-          <select>
-            <option>Prazo mais próximo</option>
-            <option>Prazo mais distante</option>
-            <option>Mais recentes</option>
+          <select onChange={orderByChange}>
+            <option value="">Selecione..</option>
+            <option value={["prazoInscricao", "ASC"]}>Prazo mais próximo</option>
+            <option value={["prazoInscricao", "DESC"]}>Prazo mais distante</option>
+            <option value={["createdAt", "ASC"]}>Mais recentes</option>
+            <option value={["createdAt", "DESC"]}>Mais antigos</option>
+            <option value={["titulo", "ASC"]}>Título A-Z</option>
+            <option value={["titulo", "DESC"]}>Título Z-A</option>
           </select>
         </div>
 
