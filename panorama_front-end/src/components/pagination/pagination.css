@@ -58,6 +58,7 @@ pagination-container {
   color: var(--page-link-hover-color);
   background-color: var(--page-link-hover-bg);
   border-color: var(--page-link-border);
+  cursor: pointer;
 }
 
 .page-link:focus {
