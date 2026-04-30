@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,7 +16,11 @@ async function bootstrap() {
     credentials: true,
   })
 
- 
+  //ativa o classtransform
+ app.useGlobalPipes(new ValidationPipe({ 
+  transform: true, 
+  whitelist: true,
+}));
 
   const port = process.env.PORT ?? 8000;
   await app.listen(port, '0.0.0.0');

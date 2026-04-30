@@ -20,6 +20,7 @@ export class ConcursoServiceFindAll {
         search?: string,
         orderBy?: string,
         categorias?: string,
+        booleanFlags?: object
     ): Promise<Page<ConcursoListParticDTO>> {
 
           
@@ -30,6 +31,7 @@ export class ConcursoServiceFindAll {
     //Prepara a cláusula WHERE para busca, usando o campo especificado em pageable.props
     const where: any = {}
     const categoriasArray = categorias ? categorias.split(',').map(id => Number(id)).filter(id => !isNaN(id)) : []; 
+    const listBooleanFlags = Object.entries(booleanFlags ?? {});
 
     if(search){
         where[pageable.props] = {
@@ -47,6 +49,13 @@ export class ConcursoServiceFindAll {
         }
     }
 
+    //Padroniza listagem de todos os campos de flags booleanas
+    listBooleanFlags.forEach(([key, value]) =>{
+        if( value !== undefined){
+            where[key] = value
+        }
+    })
+    
    //Executa as consultas para obter os concursos e contar o total de itens, usando Promise.all para otimizar a performance
     const [concursos, totalitems] = await Promise.all([
         this.prismaService.concurso.findMany({
