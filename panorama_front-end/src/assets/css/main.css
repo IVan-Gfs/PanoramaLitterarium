@@ -9,7 +9,7 @@
 
 /* HEADER */
 #HeaderHome {
-  background-color: #C3E8F9;
+  background-color: #D6E6F7;
   height: 100px;
   padding: 0 24px;
 
@@ -31,7 +31,7 @@
 
 /* LOGO */
 .Logo {
-  width: 140px;
+  width: 90px;
   height: auto;
   display: block;
 }

@@ -3,26 +3,24 @@ import "../../assets/css/concurso/filtroConcurso.css";
 import type { Categoria, CategoriaReponse } from "../../services/entities/categoria/type/Categoria";
 import { apiGetCategoria } from "../../services/entities/categoria/api/api.categoria";
 import { ROTA } from "../../services/router/url";
-import Select, { type SingleValue } from "react-select";
 import customSelectStyles, { type OptionType } from "../../assets/styles/select.Style";
+import Select from "react-select";
 
-interface BotaoProps{
-  label: string;
-  isAtivo: boolean;
-  onClickCategoria: (nome: string) => void
-}
+
 export const FiltroConcursos: React.FC<{
   onSearch: (termo: string)=> void, 
   orderByChange: (orderBy: React.ChangeEvent<HTMLSelectElement>) => void,
   filterCategory: (categorias: number[]) => void
-}> = ({onSearch, orderByChange, filterCategory}) => {
+  filtersFlags: (filtersFlags: object[]) => void,
+}> = ({onSearch, orderByChange, filterCategory, filtersFlags}) => {
 
   const [dropdownAberto, setDropdownAberto] = useState<string | null>(null);
 
-  const [btnCatAtivos, setBtnCatAtivos] = useState<number[]>([])
   const [busca, setBusca] = useState("");
+  const [btnCatAtivos, setBtnCatAtivos] = useState<number[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
-
+  const [filters, setFilters] = useState<object[]>([])
+  
   const buscarTodasCategorias = useCallback(
     async (): Promise<CategoriaReponse| null> =>{
       try{
@@ -42,7 +40,7 @@ export const FiltroConcursos: React.FC<{
       setBtnCatAtivos([...btnCatAtivos, cat])
     }
   }
-
+   
   useEffect(()=>{
     const timeout = setTimeout(()=>{
       onSearch(busca)
@@ -63,14 +61,16 @@ export const FiltroConcursos: React.FC<{
   const options = [
     { value: 'prazoInscricao,ASC', label: 'Prazo mais próximo' },
     { value: 'prazoInscricao,DESC', label: 'Prazo mais distante' },
-    { value: 'createdAt,ASC', label: 'Mais recentes' },
-    { value: 'createdAt,DESC', label: 'Mais antigos' },
+    { value: 'createdAt,DESC', label: 'Mais recentes' },
+    { value: 'createdAt,ASC', label: 'Mais antigos' },
     { value: 'titulo,ASC', label: 'Título A-Z' },
     { value: 'titulo,DESC', label: 'Título Z-A' },
   ];
   const toggleDropdown = (nome: string) => {//Atualiza o dropdown atual
     setDropdownAberto(prev => (prev === nome ? null : nome));
   };
+
+  
 
   useEffect(() => {//fecha dropdown ao clicar fora
   const handleClick = (e: MouseEvent) => {
@@ -153,8 +153,6 @@ export const FiltroConcursos: React.FC<{
         </div>
           )}
         </div>
-
-
         
         {/* Botão filtros */}
         <div className="filtro-item select">
@@ -168,23 +166,22 @@ export const FiltroConcursos: React.FC<{
          {dropdownAberto === 'filtros' && (
             <div className="filtros-dropdown">
               <h4>Custos e premiação</h4>
-
               <label>
-                <input type="checkbox" />
+                <input type="checkbox" onChange={(e)=> { setFilters(prev =>[...prev, {gratuito: e.target.checked}])}}/>
                 Gratuito
               </label>
 
               <label>
-                <input type="checkbox" />
+                <input type="checkbox" onChange={(e)=> { setFilters(prev =>[...prev, {pago: e.target.checked}])}}/>
                 Pago
               </label>
 
               <label>
-                <input type="checkbox" />
+                <input type="checkbox" onChange={(e)=> { setFilters(prev =>[...prev, {premioEmDinheiro: e.target.checked}])}}/>
                 Prêmio em dinheiro
               </label>
 
-              <button className="btn-aplicar">Aplicar</button>
+              <button className="btn-aplicar" onClick={()=>{filtersFlags(filters)}}>Aplicar</button>
             </div>
           )}
         </div>

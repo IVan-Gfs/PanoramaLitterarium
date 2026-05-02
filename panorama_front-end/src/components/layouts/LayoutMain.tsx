@@ -15,12 +15,8 @@ export default function LayoutMain() {
         <div className="leftHeader">
 
           <NavLink to="/" className="logoLink">
-            <img src="/logo.svg" alt="logo" className="Logo" />
+            <img src="/logo.png" alt="logo" className="Logo" />
           </NavLink>
-
-        
-
-          
          
 
           <nav id="navbar">

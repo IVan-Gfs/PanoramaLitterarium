@@ -21,14 +21,23 @@ export default function ConsultarConcursos ( ){
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(6);
   const [totalPages, setTotalPages] = useState<number>(6);
-  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<number[]>([]);
+  
+  
 
   //Filtragem
   const [props, setProps] = useState<string>("titulo");
   const [order, setOrder] = useState<string>("asc");
   const [orderBy, setOrderBy] = useState<string>("id");
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<number[]>([]);
+  const [gratuito, setGratuito] = useState<number>()
+  const [premioEmDinheiro, setPremioEmDinheiro] = useState<number>()
 
+  interface FilterFields {
+    gratuito?: boolean;
+    pago?:boolean;
+    premioEmDinheiro?: boolean
+  }
   
 
   const [loading, setLoading] = useState(true);
@@ -60,7 +69,9 @@ export default function ConsultarConcursos ( ){
         order: order,
         orderBy: orderBy,
         searchTerm: searchTerm === '' ? null : searchTerm,
-        categorias: categoriasSelecionadas.length > 0 ? categoriasSelecionadas.join(',') : undefined
+        categorias: categoriasSelecionadas.length > 0 ? categoriasSelecionadas.join(',') : undefined,
+        gratuito: gratuito,
+        premioEmDinheiro: premioEmDinheiro,
       };
       const data = await buscarTodosConcursos(params);
 
@@ -74,7 +85,7 @@ export default function ConsultarConcursos ( ){
       }
     }
     fetchConcursos();
-  }, [currentPage, pageSize, searchTerm, order, props, categoriasSelecionadas]);
+  }, [currentPage, pageSize, searchTerm, order, props, categoriasSelecionadas, gratuito, premioEmDinheiro]);
 
   if(loading){ 
     return <div>Carregando concursos...</div>;
@@ -100,9 +111,29 @@ export default function ConsultarConcursos ( ){
   }
   
   const handleFilterCategory = (ids: number[]) => {
-  setCategoriasSelecionadas(ids);
-  setCurrentPage(1); // opcional: volta para a primeira página ao filtrar
+    setCategoriasSelecionadas(ids);
+    setCurrentPage(1); // opcional: volta para a primeira página ao filtrar
   };
+
+  const handleFiltersChecked = (filtersArray: object[]) =>{
+
+    let filters = filtersArray.reduce<FilterFields>((acc, item)=> {
+      return {
+        ...acc, ...item
+      }
+    },{});
+
+    const {gratuito, pago, premioEmDinheiro} = filters;
+
+    console.log(premioEmDinheiro)
+
+    if(gratuito != pago){
+        if(gratuito) setGratuito(1)
+        if(pago)     setGratuito(0)
+    }
+    if(premioEmDinheiro) setPremioEmDinheiro(0)
+  
+  }
 
     return (     
      <div>
@@ -112,6 +143,7 @@ export default function ConsultarConcursos ( ){
         onSearch={setSearchTerm}
         orderByChange={handleOrderFieldSelect}
         filterCategory={handleFilterCategory}
+        filtersFlags={handleFiltersChecked}
        />
 
         <div className='filtro'></div>
