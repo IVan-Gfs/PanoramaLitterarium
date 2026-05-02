@@ -229,7 +229,7 @@ model Pessoa {
   nome         String
   foto         String?
   documento    String?            @unique(map: "Pessoa_documento_key")
-  tipoPessoa   PessoaTipoPessoa?
+  tipoPessoa   TipoPessoa?
   tel          String?
   usuarioId    BigInt             @unique(map: "Pessoa_usuarioId_key")
   createdAt    DateTime           @default(now())
@@ -296,7 +296,7 @@ enum InscricaoStatusPagamento {
   ISENTO
 }
 
-enum PessoaTipoPessoa {
+enum TipoPessoa {
   PF
   PJ
 }

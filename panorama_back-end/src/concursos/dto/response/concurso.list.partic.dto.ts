@@ -1,4 +1,4 @@
-import { OrganizacaoResumoDto } from "src/organizacao/dtos/organizacao.resumo";
+import { OrganizacaoResumoDto } from "src/organizacao/dto/organizacao.resumo";
 import { ConcursoBaseReponseDTO } from "./consurso.base.dto";
 import { Expose, Transform, Type } from "class-transformer";
 

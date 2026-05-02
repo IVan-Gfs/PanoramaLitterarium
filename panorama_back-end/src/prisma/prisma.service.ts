@@ -17,10 +17,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         port: Number(process.env.DATABASE_PORT) || 3306,
+        allowPublicKeyRetrieval: true,
         connectionLimit: 10,
         };
  
-        
+         
         console.log('Conectando ao MariaDB em:', dbConfig.host, 'DB:', dbConfig.database);
 
         const adapter = new PrismaMariaDb(dbConfig);

@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsuarioServiceCreate } from './services/usuario.service.create';
 import { UsuarioControllerCreate } from './controllers/usuario.controller.create';
+import { UsuarioServiceCreate } from './services/usuario.service.create';
 
-
-const controllers = [UsuarioControllerCreate]
-const services = [UsuarioServiceCreate]
 @Module({
-  controllers: [...controllers],
-  providers: [...services],
+  controllers: [UsuarioControllerCreate],
+  providers: [UsuarioServiceCreate],
 })
 export class UsuarioModule {}
