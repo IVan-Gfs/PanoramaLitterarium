@@ -5,12 +5,12 @@ import { OrganizacaoResponseDto } from "src/organizacao/dto/organizacao.response
 import { ParticipanteResponseDTO } from "src/participante/dto/participante.response.dto";
 
 
-export class PessoaResponseDTO {
+export class PerfilResponseDTO {
 
     @Expose() id!: number;
     @Expose() nome!: string;
     @Expose() email!: string;
-    @Expose() documento!: string;
+    @Expose() cpf!: string;
     @Expose() tel?: string;
 
     @Expose() @Type(() =>  OrganizacaoResponseDto) organizacao?: OrganizacaoResponseDto

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { AuthModule } from 'src/auth/auth.module';
 import { CategoriaModule } from 'src/categoria/categoria.modele';
 import { ConcursoModule } from 'src/concursos/concursos.module';
-import { PessoaModule } from 'src/pessoa/pessoa.module';
+import { PessoaModule } from 'src/perfil/perfil.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { UsuarioModule } from 'src/usuario/usuario.module';
 

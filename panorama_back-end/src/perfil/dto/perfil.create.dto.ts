@@ -6,7 +6,7 @@ import { OrganizacaoCreateDto } from "src/organizacao/dto/organizacao.create.dto
 import { ParticipanteCreateDTO } from "src/participante/dto/participante.create.dto";
 
 
-export class PessoaCreateDTO {
+export class PerfilCreateDTO {
   @ValidateIf(o => o.tipo === TipoPessoa.PF )
   @IsNotEmpty({message: 'Nome de usuário é obrigatório'})
   @IsString({message: 'O nome de usuário deve ser um texto'})
@@ -20,17 +20,17 @@ export class PessoaCreateDTO {
 
   @IsOptional()
   @IsEnum(TipoPessoa, { message: 'tipo de pessoa (pf ou pj) é obrigatório.' })
-  tipo!: TipoPessoa;
+  tipo?: TipoPessoa;
 
   @IsOptional()
-  @IsString({ message: 'O CNPJ/CPF deve ser um texto.' })
-  @Length(11, 20, { message: 'O CNPJ/CPF deve ter 14 caracteres.' })
-  documento!: string;
+  @IsString({ message: 'O CPF deve ser um texto.' })
+  @Length(11, 20, { message: 'O CPF deve ter 11 caracteres.' })
+  cpf?: string;
 
   @IsOptional()
   @IsString({ message: 'O telefone deve ser um texto.' })
   @Length(10, 15, { message: 'O telefone deve ter entre 10 e 15 caracteres.' })
-  tel!: string; 
+  tel?: string; 
   
   @ValidateNested()
   @Type(()=> OrganizacaoCreateDto)

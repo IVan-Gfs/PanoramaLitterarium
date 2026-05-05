@@ -1,5 +1,5 @@
 import { Expose, Transform, Type } from "class-transformer";
-import {PessoaResponseDTO } from "src/pessoa/dto/pessoa.response.dto";
+import {PerfilResponseDTO } from "src/perfil/dto/perfil.response.dto";
 
 
 export class UsuarioResponseDTO {
@@ -10,7 +10,7 @@ export class UsuarioResponseDTO {
 
     @Expose() email: string = '';
 
-    @Type(()=>PessoaResponseDTO)
-    pessoa!: PessoaResponseDTO;
+    @Type(()=>PerfilResponseDTO)
+    pessoa!: PerfilResponseDTO;
 }
 

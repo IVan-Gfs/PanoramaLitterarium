@@ -2,12 +2,11 @@ import { Prisma, Usuario } from "@prisma/client";
 import { UsuarioCreateDTO } from "../dto/usuario.create.dto";
 import { UsuarioResponseDTO } from "../dto/usuario.response.dto";
 import { plainToInstance } from "class-transformer";
-import { PessoaMapper } from "src/pessoa/mapper/pessoa.mapper";
 
 export class UsuarioMapper {
 
   static toPrismaModel(dto: UsuarioCreateDTO): Prisma.UsuarioCreateInput{
-       const { pessoa, ...usuario } = dto;
+       const { perfil, ...usuario } = dto;
         return {
             ...usuario,
 

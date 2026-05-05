@@ -5,7 +5,7 @@ import { UsuarioCreateDTO } from "../dto/usuario.create.dto";
 import { UsuarioResponseDTO } from "../dto/usuario.response.dto";
 import { UsuarioMapper } from "../mapper/usuario.mapper";
 import * as bcrypt from 'bcrypt';
-import { PessoaMapper } from "src/pessoa/mapper/pessoa.mapper";
+import { PerfilMapper } from "src/perfil/mapper/perfil.mapper";
 
 @Injectable()
 export class UsuarioServiceCreate {
@@ -23,17 +23,20 @@ export class UsuarioServiceCreate {
         if(usuarioExistente){
             throw new ConflictException('O email informado já está cadastrado');
         }
-        if (!usuarioRequest.pessoa) {
+        if (!usuarioRequest.perfil) {
             throw new BadRequestException('Pessoa é obrigatória');
         }
 
-        const pessoaExistente = await this.prismaService.pessoa.findUnique({
-            where: { documento: usuarioRequest.pessoa.documento }
-        });
+    
+        if(usuarioRequest.perfil.cpf){
+            let perfil = await this.prismaService.perfil.findUnique({
+                where: { cpf: usuarioRequest.perfil.cpf }
+            });
+            if (perfil) throw new ConflictException('CPF/CNPJ já cadastrado');
 
-        if (pessoaExistente) {
-            throw new ConflictException('CPF/CNPJ já cadastrado');
         }
+        
+        
 
         const usuarioData = UsuarioMapper.toPrismaModel({
             ...usuarioRequest,
@@ -41,8 +44,8 @@ export class UsuarioServiceCreate {
           
         })
 
-        const pessoaData = PessoaMapper.toDomain(usuarioRequest.pessoa)
-        const { organizacao, jurado, participante, ...pessoaBase } = pessoaData;
+        const perfilData = PerfilMapper.toDomain(usuarioRequest.perfil)
+        const { organizacao, jurado, participante, ...perfilBase } = perfilData;
         const tipos = [organizacao, jurado, participante].filter(Boolean);
 
         if (tipos.length > 1) {
@@ -53,11 +56,11 @@ export class UsuarioServiceCreate {
         
         //ternário para validar qual tipo de usuário está sendo criado
         const tipoRelacao = 
-            pessoaData.organizacao
+            perfilData.organizacao
             ? {organizacao: {create: {...organizacao}}}
-            : pessoaData.jurado
+            : perfilData.jurado
             ? {jurado: {create: {...jurado}}}
-            : pessoaData.participante
+            : perfilData.participante
             ? {participante:  {create: {...participante}}}
             : {};
 
@@ -65,13 +68,19 @@ export class UsuarioServiceCreate {
         const usuario = await this.prismaService.usuario.create({
             data:{
                 ...usuarioData,
-                pessoa: {
+                perfil: {
                     create: {
-                        ...pessoaBase,
+                        ...perfilBase,
                         ...tipoRelacao,
                     }
+                },
+                usuarioRole: {
+                    connect: usuarioRequest.roles.map((role) => {
+                        role: role
+                    })
                 }
             }
+            
         })
         return UsuarioMapper.toDTOResponse(usuario)
     }

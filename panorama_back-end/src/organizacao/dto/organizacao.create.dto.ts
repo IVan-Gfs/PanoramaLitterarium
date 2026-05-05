@@ -1,6 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-import {PessoaCreateDTO } from "src/pessoa/dto/pessoa.create.dto";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class OrganizacaoCreateDto {
 
@@ -9,29 +8,33 @@ export class OrganizacaoCreateDto {
     @IsString()
     nomeFantasia!: string;
 
-    @IsNotEmpty({message: "Razão social é obrigatório"})
+    @IsOptional()
     @IsString()
-    razaoSocial!: string;
+    razaoSocial?: string;
+
+    @IsOptional()
+    @IsString()
+    cnpj?: string;
 
     @IsNotEmpty({message: "Tipo da organização é obrigatório"})
     @IsString()
     tipo!: string;
 
-    @IsNotEmpty({message: "Cep é obrigatório"})
+    @IsOptional()
     @IsNumber()
     @Type(()=> Number)
-    cep!: number;
+    cep?: number;
 
-    @IsNotEmpty({message: "Endereço é obrigatório"})
+    @IsOptional()
     @IsString()
-    endereco!: string;
+    endereco?: string;
 
-    @IsNotEmpty({message: "Município é obrigatório"})
+    @IsOptional()
     @IsString()
-    municipio!: string;
+    municipio?: string;
 
-    @IsNotEmpty({message: "UF é obrigatório"})
+    @IsOptional()
     @IsString()
-    uf!: string;
+    uf?: string;
 
 }

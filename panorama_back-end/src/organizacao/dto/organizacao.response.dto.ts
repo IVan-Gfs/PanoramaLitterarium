@@ -10,6 +10,9 @@ export class OrganizacaoResponseDto {
 
     @Expose()
     razaoSocial?: string  | null;
+
+    @Expose()
+    cpnj?: string  | null;
     
     @Expose()
     municipio?: string  | null;

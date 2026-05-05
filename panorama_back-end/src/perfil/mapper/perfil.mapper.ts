@@ -1,16 +1,15 @@
 import { Prisma } from "@prisma/client";
-import { PessoaCreateDTO } from "../dto/pessoa.create.dto";
+import { PerfilCreateDTO } from "../dto/perfil.create.dto";
 import { OrganizacaoMapper } from "src/organizacao/mapper/organizacao.mapper";
 import { ParticipanteMapper } from "src/participante/mapper/participante.mapper";
 import { JuradoMapper } from "src/jurado/mapper/jurado.mapper";
 
-export class PessoaMapper {
-  static toDomain(dto: PessoaCreateDTO) {
+export class PerfilMapper {
+  static toDomain(dto: PerfilCreateDTO) {
     return {
       nome: dto.nome,
       foto: dto.foto,
-      documento: dto.documento,
-      tipoPessoa: dto.tipo,
+      cpf: dto.cpf,
       tel: dto.tel,
 
       organizacao: dto.organizacao

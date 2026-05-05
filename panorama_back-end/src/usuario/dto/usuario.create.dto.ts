@@ -9,10 +9,8 @@ import {
   MinLength,
   ValidateNested
 } from "class-validator";
-import { TipoUsuario } from '@prisma/client';
-import { PessoaCreateDTO } from "src/pessoa/dto/pessoa.create.dto";
+import { PerfilCreateDTO } from "src/perfil/dto/perfil.create.dto";
 import { Type } from "class-transformer";
-import { ParticipanteCreateDTO } from "src/participante/dto/participante.create.dto";
 
 
 
@@ -29,12 +27,8 @@ export class UsuarioCreateDTO  {
   @MinLength(6, { message: 'A senha deve ter pelo menos 6 caracteres.' })
   senha!: string;
 
-  @IsNotEmpty({ message: 'Tipo de usuário é obrigatório.' })
-  @IsEnum(TipoUsuario, { message: 'Tipo de usuário inválido.' })
-  tipo!: TipoUsuario;
-
   @ValidateNested()
-  @Type(()=>PessoaCreateDTO)
-  pessoa!: PessoaCreateDTO
+  @Type(()=>PerfilCreateDTO)
+  perfil!: PerfilCreateDTO
 
 }

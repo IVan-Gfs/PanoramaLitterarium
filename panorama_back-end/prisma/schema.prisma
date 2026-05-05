@@ -159,11 +159,11 @@ model Jurado {
   profissao  String?
   formacao   String?
   biografia  String?
-  pessoaId   BigInt  @unique(map: "Jurado_pessoaId_key")
+  perfilId   BigInt  @unique(map: "Jurado_perfilId_key")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   banca      Banca[]
-  pessoa     Pessoa  @relation(fields: [pessoaId], references: [id], map: "Jurado_pessoaId_fkey")
+  perfil     Perfil  @relation(fields: [perfilId], references: [id], map: "Jurado_perfilId_fkey")
 }
 
 model Nota {
@@ -199,45 +199,49 @@ model Organizacao {
   id             BigInt          @id @default(autoincrement())
   nomeFantasia   String?
   razaoSocial    String?
+  cnpj           String?            @unique(map: "Perfil_cpf_key")
   tipo           String?
+  tipoPessoa     TipoPessoa?  
   cep            BigInt?
   endereco       String?
   municipio      String?
   uf             String?         @db.Char(2)
-  pessoaId       BigInt          @unique(map: "Organizacao_pessoaId_key")
+  perfilId       BigInt          @unique(map: "Organizacao_perfilId_key")
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   concurso       Concurso[]
   grupoCriterio  GrupoCriterio[]
-  pessoa         Pessoa          @relation(fields: [pessoaId], references: [id], map: "Organizacao_pessoaId_fkey")
+  perfil         Perfil          @relation(fields: [perfilId], references: [id], map: "Organizacao_perfilId_fkey")
 }
 
 model Participante {
   id         BigInt      @id @default(autoincrement())
   pseudonimo String?
-  pessoaId   BigInt      @unique(map: "Participante_pessoaId_key")
+  perfilId   BigInt      @unique(map: "Participante_perfilId_key")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 
   inscricao  Inscricao[]
   obra       Obra[]
-  pessoa     Pessoa      @relation(fields: [pessoaId], references: [id], map: "Participante_pessoaId_fkey")
+  perfil     Perfil      @relation(fields: [perfilId], references: [id], map: "Participante_perfilId_fkey")
 }
 
-model Pessoa {
+model Perfil {
   id           BigInt             @id @default(autoincrement())
   nome         String
   foto         String?
-  documento    String?            @unique(map: "Pessoa_documento_key")
-  tipoPessoa   TipoPessoa?
+  cpf    String?            @unique(map: "Perfil_cpf_key")
   tel          String?
-  usuarioId    BigInt             @unique(map: "Pessoa_usuarioId_key")
+  
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
+
+  usuarioId    BigInt             @unique(map: "perfil_usuarioId_key")
+  usuario      Usuario            @relation(fields: [usuarioId], references: [id], map: "Perfil_usuarioId_fkey")
+
   jurado       Jurado?
   organizacao  Organizacao?
   participante Participante?
-  usuario      Usuario            @relation(fields: [usuarioId], references: [id], map: "Pessoa_usuarioId_fkey")
 }
 
 model Submissao {
@@ -260,10 +264,26 @@ model Usuario {
   id        BigInt       @id @default(autoincrement())
   email     String       @unique(map: "Usuario_email_key")
   senha     String
-  tipo      TipoUsuario
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
-  pessoa    Pessoa?
+  perfil    Perfil?
+  usuarioRole UsuarioRole? 
+}
+
+model UsuarioRole {
+  id        BigInt       @id @default(autoincrement())
+  usuarioId BigInt @unique(map: "UsuarioRole_usuarioId_key")
+  roleId    BigInt  @unique(map: "UsuarioRole_roleId_key")
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], map: "UsuarioRole_usuarioId_fkey")
+  role Role @relation(fields: [usuarioId], references: [id], map: "UsuarioRole_roleId_fkey")
+
+}
+
+model Role {
+  id        BigInt       @id @default(autoincrement())
+  role   RoleUsuario     
+  usuarioRole UsuarioRole?
 }
 
 enum AnaliseAvaliacaoStatus {
@@ -283,11 +303,14 @@ enum SubmissaoStatus {
   DESCLASSIFICADA
 }
 
-enum TipoUsuario {
+enum RoleUsuario {
   ADMIN
   JURADO
   PARTICIPANTE
-  ORGANIZACAO
+}
+enum TipoPessoa {
+    PF
+    PJ
 }
 
 enum InscricaoStatusPagamento {
@@ -296,7 +319,7 @@ enum InscricaoStatusPagamento {
   ISENTO
 }
 
-enum TipoPessoa {
+enum Tipoperfil {
   PF
   PJ
 }
