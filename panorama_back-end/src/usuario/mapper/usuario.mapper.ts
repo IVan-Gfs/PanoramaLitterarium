@@ -6,7 +6,7 @@ import { plainToInstance } from "class-transformer";
 export class UsuarioMapper {
 
   static toPrismaModel(dto: UsuarioCreateDTO): Prisma.UsuarioCreateInput{
-       const { perfil, ...usuario } = dto;
+       const { perfil, roles, ...usuario } = dto;
         return {
             ...usuario,
 

@@ -90,7 +90,7 @@ model Concurso {
 
 model  Categoria {
   id          BigInt      @id @default(autoincrement())
-  nome        String
+  nome        String      @unique
   descricao   String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -267,23 +267,25 @@ model Usuario {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   perfil    Perfil?
-  usuarioRole UsuarioRole? 
+  usuarioRole UsuarioRole[] 
 }
 
 model UsuarioRole {
   id        BigInt       @id @default(autoincrement())
-  usuarioId BigInt @unique(map: "UsuarioRole_usuarioId_key")
-  roleId    BigInt  @unique(map: "UsuarioRole_roleId_key")
+  usuarioId BigInt 
+  roleId    BigInt  
 
-  usuario Usuario @relation(fields: [usuarioId], references: [id], map: "UsuarioRole_usuarioId_fkey")
-  role Role @relation(fields: [usuarioId], references: [id], map: "UsuarioRole_roleId_fkey")
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  role      Role    @relation(fields: [roleId], references: [id]) 
+
+  @@unique([usuarioId, roleId]) 
 
 }
 
 model Role {
   id        BigInt       @id @default(autoincrement())
-  role   RoleUsuario     
-  usuarioRole UsuarioRole?
+  role   RoleUsuario     @unique    
+  usuarioRole UsuarioRole[]
 }
 
 enum AnaliseAvaliacaoStatus {

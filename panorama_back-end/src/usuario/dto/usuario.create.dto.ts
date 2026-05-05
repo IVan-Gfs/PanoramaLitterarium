@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -11,6 +12,7 @@ import {
 } from "class-validator";
 import { PerfilCreateDTO } from "src/perfil/dto/perfil.create.dto";
 import { Type } from "class-transformer";
+import { RoleUsuario } from "@prisma/client";
 
 
 
@@ -26,6 +28,11 @@ export class UsuarioCreateDTO  {
   @IsString({ message: 'A senha deve ser um texto.' })
   @MinLength(6, { message: 'A senha deve ter pelo menos 6 caracteres.' })
   senha!: string;
+
+  @IsNotEmpty({message: 'Roles do usuário não pode ser vazio'})
+
+  @IsEnum(RoleUsuario, { each: true }) 
+  roles?: RoleUsuario[];
 
   @ValidateNested()
   @Type(()=>PerfilCreateDTO)

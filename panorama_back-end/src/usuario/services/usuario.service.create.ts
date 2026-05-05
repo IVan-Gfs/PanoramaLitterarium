@@ -6,6 +6,8 @@ import { UsuarioResponseDTO } from "../dto/usuario.response.dto";
 import { UsuarioMapper } from "../mapper/usuario.mapper";
 import * as bcrypt from 'bcrypt';
 import { PerfilMapper } from "src/perfil/mapper/perfil.mapper";
+import { connect } from "node:http2";
+import { RoleUsuario } from "@prisma/client";
 
 @Injectable()
 export class UsuarioServiceCreate {
@@ -14,7 +16,6 @@ export class UsuarioServiceCreate {
 
     async create(usuarioRequest: UsuarioCreateDTO): Promise<UsuarioResponseDTO>{
 
-        console.log(JSON.stringify(usuarioRequest, null, 2));
 
         const usuarioExistente = await this.prismaService.usuario.findUnique({
             where: {email: usuarioRequest.email}
@@ -24,10 +25,10 @@ export class UsuarioServiceCreate {
             throw new ConflictException('O email informado já está cadastrado');
         }
         if (!usuarioRequest.perfil) {
-            throw new BadRequestException('Pessoa é obrigatória');
+            throw new BadRequestException('Perfil é obrigatória');
         }
-
-    
+       
+        
         if(usuarioRequest.perfil.cpf){
             let perfil = await this.prismaService.perfil.findUnique({
                 where: { cpf: usuarioRequest.perfil.cpf }
@@ -36,8 +37,6 @@ export class UsuarioServiceCreate {
 
         }
         
-        
-
         const usuarioData = UsuarioMapper.toPrismaModel({
             ...usuarioRequest,
             senha: await bcrypt.hash(usuarioRequest.senha, 10),
@@ -63,8 +62,7 @@ export class UsuarioServiceCreate {
             : perfilData.participante
             ? {participante:  {create: {...participante}}}
             : {};
-
-
+        
         const usuario = await this.prismaService.usuario.create({
             data:{
                 ...usuarioData,
@@ -75,13 +73,20 @@ export class UsuarioServiceCreate {
                     }
                 },
                 usuarioRole: {
-                    connect: usuarioRequest.roles.map((role) => {
-                        role: role
-                    })
+                    create: usuarioRequest.roles?.map((role)=>({
+                        role: {
+                            connect:{
+                                role
+                            }
+                        }
+                    }))
                 }
             }
+
             
         })
+
+       
         return UsuarioMapper.toDTOResponse(usuario)
     }
 
