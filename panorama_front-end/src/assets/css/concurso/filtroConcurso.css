@@ -39,10 +39,7 @@
   color: #fff;
 }
 
-.filtro-item.select.btn-filtro:hover::after {
-  content: "⏷";
-  
-}
+
 .filtro-item.select.btn-filtro::after{
   content: "⏷";
 
@@ -145,7 +142,7 @@
 
 .filtros-dropdown label {
   font-size: 0.9rem;
-  display: flex;
+  display: flex;  
   gap: 8px;
   align-items: center;
   padding-left: 8px;

@@ -4,14 +4,14 @@ export const  ORGNIZACAO = {
         ENTITY: ENTITY_NAME,
         ALIAS: "organizacao",
         DADOS_INICIAIS: {
-            idOrg: "",
+            id: "",
             nomeFantasia: "",
             razaoSocial: "",
-            tipoOrg: "",
-            cepOrg: "",
-            enderecoOrg: "",
-            municipioOrg: "",
-            ufOrg: ""
+            tipo: "",
+            cep: "",
+            endereco: "",
+            municipio: "",
+            uf: ""
         },
         FIELDS: {
             NOME_FANTASIA: "nomeFantasia",

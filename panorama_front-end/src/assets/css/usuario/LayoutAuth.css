@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 .logo{
-    width: 300px;
+    width: 200px;
     margin: auto;
     display: block;
     margin-top: 80px;
@@ -28,7 +28,7 @@
 .authContainer{
     margin: auto;
     margin-top: 30px;
-    background-color: #C3E8F9;
+    background-color: #D6E6F7;
     width: 400px;
     padding: 50px;
     border-radius: 5px;
@@ -51,16 +51,5 @@
     gap: 25px;
 }
 
-.container-cadastro input{
-    width: 50%; 
-}
-
-.form-grid {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 20px;
-
- 
-}
 
 

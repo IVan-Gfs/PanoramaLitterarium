@@ -2,8 +2,13 @@ import "../../assets/css/usuario/cadastrar.css";
 import "../../assets/css/usuario/LayoutAuth.css"
 import "../../assets/css/usuario/cadastroSuccess.css"
 import { useState } from "react";
+import { estados } from "../../utils/estados";
+import { useCriar } from "../../services/entities/usuario/hook/useCriar";
+import { USUARIO } from "../../services/entities/usuario/constant/usuario.constants";
+
 
 export default function CadastrarUsuarioOrganizacao() {
+
   const [step, setStep] = useState(1);
 
   const next = () => setStep((s) => s + 1);
@@ -12,9 +17,8 @@ export default function CadastrarUsuarioOrganizacao() {
   return (
     <div className="">
       <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-3xl">
-        
-        {step === 1 && <UserForm next={next} />}
-        {step === 2 && <OrgForm next={next} back={back} />}
+        {step === 1 && <OrgForm next={next} back={back} />}
+        {step === 2 && <UserForm next={next}/>}
         {step === 3 && <SuccessScreen />}
       </div>
     </div>
@@ -23,19 +27,26 @@ export default function CadastrarUsuarioOrganizacao() {
 
 // Step 1 — Dados do Usuário
 function UserForm({ next }: { next: () => void }) {
+  const { model, errors, handleChangeField, validateField, onSubmitForm } =
+    useCriar(); 
   return (
     <div className="authContainer container-cadastro">
       <h2 className="title">DADOS DO USUÁRIO</h2>
 
-      <div className="form-grid">
-        <div>
-          <label htmlFor="nomeUsuario"><span className="asterisco">*</span>Nome de Usuário:</label>
-          <input type="text" name="nomeUsuario" className="input" placeholder="" required/>
-        </div>
+      <div className="form-grid-cadastro-usuario">
         <div>
           <label htmlFor="email"><span className="asterisco">*</span>Email:</label>
-          <input type="email" name="email" className="input" placeholder="" required />
+          <input 
+            type="email" 
+            name="email" 
+            className="input" 
+            placeholder=""
+            onChange={(e) => {handleChangeField(USUARIO.FIELDS.EMAIL, e.target.value)}}
+            onBlur={(e)=> validateField(USUARIO.FIELDS.EMAIL, e)} 
+            required 
+          />
         </div>
+
         <div>
           <label htmlFor="senha"><span className="asterisco">*</span>Senha:</label>
           <input type="email" name="senha" className="input" placeholder="" required />
@@ -44,26 +55,8 @@ function UserForm({ next }: { next: () => void }) {
           <label htmlFor="confirmarSenha"><span className="asterisco">*</span>Confirmar Senha:</label>
           <input type="email" name="confirmarSenha" className="input" placeholder="" required />
         </div>
-        <div>
-          <label htmlFor="telefone"><span className="asterisco">*</span>Confirmar Senha:</label>
-          <input type="email" name="telefone" className="input" placeholder="" />
-        </div>
       </div>
 
-      {/* Foto de Perfil */}
-      {/* <div className="mt-6 grid grid-cols-2 gap-4 items-center">
-        <div>
-          <label className="font-medium text-sm">Foto de Perfil:</label>
-          <div className="w-40 h-40 bg-white border rounded-xl shadow-inner"></div>
-        </div>
-
-        <label className="">
-          <span className="">UPLOAD IMAGEM</span>
-          <span className="">⤴</span>
-          <input type="file" accept="image/png, image/jpeg, image/jpg" className="hidden" />
-          <p className="text-[10px] mt-1">* png, jpeg ou jpg</p>
-        </label>
-      </div> */}
 
       <div className="buttons-form next">
         <button className="btn-primary" onClick={next}>AVANÇAR</button>
@@ -75,10 +68,10 @@ function UserForm({ next }: { next: () => void }) {
 // Step 2 — Dados da Organização
 function OrgForm({ next, back }: { next: () => void; back: () => void }) {
   return (
-    <div className="container container-cadastro ">
+    <div className="authContainer container-cadastro ">
       <h2 className="title">DADOS DA ORGANIZAÇÃO</h2>
 
-      <div className="form-grid">
+      <div className="form-grid-cadastro-usuario">
         <div>
           <label htmlFor="razaoSocial"><span className="asterisco">*</span>Razão Social:</label>
           <input type="text" name="razaoSocial" className="input" placeholder="" />
@@ -88,7 +81,17 @@ function OrgForm({ next, back }: { next: () => void; back: () => void }) {
           <label htmlFor="nomeFantasia"><span className="asterisco">*</span>Nome Fantasia:</label>
           <input type="text" className="input" name="nomeFantasia" placeholder=""/>
         </div>
-        
+
+        <div>
+          <label htmlFor="cnpj"><span className="asterisco">*</span>CNPJ:</label>
+          <input type="text" className="input" name="cnpj" placeholder="" />
+        </div>
+
+        <div>
+          <label htmlFor="tel"><span className="asterisco">*</span>Telefone:</label>
+          <input type="tel" className="input" name="tel" placeholder="" />
+        </div>
+
         <div>
           <label htmlFor=""><span className="asterisco">*</span>Tipo Organização: </label>
           <select name="tipoOrg" id="tipoOrg" className="input" required>
@@ -102,24 +105,40 @@ function OrgForm({ next, back }: { next: () => void; back: () => void }) {
           </select>
 
         </div>
-        <div>
-          <label htmlFor="cnpj"><span className="asterisco">*</span>CNPJ:</label>
-          <input type="text" className="input" name="cnpj" placeholder="" />
-        </div>
+      
 
-        <div>
-          <label htmlFor="cep"><span className="asterisco">*</span>CEP:</label>
-          <input type="text" className="input" name="cep" placeholder="" />
-        </div>
+        <div className="cep-uf-inline">
+          <div>
+            <label htmlFor="cep"><span className="asterisco">*</span>CEP:</label>
+            <input type="text" className="input" name="cep" placeholder="" />
+          </div>
 
-        <div>
-          <label htmlFor="uf"><span className="asterisco">*</span>UF:</label>
-          <input type="text" className="input" name="uf" placeholder="" />
+          <div>
+            <label htmlFor="uf"><span className="asterisco">*</span>Unidade Federal:</label>
+            <select name="uf" id="uf" className="input" required>
+              <option value="" disabled selected>Selecione</option>
+              {
+                estados.map((e) => (
+                  <option key={e.uf} value={e.uf}>
+                    {e.nome}
+                  </option>
+                ))
+              }
+            </select>
+          </div>
         </div>
+       
+
+        
         
         <div>
           <label htmlFor="municipio"><span className="asterisco">*</span>Município:</label>
           <input type="text" className="input" name="municipio" placeholder="" />
+        </div>
+
+        <div>
+          <label htmlFor="endereco"><span className="asterisco">*</span>Endereço:</label>
+          <input type="text" className="input" name="endereco" placeholder="" />
         </div>
         
         
@@ -136,11 +155,11 @@ function OrgForm({ next, back }: { next: () => void; back: () => void }) {
 // Step 3 — Sucesso
 function SuccessScreen() {
   return (
-    <div className="container success">
+    <div className="authContainer success">
       <h2 className="feedback-message">Dados enviados com sucesso!</h2> 
        <img className="icon-success" src="../../../../public/imgs/success-icon.png" alt="success" />
       <p className="mt-4 text-gray-700">
-        Em breve retornaremos um e-mail de aprovação do seu cadastro.
+        Faça o login com sua conta!
       </p>
       <button className="ok">OK</button>
     </div>

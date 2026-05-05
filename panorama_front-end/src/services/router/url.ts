@@ -1,6 +1,7 @@
 
 import { CATEGORIA } from "../entities/categoria/constants/categoria.contants";
 import { CONCURSO } from "../entities/concurso/constants/concurso.constants";
+import { USUARIO } from "../entities/usuario/constant/usuario.constants";
 
 export const ROTA_SISTEMA = `panorama-litterarium/api/v1`;
 export const DASHBOARD = `dashboard`;
@@ -26,5 +27,6 @@ function gerarRotaSistema(entity: string, folder?: string) {
 
 export const ROTA = {
   CONCURSO: gerarRotaSistema(CONCURSO.ALIAS, CONCURSO.UPLOAD_FOLDER),
-  CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS)
+  CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS),
+  USUARIO: gerarRotaSistema(USUARIO.ALIAS)
 };

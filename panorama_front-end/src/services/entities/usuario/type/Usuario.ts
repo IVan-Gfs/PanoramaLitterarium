@@ -1,13 +1,21 @@
+import type { Organizacao } from "../../organizacao/type/Organizacao"
+
 export interface Usuario {
-  idUsuario?: string,
-  nomeUsuario?: string,
-  emailUsuario?: string,
-  senhaUsuario?: string,
-  fotoUsuario?: string, 
-  tipoUsuario?: string,
-  cpfUsuario?: string,
-  cnpjUsuario?: string,
-  telUsuario?: string
+  id?: string,
+  email?: string,
+  senha?: string,
+  pessoa?: Pessoa
+}
+
+export interface Pessoa {
+  id?: string,
+  nome?: string,
+  foto?: string,
+  tipo?: string,
+  documento?: string,
+  tel?: string,
+  organizacao?: Organizacao
+
 }
 
 export interface ErrosUsuario {

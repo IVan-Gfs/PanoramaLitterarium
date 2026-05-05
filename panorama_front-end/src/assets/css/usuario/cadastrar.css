@@ -1,4 +1,18 @@
 
+body{
+    height: 120vh;
+}
+.form-grid-cadastro-usuario {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 20px;
+
+}
+
+.form-grid-cadastro-usuario input{
+    height: 50%;
+}
+
 .buttons-form{
     display: flex;
     justify-content: space-between;
@@ -38,12 +52,17 @@
 label{
     font-size: 1.2em;
 }
-#tipoOrg{
+#tipoOrg, #uf{
     width: 103%;
     padding: 2px;
     border-radius: 4px;
 }
 .asterisco{
     color: #580202;
+}
+
+.cep-uf-inline{
+    display: flex;
+    gap: 5px;
 }
 
