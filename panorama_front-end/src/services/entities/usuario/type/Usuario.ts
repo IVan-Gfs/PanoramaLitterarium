@@ -4,37 +4,26 @@ export interface Usuario {
   id?: string,
   email?: string,
   senha?: string,
-  pessoa?: Pessoa
+  perfil?: Perfil
 }
 
-export interface Pessoa {
+export interface Perfil {
   id?: string,
   nome?: string,
   foto?: string,
-  tipo?: string,
-  documento?: string,
+  cpf?: string,
   tel?: string,
   organizacao?: Organizacao
 
 }
 
 export interface ErrosUsuario {
-  idUsuario?: boolean,
-  nomeUsuario?: boolean,
-  emailUsuario?: boolean,
-  senhaUsuario?: boolean,
-  fotoUsuario?: boolean, 
-  tipoUsuario?: boolean,
-  cpfUsuario?: boolean,
-  cnpjUsuario?: boolean,
-  telUsuario?: boolean
+  
+  nome?: boolean,
+  email?: boolean,
+  senha?: boolean,
 
-  nomeUsuarioMensagem?: string[],
-  emailUsuarioMensagem?: string[],
-  senhaUsuarioMensagem?: string[],
-  fotoUsuarioMensagem?: string[], 
-  tipoUsuarioMensagem?: string[],
-  cpfUsuarioMensagem?: string[],
-  cnpjUsuarioMensagem?: string[],
-  telUsuarioMensagem?: string[]
+ 
+  emailMensagem?: string[],
+  senhaMensagem?: string[],
 }

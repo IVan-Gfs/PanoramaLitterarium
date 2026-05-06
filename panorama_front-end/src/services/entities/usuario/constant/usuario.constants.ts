@@ -10,18 +10,22 @@ export const  USUARIO = {
             id: "",
             email: "",
             senha: "",
-       
+            perfil: {
+                nome: "",
+                foto: "",
+                cpf: "",
+                tel: ""
+            }
         
         },
         FIELDS: {
             ID: "id",
             EMAIL: "email",
             SENHA: "senha",
-            PESSOA: {
+            PERFIL: {
                 NOME: "nome",
                 FOTO: "foto",
-                TIPO: "tipo",
-                DOCUMENTO: "documento",
+                CPF: "cpf",
                 TEL: "tel"
                 
             }

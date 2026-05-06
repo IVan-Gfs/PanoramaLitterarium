@@ -7,9 +7,9 @@ import LayoutAuth from "../../components/layouts/LayoutAuth";
 
 //CONCURSOS
 import ConsultarConcursos from "../../views/Concursos/listagem";
-import CadastrarUsuarioOrganizacao from "../../views/Usuario/cadastrar.usuario.organizacao";
-import CriarConta from "../../views/Usuario/selecionarConta.usuario";
 import DetalhesConcurso from "../../views/Concursos/detalhes";
+import CadastrarUsuario from "../../views/Usuario/cadastrar";
+import SelecionarConta from "../../views/Usuario/selecionarConta";
 
 
 
@@ -40,11 +40,11 @@ export const routes: RouteObject[] = [
             },
             {
                 path: "/user/cadastrar",
-                element: <CriarConta/>
+                element: <SelecionarConta/>
             },
             {
-                path: "/user/cadastrar/organização",
-                element: <CadastrarUsuarioOrganizacao/>
+                path: "/user/cadastrar/:tipoConta",
+                element: <CadastrarUsuario/>
             }
         ]
 

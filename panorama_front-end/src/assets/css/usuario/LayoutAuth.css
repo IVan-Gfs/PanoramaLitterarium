@@ -35,8 +35,27 @@
     box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
    
 }
-
-
+.authContainer input:focus{
+    outline: 0;
+    border-radius: 4px;
+    border: 2px solid #4CAFaa77;
+}
+.authContainer.input{
+    display: block;
+    height: 25px;
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 5px;
+}
+.input-error{
+    border: 2px solid #d32f2f ;
+    border-radius: 4px;
+}
+.input-message-error{
+    color:#d32f2f; 
+    margin: 5px;
+}
 /*Interface de cadastro de usuários*/
 .container-cadastro{
     width: 800px;

@@ -15,18 +15,8 @@
 .input{
     font-size: 1.2em;
 }
-.authContainer input{
-    display: block;
-    height: 25px;
-    width: 100%;
-    border: 1px solid gray;
-    border-radius: 4px;
-    padding: 5px;
-}
-.authContainer input:focus{
-    outline: 0;
-    border: 2px solid #4CAFaa;
-}
+
+
 #submit{
     width: 30%;
     height: 35px;

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import "../../assets/css/usuario/tipoUsuario.css";    
 
-export default function CriarConta ( ){
+export default function SelecionarConta ( ){
     return (
     <div className="authContainer">
         <h2>Selecione o tipo de conta: </h2>
 
-        <Link to="" className="card-user">
+        <Link to="/user/cadastrar/participante" className="card-user">
 
                 <div className="card-user-flex"> 
                         <p>PARTICIPANTE</p>
@@ -15,7 +15,7 @@ export default function CriarConta ( ){
                 <legend>Participe de seleções literárias</legend>
         </Link>
         
-        <Link to="/user/cadastrar/organização" className="card-user">
+        <Link to="/user/cadastrar/organizacao" className="card-user">
                 
                 <div className="card-user-flex"> 
                         <p>ORGANIZAÇÃO</p>
@@ -25,7 +25,7 @@ export default function CriarConta ( ){
         </Link>
         
 
-        <Link to="" className="card-user">
+        <Link to="/user/cadastrar/jurado" className="card-user">
                 <div className="card-user-flex"> 
                         <p>JURADO</p>
                         <img src="../../public/imgs/arrow_enter.png" alt="" />

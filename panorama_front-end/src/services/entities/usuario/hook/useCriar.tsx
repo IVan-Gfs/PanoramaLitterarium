@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { USUARIO } from "../constant/usuario.constants"
-import type { ErrosUsuario, Usuario } from "../type/Usuario";
+import type { ErrosUsuario, Perfil, Usuario } from "../type/Usuario";
 import { apiPostUsuario } from "../api/usuario.api";
 
 export const useCriar = () => {
@@ -11,7 +11,7 @@ export const useCriar = () => {
 
     const handleChangeField = (name: keyof Usuario, value: string) => {
         setModel((prev) => ({ ...prev, [name]: value }));
-
+        console.log("mudou: "+model.email)
         setErrors((prev) => ({
             ...prev,
             [name]: undefined,
@@ -23,10 +23,12 @@ export const useCriar = () => {
     name: keyof Usuario,
     e: React.FocusEvent<HTMLInputElement>
   ) => {
-
+    
     let messages: string[] = []
     const value = model[name]
 
+
+    console.log(name)
     switch (name) {
         case USUARIO.FIELDS.EMAIL:
             if(!value) messages.push(USUARIO.INPUT_ERROR.EMAIL.BLANK)
@@ -46,9 +48,11 @@ export const useCriar = () => {
 
     setErrors((prev) => ({
             ...prev,
-            [name]: undefined,
-            [`${name}Mensagem`]: undefined,
+            [name]: messages.length > 0,
+            [`${name}Mensagem`]: messages.length > 0 ? messages : undefined,
         }));
+
+        console.log(errors)
   }
 
   const validarFormulario = (): boolean => {
@@ -64,8 +68,8 @@ export const useCriar = () => {
       EmailMessages.push(USUARIO.INPUT_ERROR.EMAIL.STRING);
     }
     if (EmailMessages.length > 0) {
-      newErrors.emailUsuario = true;
-      newErrors.senhaUsuarioMensagem = EmailMessages;
+      newErrors.email = true;
+      newErrors.emailMensagem = EmailMessages;
       isFormValid = false;
     }
 
@@ -81,8 +85,8 @@ export const useCriar = () => {
       }
     }
     if (senhaMessages.length > 0) {
-      newErrors.senhaUsuario = true;
-      newErrors.senhaUsuarioMensagem = senhaMessages;
+      newErrors.senha = true;
+      newErrors.senhaMensagem = senhaMessages;
       isFormValid = false;
     }
 
@@ -95,7 +99,7 @@ export const useCriar = () => {
     e.preventDefault();
 
     if (!validarFormulario()) {
-      console.log("Erro na digitaçãod os dados ");
+      console.log("Erro na digitação os dados ");
       return;
     }
 

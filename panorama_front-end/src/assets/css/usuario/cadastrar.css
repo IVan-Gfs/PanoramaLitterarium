@@ -8,9 +8,13 @@ body{
  gap: 20px;
 
 }
-
+.form-grid-cadastro-usuario div {
+    display: flex;
+    flex-direction: column;
+   
+}
 .form-grid-cadastro-usuario input{
-    height: 50%;
+    height: 35px;
 }
 
 .buttons-form{
@@ -65,4 +69,5 @@ label{
     display: flex;
     gap: 5px;
 }
+
 
