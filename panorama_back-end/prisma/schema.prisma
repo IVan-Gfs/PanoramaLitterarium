@@ -309,6 +309,7 @@ enum RoleUsuario {
   ADMIN
   JURADO
   PARTICIPANTE
+  ORGANIZACAO
 }
 enum TipoPessoa {
     PF

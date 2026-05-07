@@ -32,9 +32,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     async onModuleInit() {
         try {
             await this.$connect();
-            Logger.log('Conexão estabelecida com sucesso!');
+            Logger.log('Conexão com o banco de dados estabelecida com sucesso!');
         } catch (error) {
-            Logger.error(`Falha na conexão com o banco`)
+            Logger.error(`Falha na conexão com o banco de dados`)
             throw error;
         }
     }
