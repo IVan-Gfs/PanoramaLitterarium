@@ -9,30 +9,49 @@ export const useCriar = () => {
 
     const [errors, setErrors] = useState<ErrosUsuario>({});
 
-    const handleChangeField = (name: keyof Usuario, value: string) => {
-        setModel((prev) => ({ ...prev, [name]: value }));
-        console.log("mudou: "+model.email)
-        setErrors((prev) => ({
-            ...prev,
-            [name]: undefined,
-            [`${name}Mensagem`]: undefined,
-        }));
-    };
+  
+  const setNestedValue = (obj: any, path: string, value: any) => {
+    const keys = path.split('.');
+    const lastKey = keys.pop();
 
+    const deep = keys.reduce((acc, key) => {
+      if (!acc[key]) acc[key] = {};
+      return acc[key];
+    }, obj);
+
+    deep[lastKey!] = value;
+  };
+  const getNestedValue = (obj: any, path: string) => {
+    return path.split('.').reduce((acc, part) => acc?.[part], obj);
+  };
+    
+  const handleChangeField = (name: string, value: string) => {
+    setModel((prev) => {
+      const newModel = { ...prev };
+      setNestedValue(newModel, name, value);
+      return newModel;
+    });
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
+      [`${name}Mensagem`]: undefined,
+    }));
+};
   const validateField = (
-    name: keyof Usuario,
+    name: keyof Usuario | string,
     e: React.FocusEvent<HTMLInputElement>
   ) => {
     
-    let messages: string[] = []
-    const value = model[name]
+    const messages: string[] = []
+    const value = getNestedValue(model, name as string);
 
 
     console.log(name)
     switch (name) {
         case USUARIO.FIELDS.EMAIL:
             if(!value) messages.push(USUARIO.INPUT_ERROR.EMAIL.BLANK)
-            if(!value && typeof value !== "string") messages.push(USUARIO.INPUT_ERROR.EMAIL.STRING)
+            if(typeof value !== "string" || value.trim() === "") messages.push(USUARIO.INPUT_ERROR.EMAIL.STRING)
             break;
         case USUARIO.FIELDS.SENHA: 
             if (!value || String(value).trim().length === 0) {
@@ -54,6 +73,7 @@ export const useCriar = () => {
 
         console.log(errors)
   }
+
 
   const validarFormulario = (): boolean => {
     const newErrors: ErrosUsuario = {};

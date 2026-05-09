@@ -7,10 +7,10 @@ import { useParams } from "react-router-dom";
 
 
 export default function CadastrarUsuario() {
-const { model, errors, handleChangeField, validateField, onSubmitForm, validarFormulario } = useCriar(); 
+const { model, errors, handleChangeField, validateField, onSubmitForm } = useCriar(); 
 
 
-let { tipoConta } = useParams();
+const { tipoConta } = useParams();
 
   return (
     <div className="authContainer container-cadastro">
@@ -24,13 +24,13 @@ let { tipoConta } = useParams();
           <input 
             type="text" 
             name="nome" 
-            className={"input"} 
+            className={errors.nome ? "input-error" : "input"} 
             placeholder=""
-            onChange={(e) => {handleChangeField(USUARIO.FIELDS.EMAIL, e.target.value)}}
-            onBlur={(e)=> validateField(USUARIO.FIELDS.EMAIL, e)} 
+            onChange={(e) => {handleChangeField(USUARIO.FIELDS.PERFIL.NOME, e.target.value)}}
+            onBlur={(e)=> validateField(USUARIO.FIELDS.PERFIL.NOME, e)} 
             required 
           />
-          
+          {errors.nome && <span className="input-message-error">{errors.nomeMensagem} </span>} 
         </div>
 
         <div>

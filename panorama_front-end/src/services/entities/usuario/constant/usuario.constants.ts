@@ -90,9 +90,10 @@ export const  USUARIO = {
         OPERACAO: criarMensagemOperacao(ENTITY_NAME)
 }
 
-export const fieldsUsuario: (keyof Usuario)[] = [
+export const fieldsUsuario: string[] = [
             USUARIO.FIELDS.ID,
             USUARIO.FIELDS.EMAIL,
             USUARIO.FIELDS.SENHA,
+            USUARIO.FIELDS.PERFIL.NOME
 ];
 
