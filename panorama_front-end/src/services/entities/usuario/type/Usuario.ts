@@ -22,8 +22,10 @@ export interface ErrosUsuario {
   nome?: boolean,
   email?: boolean,
   senha?: boolean,
+  nomeOrganizacacao?: boolean,
 
   nomeMensagem?: string[],
+  nomeOrganizacao?: string[],
   emailMensagem?: string[],
   senhaMensagem?: string[],
 }

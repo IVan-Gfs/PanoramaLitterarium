@@ -41,16 +41,17 @@ export const  USUARIO = {
                 BLANK: `O email de ${ENTITY_NAME} deve ser informado`,
                 MAX_LEN: `O email da ${ENTITY_NAME} deve ter no máximo 240 caracteres`,
                 MIN_LEN: `O email da ${ENTITY_NAME} deve ter no mínimo 20 caracteres `,
-                STRING: `O email da ${ENTITY_NAME} deve ser um texto`,
+                
                 VALID: `Informe um código de identificação válido para ${ENTITY_NAME}`,
                 
             },
             SENHA:{
                 BLANK: `A senha de ${ENTITY_NAME} deve ser informado`,
+                NOT_EQUAL:"As senhas não conferem",
                 MIN_LEN: `a senha de ${ENTITY_NAME} deve ter no mínimo 8 caracteres `,
                 STRING: `a senha deve conter letras e números`
             },
-            PESSOA: {
+            PERFIL: {
                 NOME: {
                     BLANK: `O nome de ${ENTITY_NAME} deve ser informado`,
                     MAX_LEN: `O nome de ${ENTITY_NAME} deve ter no máximo 100 caracteres`,

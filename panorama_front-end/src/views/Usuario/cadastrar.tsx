@@ -100,12 +100,30 @@ const { tipoConta } = useParams();
         
         <div>
           <label htmlFor="senha"><span className="asterisco">*</span>Senha:</label>
-          <input type="email" name="senha" className="input" placeholder="" required />
+          <input 
+            type="password" 
+            name="senha" 
+            className={errors.email ? "input-error" : "input"}
+            placeholder="" 
+            onChange={(e) => {handleChangeField(USUARIO.FIELDS.SENHA, e.target.value)}}
+            onBlur={(e)=> validateField(USUARIO.FIELDS.SENHA, e)} 
+            required 
+          />
+          {errors.senha && <span className="input-message-error">{errors.senhaMensagem} </span>} 
         </div>
 
         <div>
-          <label htmlFor="confirmarSenha"><span className="asterisco">*</span>Confirmar Senha:</label>
-          <input type="email" name="confirmarSenha" className="input" placeholder="" required />
+          <label htmlFor="confirmarSenha"><span className="asterisco">*</span>Confirmar senha:</label>
+          <input 
+            type="password" 
+            name="confirmarSenha" 
+            className={errors.email ? "input-error" : "input"}
+            placeholder="" 
+            onChange={(e) => {handleChangeField(USUARIO.FIELDS.SENHA, e.target.value)}}
+            onBlur={(e)=> validateField(USUARIO.FIELDS.SENHA, e)} 
+            required 
+          />
+          {errors.senha && <span className="input-message-error">{errors.senhaMensagem} </span>} 
         </div>
 
       </div>

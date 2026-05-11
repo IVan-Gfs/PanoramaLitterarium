@@ -9,7 +9,7 @@ export const useCriar = () => {
 
     const [errors, setErrors] = useState<ErrosUsuario>({});
 
-  
+  //função para permitir propriedades aninhadas
   const setNestedValue = (obj: any, path: string, value: any) => {
     const keys = path.split('.');
     const lastKey = keys.pop();
@@ -21,6 +21,8 @@ export const useCriar = () => {
 
     deep[lastKey!] = value;
   };
+
+  //função para ler propriedades aninhadas 
   const getNestedValue = (obj: any, path: string) => {
     return path.split('.').reduce((acc, part) => acc?.[part], obj);
   };
@@ -49,6 +51,9 @@ export const useCriar = () => {
 
     console.log(name)
     switch (name) {
+        case USUARIO.FIELDS.PERFIL.NOME:
+            if(!value) messages.push(USUARIO.INPUT_ERROR.PERFIL.NOME.BLANK)
+            break;
         case USUARIO.FIELDS.EMAIL:
             if(!value) messages.push(USUARIO.INPUT_ERROR.EMAIL.BLANK)
             if(typeof value !== "string" || value.trim() === "") messages.push(USUARIO.INPUT_ERROR.EMAIL.STRING)
@@ -60,6 +65,7 @@ export const useCriar = () => {
             if (String(value).length > 0 && String(value).length < 8) {
                 messages.push(USUARIO.INPUT_ERROR.SENHA.MIN_LEN);
             }
+            if(e.target.name == "confirmarSenha" && value) messages.push(USUARIO.INPUT_ERROR.SENHA.NOT_EQUAL); console.log(messages)
             break;
         default:
             break;
@@ -83,9 +89,6 @@ export const useCriar = () => {
 
     if (!model.email) {
       EmailMessages.push(USUARIO.INPUT_ERROR.EMAIL.VALID);
-    }
-    if (model.senha && typeof model.senha !== "string") {
-      EmailMessages.push(USUARIO.INPUT_ERROR.EMAIL.STRING);
     }
     if (EmailMessages.length > 0) {
       newErrors.email = true;
