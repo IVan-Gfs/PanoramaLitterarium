@@ -7,8 +7,8 @@ import { LocalAuthGuard } from "../config/guard/local.auth.guard";
 @Controller('auth')
 export class AuthController{
     constructor(
-        // private readonly authService: AuthService,
-        // private readonly usuarioService: UsuarioService
+        private readonly authService: AuthService,
+        //private readonly usuarioService: UsuarioService
     ){}
 
     @UseGuards(LocalAuthGuard)
@@ -17,6 +17,7 @@ export class AuthController{
         @Req() req: requestWithUser
     ){
 
-        console.log(req.user)
+       const accessToken = await this.authService.getJwtToken(req.user)
+        return 'token do usuário auteticado: ' + (accessToken)
     }
 }

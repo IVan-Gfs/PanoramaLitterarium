@@ -2,10 +2,26 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Usuario } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 import bcrypt from "bcrypt"
+import { JsonWebTokenService, UserToken } from "./jwt.service";
+
 
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService){}
+    constructor(
+        private readonly prisma: PrismaService, 
+        private readonly jsonWeTokenService: JsonWebTokenService
+    ){}
+
+    async getJwtToken(usuario: Usuario){
+        const userToken: UserToken = {
+            id: Number(usuario.id),
+            email: usuario.email
+
+        }
+        const { accessToken } = await this.jsonWeTokenService.createAccessToken(userToken);
+
+        return accessToken;
+    }
     async getAuthenticated(email: string, pass: string): Promise<Usuario | null>{
         const usuario = await this.findByEmail(email)
 
