@@ -264,6 +264,10 @@ model Usuario {
   id        BigInt       @id @default(autoincrement())
   email     String       @unique(map: "Usuario_email_key")
   senha     String
+  statusValidacao Boolean @default(false)
+  recovery_token String?
+  token_expires DateTime?
+  
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   perfil    Perfil?
