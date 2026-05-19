@@ -3,14 +3,13 @@ import "../../assets/css/usuario/LayoutAuth.css";
 import "../../assets/css/usuario/cadastroSuccess.css";
 import { useCriar } from "../../services/entities/usuario/hook/useCriar";
 import { USUARIO } from "../../services/entities/usuario/constant/usuario.constants";
-import { useParams, useNavigate } from "react-router-dom";
 import { ORGANIZACAO } from "../../services/entities/organizacao/constants/org.constants";
 import { PARTICIPANTE } from "../../services/entities/participante/constants/participante.constants";
 import { JURADO } from "../../services/entities/jurado/constants/jurado.constants";
+import { useParams, useNavigate } from "react-router-dom";
 
 // ─────────────────────────────────────────────
-// Componente auxiliar: exibe lista de mensagens de erro
-// Recebe um array de strings e renderiza cada uma em <li>
+// Componente auxiliar: lista de mensagens de erro
 // ─────────────────────────────────────────────
 function ErrorMessages({ messages }: { messages?: string[] }) {
   if (!messages || messages.length === 0) return null;
@@ -39,26 +38,28 @@ export default function CadastrarUsuario() {
   } = useCriar();
 
   const { tipoConta } = useParams();
+  const isLoading = submitStatus === "loading";
 
-  // Exibe tela de sucesso quando o envio foi bem-sucedido
+  // Mostra tela de sucesso após cadastro concluído
   if (submitStatus === "success") {
     return <SuccessScreen />;
   }
 
-  const isLoading = submitStatus === "loading";
-
   return (
-    // O onSubmit fica na <form>, não no botão
+    // onSubmit na <form> — passa tipoConta para o hook montar o payload correto
     <form
       className="authContainer container-cadastro"
       onSubmit={(e) => onSubmitForm(e, tipoConta)}
-      noValidate // desativa validação nativa do browser; usamos a nossa
+      noValidate
     >
       <h2 className="title">DADOS DO USUÁRIO</h2>
 
       <div className="form-grid-cadastro-usuario">
 
-        {/* ── Nome ── */}
+        {/* ── Nome ──
+            CORREÇÃO: errors[USUARIO.FIELDS.PERFIL.NOME] resolve para
+            errors["perfil.nome"], que agora existe em ErrosUsuario com [key: string].
+            Antes falhava porque ErrosUsuario só tinha "nome?: boolean". */}
         <div>
           <label htmlFor="nome">
             <span className="asterisco">*</span>Seu nome:
@@ -66,14 +67,12 @@ export default function CadastrarUsuario() {
           <input
             id="nome"
             type="text"
-            name="nome"
+            name="perfil.nome"
             className={errors[USUARIO.FIELDS.PERFIL.NOME] ? "input-error" : "input"}
-            placeholder=""
             onChange={(e) =>
               handleChangeField(USUARIO.FIELDS.PERFIL.NOME, e.target.value)
             }
             onBlur={(e) => validateField(USUARIO.FIELDS.PERFIL.NOME, e)}
-            aria-describedby="nome-error"
             required
           />
           <ErrorMessages
@@ -83,23 +82,19 @@ export default function CadastrarUsuario() {
 
         {/* ── Telefone ── */}
         <div>
-          <label htmlFor="tel">
-            Telefone:
-          </label>
+          <label htmlFor="tel">Telefone:</label>
           <input
             id="tel"
             type="tel"
-            name="tel"
+            name="perfil.tel"
             className="input"
-            placeholder=""
             onChange={(e) =>
               handleChangeField(USUARIO.FIELDS.PERFIL.TEL, e.target.value)
             }
           />
         </div>
 
-        {/* ── Campos específicos por tipo de conta ── */}
-
+        {/* ── Campos de Participante ── */}
         {tipoConta === "participante" && (
           <div>
             <label htmlFor="peseudonimo">
@@ -108,20 +103,24 @@ export default function CadastrarUsuario() {
             <input
               id="peseudonimo"
               type="text"
-              name="peseudonimo"
-              className="input"
-              placeholder=""
+              name="perfil.participante.pseudonimo"
+              className={
+                errors[PARTICIPANTE.FIELDS.PSEUDONIMO] ? "input-error" : "input"
+              }
               onChange={(e) =>
-                handleChangeField(
-                  PARTICIPANTE.FIELDS.PSEUDONIMO,
-                  e.target.value
-                )
+                handleChangeField(PARTICIPANTE.FIELDS.PSEUDONIMO, e.target.value)
               }
               required
+            />
+            <ErrorMessages
+              messages={
+                errors[`${PARTICIPANTE.FIELDS.PSEUDONIMO}Mensagem`] as string[]
+              }
             />
           </div>
         )}
 
+        {/* ── Campos de Jurado ── */}
         {tipoConta === "jurado" && (
           <>
             <div>
@@ -131,41 +130,39 @@ export default function CadastrarUsuario() {
               <input
                 id="profissao"
                 type="text"
-                name="profissao"
-                className="input"
-                placeholder=""
+                name="perfil.jurado.profissao"
+                className={
+                  errors[JURADO.FIELDS.PROFISSAO] ? "input-error" : "input"
+                }
                 onChange={(e) =>
-                  handleChangeField(
-                    JURADO.FIELDS.PROFISSAO,
-                    e.target.value
-                  )
+                  handleChangeField(JURADO.FIELDS.PROFISSAO, e.target.value)
                 }
                 required
+              />
+              <ErrorMessages
+                messages={
+                  errors[`${JURADO.FIELDS.PROFISSAO}Mensagem`] as string[]
+                }
               />
             </div>
 
             <div>
-              <label htmlFor="formacao">
-               Formação:
-              </label>
+              <label htmlFor="formacao">Formação:</label>
+              {/* CORREÇÃO: antes ambos usavam JURADO.FIELDS.PROFISSAO */}
               <input
                 id="formacao"
                 type="text"
-                name="formacao"
+                name="perfil.jurado.formacao"
                 className="input"
-                placeholder=""
                 onChange={(e) =>
-                  handleChangeField(
-                    JURADO.FIELDS.PROFISSAO,
-                    e.target.value
-                  )
+                  handleChangeField(JURADO.FIELDS.FORMACAO, e.target.value)
                 }
-                required
               />
             </div>
           </>
         )}
 
+        {/* ── Campos de Organização ── */}
         {tipoConta === "organizacao" && (
           <>
             <div>
@@ -175,9 +172,10 @@ export default function CadastrarUsuario() {
               <input
                 id="nomeFantasia"
                 type="text"
-                name="nomeFantasia"
-                className="input"
-                placeholder=""
+                name="perfil.organizacao.nomeFantasia"
+                className={
+                  errors[ORGANIZACAO.FIELDS.NOME_FANTASIA] ? "input-error" : "input"
+                }
                 onChange={(e) =>
                   handleChangeField(
                     ORGANIZACAO.FIELDS.NOME_FANTASIA,
@@ -185,33 +183,36 @@ export default function CadastrarUsuario() {
                   )
                 }
               />
+              <ErrorMessages
+                messages={
+                  errors[`${ORGANIZACAO.FIELDS.NOME_FANTASIA}Mensagem`] as string[]
+                }
+              />
             </div>
 
             <div>
-              <label htmlFor="tipoOrg">
+              <label htmlFor="tipo">
                 <span className="asterisco">*</span>Tipo de Organização:
               </label>
               <select
                 id="tipoOrg"
-                name="tipoOrg"
+                name="perfil.organizacao.tipo"
                 className="input"
                 onChange={(e) =>
-                  handleChangeField(
-                    ORGANIZACAO.FIELDS.TIPO,
-                    e.target.value
-                  )
+                  handleChangeField(ORGANIZACAO.FIELDS.TIPO, e.target.value)
                 }
+             
                 required
               >
-                <option value="" disabled>
+                <option value="" >
                   Selecione
                 </option>
-                <option value="editora">Editora</option>
-                <option value="livraria">Livraria</option>
-                <option value="ensino">Instituição de Ensino</option>
-                <option value="assocLiteraria">Associação Literária</option>
-                <option value="orgaoPublico">Órgão Público</option>
-                <option value="outro">Outro</option>
+                <option value="EDITORA">Editora</option>
+                <option value="LIVRARIA">Livraria</option>
+                <option value="ENSINO">Instituição de Ensino</option>
+                <option value="ASSOC_LITERARIA">Associação Literária</option>
+                <option value="ORGAO_PUBLICO">Órgão Público</option>
+                <option value="OUTRO">Outro</option>
               </select>
             </div>
           </>
@@ -226,16 +227,14 @@ export default function CadastrarUsuario() {
             id="email"
             type="email"
             name="email"
-            className={errors.email ? "input-error" : "input"}
-            placeholder=""
+            className={errors["email"] ? "input-error" : "input"}
             onChange={(e) =>
               handleChangeField(USUARIO.FIELDS.EMAIL, e.target.value)
             }
             onBlur={(e) => validateField(USUARIO.FIELDS.EMAIL, e)}
-            aria-describedby="email-error"
             required
           />
-          <ErrorMessages messages={errors.emailMensagem as string[]} />
+          <ErrorMessages messages={errors["emailMensagem"] as string[]} />
         </div>
 
         {/* ── Senha ── */}
@@ -247,14 +246,11 @@ export default function CadastrarUsuario() {
             id="senha"
             type="password"
             name="senha"
-            // ← CORRIGIDO: usava errors.email por engano
             className={errors[USUARIO.FIELDS.SENHA] ? "input-error" : "input"}
-            placeholder=""
             onChange={(e) =>
               handleChangeField(USUARIO.FIELDS.SENHA, e.target.value)
             }
             onBlur={(e) => validateField(USUARIO.FIELDS.SENHA, e)}
-            aria-describedby="senha-error"
             required
           />
           <ErrorMessages
@@ -271,20 +267,13 @@ export default function CadastrarUsuario() {
             id="confirmarSenha"
             type="password"
             name="confirmarSenha"
-            // ← CORRIGIDO: campo próprio para confirmarSenha
             className={
               errors[USUARIO.FIELDS.CONFIRMAR_SENHA] ? "input-error" : "input"
             }
-            placeholder=""
             onChange={(e) =>
-              // ← CORRIGIDO: usava SENHA em vez de CONFIRMAR_SENHA
               handleChangeField(USUARIO.FIELDS.CONFIRMAR_SENHA, e.target.value)
             }
-            onBlur={(e) =>
-              // ← CORRIGIDO: valida o campo correto
-              validateField(USUARIO.FIELDS.CONFIRMAR_SENHA, e)
-            }
-            aria-describedby="confirmarSenha-error"
+            onBlur={(e) => validateField(USUARIO.FIELDS.CONFIRMAR_SENHA, e)}
             required
           />
           <ErrorMessages
@@ -295,14 +284,14 @@ export default function CadastrarUsuario() {
         </div>
       </div>
 
-      {/* ── Erro vindo do servidor (ex: email já cadastrado) ── */}
+      {/* ── Erro do servidor (ex: email já cadastrado) ── */}
       {serverError && (
         <div className="server-error-box" role="alert">
           {serverError}
         </div>
       )}
 
-      {/* ── Botões ── */}
+      {/* ── Botão de submit ── */}
       <div className="buttons-form next">
         <button
           className="btn-primary"
@@ -310,7 +299,6 @@ export default function CadastrarUsuario() {
           disabled={isLoading}
           aria-busy={isLoading}
         >
-          {/* Mostra feedback visual durante o envio */}
           {isLoading ? "Enviando..." : "Confirmar"}
         </button>
       </div>
@@ -319,21 +307,20 @@ export default function CadastrarUsuario() {
 }
 
 // ─────────────────────────────────────────────
-// Tela de sucesso exibida após cadastro concluído
+// Tela exibida após cadastro bem-sucedido
 // ─────────────────────────────────────────────
 function SuccessScreen() {
   const navigate = useNavigate();
 
   return (
     <div className="authContainer success">
-      <h2 className="feedback-message">Dados enviados com sucesso!</h2>
+      <h2 className="feedback-message">Conta criada com sucesso!</h2>
       <img
         className="icon-success"
         src="/imgs/success-icon.png"
         alt="Ícone de sucesso"
       />
       <p className="success-text">Faça o login com sua conta!</p>
-      {/* Redireciona para a página de login */}
       <button className="ok" onClick={() => navigate("/login")}>
         OK
       </button>

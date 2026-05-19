@@ -4,10 +4,9 @@ import type { ErrosUsuario, Usuario } from "../type/Usuario";
 import { apiPostUsuario } from "../api/usuario.api";
 
 // ─────────────────────────────────────────────
-// Helpers para leitura e escrita em objetos aninhados
-// Ex: "perfil.nome" acessa obj.perfil.nome
+// Helpers para objetos aninhados via dot-notation
+// Ex: getNestedValue(obj, "perfil.nome") → obj.perfil.nome
 // ─────────────────────────────────────────────
-
 const setNestedValue = (obj: any, path: string, value: any) => {
   const keys = path.split(".");
   const lastKey = keys.pop()!;
@@ -18,55 +17,61 @@ const setNestedValue = (obj: any, path: string, value: any) => {
   deep[lastKey] = value;
 };
 
-const getNestedValue = (obj: any, path: string) =>
+const getNestedValue = (obj: any, path: string): any =>
   path.split(".").reduce((acc, part) => acc?.[part], obj);
 
 // ─────────────────────────────────────────────
-// Regex de validação de e-mail (formato básico)
+// Regex de e-mail (formato básico RFC-like)
 // ─────────────────────────────────────────────
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─────────────────────────────────────────────
-// Tipo do estado de envio do formulário
+// Estado do ciclo de envio do formulário
 // ─────────────────────────────────────────────
 type SubmitStatus = "idle" | "loading" | "success" | "error";
 
+// ─────────────────────────────────────────────
+// Model interno do formulário.
+// Estende Usuario com confirmar_senha (só existe no front).
+// Os sub-objetos de perfil (organizacao, participante, jurado)
+// são preenchidos dinamicamente pelo setNestedValue.
+// ─────────────────────────────────────────────
+interface FormModel extends Usuario {
+  confirmar_senha?: string;
+}
+
+const DADOS_INICIAIS_FORM: FormModel = {
+  ...USUARIO.DADOS_INICIAIS,
+  confirmar_senha: "",
+};
+
 export const useCriar = () => {
-  // Estado principal do modelo de usuário
-  const [model, setModel] = useState<Usuario>(USUARIO.DADOS_INICIAIS);
-
-  // Estado dos erros por campo (chave = field, valor = bool de erro + mensagem)
+  const [model, setModel] = useState<FormModel>(DADOS_INICIAIS_FORM);
   const [errors, setErrors] = useState<ErrosUsuario>({});
-
-  // Estado do processo de envio: idle | loading | success | error
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
-
-  // Mensagem de erro vinda do servidor (ex: "Email já cadastrado")
   const [serverError, setServerError] = useState<string | null>(null);
 
   // ─────────────────────────────────────────────
   // Atualiza um campo no model e limpa seus erros
   // ─────────────────────────────────────────────
   const handleChangeField = (name: string, value: string) => {
+    console.log(value)
     setModel((prev) => {
-      const newModel = { ...prev };
-      setNestedValue(newModel, name, value);
-      return newModel;
+      // Copia rasa do topo + perfil para não mutar o state
+      const next: FormModel = { ...prev, perfil: { ...prev.perfil } };
+      setNestedValue(next, name, value);
+      return next;
     });
 
-    // Limpa os erros do campo editado
     setErrors((prev) => ({
       ...prev,
       [name]: undefined,
       [`${name}Mensagem`]: undefined,
     }));
 
-    // Se o campo alterado é senha ou confirmarSenha,
-    // também limpa o erro do campo irmão para evitar mensagem obsoleta
-    if (
-      name === USUARIO.FIELDS.SENHA ||
-      name === USUARIO.FIELDS.CONFIRMAR_SENHA
-    ) {
+    // Quando senha ou confirmar_senha muda, limpa os dois campos
+    // para não deixar a mensagem "senhas não conferem" obsoleta
+    if (name === USUARIO.FIELDS.SENHA || name === USUARIO.FIELDS.CONFIRMAR_SENHA) {
       setErrors((prev) => ({
         ...prev,
         [USUARIO.FIELDS.SENHA]: undefined,
@@ -78,14 +83,18 @@ export const useCriar = () => {
   };
 
   // ─────────────────────────────────────────────
-  // Valida um campo individual ao perder o foco (onBlur)
+  // Valida campo individual ao perder o foco (onBlur)
   // ─────────────────────────────────────────────
   const validateField = (
     name: string,
-    e: React.FocusEvent<HTMLInputElement>
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const messages: string[] = [];
-    const value = getNestedValue(model, name);
+    // confirmar_senha é campo raiz do FormModel; demais via dot-notation
+    const value =
+      name === USUARIO.FIELDS.CONFIRMAR_SENHA
+        ? model.confirmar_senha
+        : getNestedValue(model, name);
 
     switch (name) {
       case USUARIO.FIELDS.PERFIL.NOME:
@@ -106,20 +115,16 @@ export const useCriar = () => {
         else if (String(value).length < 8)
           messages.push(USUARIO.INPUT_ERROR.SENHA.MIN_LEN);
 
-        // Se confirmarSenha já foi preenchido, revalida igualdade
-        const confirmar = getNestedValue(model, USUARIO.FIELDS.CONFIRMAR_SENHA);
-        if (confirmar && value !== confirmar)
+        // Revalida igualdade se confirmar já foi preenchido
+        if (model.confirmar_senha && value !== model.confirmar_senha)
           messages.push(USUARIO.INPUT_ERROR.SENHA.NOT_EQUAL);
         break;
       }
 
       case USUARIO.FIELDS.CONFIRMAR_SENHA: {
-        // Lê a senha atual do model para comparar
-        const senha = getNestedValue(model, USUARIO.FIELDS.SENHA);
-
         if (!value || String(value).trim().length === 0)
           messages.push(USUARIO.INPUT_ERROR.SENHA.BLANK);
-        else if (value !== senha)
+        else if (value !== model.senha)
           messages.push(USUARIO.INPUT_ERROR.SENHA.NOT_EQUAL);
         break;
       }
@@ -136,16 +141,16 @@ export const useCriar = () => {
   };
 
   // ─────────────────────────────────────────────
-  // Valida o formulário inteiro antes de enviar
-  // Retorna true se tudo estiver ok
+  // Valida o formulário inteiro antes de enviar.
+  // Recebe o tipoConta para validar campos específicos.
   // ─────────────────────────────────────────────
-  const validarFormulario = (): boolean => {
+  const validarFormulario = (tipo: string | undefined): boolean => {
     const newErrors: ErrosUsuario = {};
     let isValid = true;
 
-    // Validação do nome
-    const nome = getNestedValue(model, USUARIO.FIELDS.PERFIL.NOME);
-    if (!nome || String(nome).trim() === "") {
+    // — Nome —
+    const nome = model.perfil?.nome;
+    if (!nome || nome.trim() === "") {
       newErrors[USUARIO.FIELDS.PERFIL.NOME] = true;
       newErrors[`${USUARIO.FIELDS.PERFIL.NOME}Mensagem`] = [
         USUARIO.INPUT_ERROR.PERFIL.NOME.BLANK,
@@ -153,37 +158,35 @@ export const useCriar = () => {
       isValid = false;
     }
 
-    // Validação do e-mail
-    const email = model.email;
+    // — E-mail —
     const emailMsgs: string[] = [];
-    if (!email || email.trim() === "")
+    if (!model.email || model.email.trim() === "")
       emailMsgs.push(USUARIO.INPUT_ERROR.EMAIL.BLANK);
-    else if (!EMAIL_REGEX.test(email))
+    else if (!EMAIL_REGEX.test(model.email))
       emailMsgs.push(USUARIO.INPUT_ERROR.EMAIL.VALID);
     if (emailMsgs.length > 0) {
-      newErrors.email = true;
-      newErrors.emailMensagem = emailMsgs;
+      newErrors["email"] = true;
+      newErrors["emailMensagem"] = emailMsgs;
       isValid = false;
     }
 
-    // Validação da senha
-    const senha = model.senha;
+    // — Senha —
     const senhaMsgs: string[] = [];
-    if (!senha || senha.trim().length === 0)
+    if (!model.senha || model.senha.trim().length === 0)
       senhaMsgs.push(USUARIO.INPUT_ERROR.SENHA.BLANK);
-    else if (senha.length < 8) senhaMsgs.push(USUARIO.INPUT_ERROR.SENHA.MIN_LEN);
+    else if (model.senha.length < 8)
+      senhaMsgs.push(USUARIO.INPUT_ERROR.SENHA.MIN_LEN);
     if (senhaMsgs.length > 0) {
       newErrors[USUARIO.FIELDS.SENHA] = true;
       newErrors[`${USUARIO.FIELDS.SENHA}Mensagem`] = senhaMsgs;
       isValid = false;
     }
 
-    // Validação da confirmação de senha
-    const confirmar = getNestedValue(model, USUARIO.FIELDS.CONFIRMAR_SENHA);
+    // — Confirmar senha —
     const confirmarMsgs: string[] = [];
-    if (!confirmar || String(confirmar).trim().length === 0)
+    if (!model.confirmar_senha || model.confirmar_senha.trim().length === 0)
       confirmarMsgs.push(USUARIO.INPUT_ERROR.SENHA.BLANK);
-    else if (confirmar !== senha)
+    else if (model.confirmar_senha !== model.senha)
       confirmarMsgs.push(USUARIO.INPUT_ERROR.SENHA.NOT_EQUAL);
     if (confirmarMsgs.length > 0) {
       newErrors[USUARIO.FIELDS.CONFIRMAR_SENHA] = true;
@@ -191,37 +194,102 @@ export const useCriar = () => {
       isValid = false;
     }
 
+    // — Campos por tipo de conta —
+    if (tipo === "organizacao") {
+      const nomeFantasia = model.perfil?.organizacao?.nomeFantasia;
+      if (!nomeFantasia || nomeFantasia.trim() === "") {
+        newErrors["perfil.organizacao.nomeFantasia"] = true;
+        newErrors["perfil.organizacao.nomeFantasiaMensagem"] = [
+          "O nome da organização deve ser informado",
+        ];
+        isValid = false;
+      }
+    }
+
+    if (tipo === "participante") {
+      const pseudonimo = model.perfil?.participante?.pseudonimo;
+      if (!pseudonimo || pseudonimo.trim() === "") {
+        newErrors["perfil.participante.pseudonimo"] = true;
+        newErrors["perfil.participante.pseudonimoMensagem"] = [
+          "O pseudônimo deve ser informado",
+        ];
+        isValid = false;
+      }
+    }
+
+    if (tipo === "jurado") {
+      const profissao = model.perfil?.jurado?.profissao;
+      if (!profissao || profissao.trim() === "") {
+        newErrors["perfil.jurado.profissao"] = true;
+        newErrors["perfil.jurado.profissaoMensagem"] = [
+          "A profissão deve ser informada",
+        ];
+        isValid = false;
+      }
+    }
+
     setErrors(newErrors);
     return isValid;
   };
 
   // ─────────────────────────────────────────────
-  // Envio do formulário
+  // Monta o payload exato que o back-end espera.
+  //
+  // {
+  //   "email": "...", "senha": "...", "roles": ["ORGANIZACAO"],
+  //   "perfil": {
+  //     "nome": "...", "tel": "...",
+  //     "organizacao": { "nomeFantasia": "...", "tipo": "..." }
+  //   }
+  // }
+  //
+  // • confirmar_senha NUNCA vai no payload
+  // • O perfil inclui apenas o sub-objeto do tipo ativo
   // ─────────────────────────────────────────────
-  const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>, tipo: string | undefined) => {
+  const montarPayload = (tipo: string | undefined): Usuario => {
+    const perfilBase: Usuario["perfil"] = {
+      nome: model.perfil?.nome,
+      tel: model.perfil?.tel,
+    };
+
+    if (tipo === "organizacao" && model.perfil?.organizacao) {
+      perfilBase.organizacao = { ...model.perfil.organizacao };
+    } else if (tipo === "participante" && model.perfil?.participante) {
+      perfilBase.participante = { ...model.perfil.participante };
+    } else if (tipo === "jurado" && model.perfil?.jurado) {
+      perfilBase.jurado = { ...model.perfil.jurado };
+    }
+
+    return {
+      email: model.email,
+      senha: model.senha,
+      roles: [tipo ? tipo.toUpperCase() : ""],
+      perfil: perfilBase,
+    };
+  };
+
+  // ─────────────────────────────────────────────
+  // Submit do formulário
+  // ─────────────────────────────────────────────
+  const onSubmitForm = async (
+    e: React.FormEvent<HTMLFormElement>,
+    tipo: string | undefined
+  ) => {
     e.preventDefault();
     setServerError(null);
 
-    // Bloqueia envio se houver erros de validação
-    if (!validarFormulario()) return;
+    if (!validarFormulario(tipo)) return;
 
     setSubmitStatus("loading");
 
-    if(tipo){
-      model.roles[0] = tipo.toUpperCase()
-      console.log(model.roles)
-    }
+    const payload = montarPayload(tipo);
+    console.log("Payload enviado:", JSON.stringify(payload, null, 2));
 
-    console.log(model)
-  
-    
     try {
-      await apiPostUsuario(model);
+      await apiPostUsuario(payload);
       setSubmitStatus("success");
     } catch (error: any) {
       setSubmitStatus("error");
-
-      // Tenta extrair mensagem de erro do servidor
       const msg =
         error?.response?.data?.message ||
         error?.message ||
@@ -237,7 +305,6 @@ export const useCriar = () => {
     serverError,
     handleChangeField,
     validateField,
-    validarFormulario,
     onSubmitForm,
   };
 };

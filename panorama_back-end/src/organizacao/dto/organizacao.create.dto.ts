@@ -16,8 +16,7 @@ export class OrganizacaoCreateDto {
     @IsString()
     cnpj?: string;
 
-    @IsNotEmpty({message: "Tipo da organização é obrigatório"})
-    @IsString()
+    @IsNotEmpty({message: "tipo | Tipo da organização é obrigatório"})
     tipo!: string;
 
     @IsOptional()

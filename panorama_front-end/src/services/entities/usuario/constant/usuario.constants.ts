@@ -25,10 +25,10 @@ export const  USUARIO = {
             SENHA: "senha",
             CONFIRMAR_SENHA: "confirmar_senha",
             PERFIL: {
-                NOME: "nome",
-                FOTO: "foto",
-                CPF: "cpf",
-                TEL: "tel"
+                NOME: "perfil.nome",
+                FOTO: "perfil.foto",
+                CPF: "perfil.cpf",
+                TEL: "perfil.tel"
                 
             }
         } as const,

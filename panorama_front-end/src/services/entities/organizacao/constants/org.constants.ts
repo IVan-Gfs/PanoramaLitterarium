@@ -14,13 +14,13 @@ export const  ORGANIZACAO = {
             uf: ""
         },
         FIELDS: {
-            NOME_FANTASIA: "nomeFantasia",
-            RAZAO_SOCIAL: "razaoSocial",
-            TIPO: "tipoOrg",
-            CEP: "cepOrg",
-            ENDERECO: "enderecoOrg",
-            MUNICIPIO: "municipioOrg",
-            UF: "ufOrg"
+            NOME_FANTASIA: "perfil.organizacao.nomeFantasia",
+            RAZAO_SOCIAL: "perfil.organizacao.razaoSocial",
+            TIPO: "perfil.organizacao.tipo",
+            CEP: "perfil.organizacao.cep",
+            ENDERECO: "perfil.organizacao.endereco",
+            MUNICIPIO: "perfil.organizacao.municipio",
+            UF: "perfil.organizacao.uf"
         },
         
         INPUT_ERROR: {
