@@ -46,11 +46,12 @@ export class UsuarioServiceCreate {
         const perfilData = PerfilMapper.toDomain(usuarioRequest.perfil)
         const { organizacao, jurado, participante, ...perfilBase } = perfilData;
         const tipos = [organizacao, jurado, participante].filter(Boolean);
-
+            console.log(usuarioRequest)
         if (tipos.length > 1) {
             throw new BadRequestException('Pessoa não pode ter múltiplos tipos na criação do usuário');
         }else if(tipos.length < 1){
             throw new BadRequestException('Dados da organização, jurado ou participante são obrigatórios');
+            
         }
         
         //ternário para validar qual tipo de usuário está sendo criado

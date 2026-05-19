@@ -1,5 +1,5 @@
 import { TipoPessoa } from "@prisma/client";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MinLength, ValidateIf, ValidateNested } from "class-validator";
 import { JuradoCreateDTO } from "src/jurado/dto/jurado.create.dto";
 import { OrganizacaoCreateDto } from "src/organizacao/dto/organizacao.create.dto";
@@ -22,14 +22,19 @@ export class PerfilCreateDTO {
   @IsEnum(TipoPessoa, { message: 'tipo de pessoa (pf ou pj) é obrigatório.' })
   tipo?: TipoPessoa;
 
-  @IsOptional()
+  
   @IsString({ message: 'O CPF deve ser um texto.' })
   @Length(11, 20, { message: 'O CPF deve ter 11 caracteres.' })
+  @IsOptional()
+  @Transform(({value}) => (value?.trim() === 1 ? undefined : value))
   cpf?: string;
 
-  @IsOptional()
+  
+  
   @IsString({ message: 'O telefone deve ser um texto.' })
   @Length(10, 15, { message: 'O telefone deve ter entre 10 e 15 caracteres.' })
+  @IsOptional()
+  @Transform(({value}) => (value?.trim() === 1 ? undefined : value))
   tel?: string; 
   
   @ValidateNested()
