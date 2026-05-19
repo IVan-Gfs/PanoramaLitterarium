@@ -10,11 +10,12 @@ export const  USUARIO = {
             id: "",
             email: "",
             senha: "",
+            roles: [""],
             perfil: {
                 nome: "",
                 foto: "",
-                cpf: "",
-                tel: ""
+                cpf: undefined,
+                tel: undefined
             }
         
         },
@@ -22,6 +23,7 @@ export const  USUARIO = {
             ID: "id",
             EMAIL: "email",
             SENHA: "senha",
+            CONFIRMAR_SENHA: "confirmar_senha",
             PERFIL: {
                 NOME: "nome",
                 FOTO: "foto",

@@ -8,7 +8,7 @@ import LayoutAuth from "../../components/layouts/LayoutAuth";
 //CONCURSOS
 import ConsultarConcursos from "../../views/Concursos/listagem";
 import DetalhesConcurso from "../../views/Concursos/detalhes";
-import CadastrarUsuario from "../../views/Usuario/cadastrar";
+import CadastrarUsuario from "../../views/Usuario/CadastrarUsuario";
 import SelecionarConta from "../../views/Usuario/selecionarConta";
 
 

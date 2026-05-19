@@ -1,6 +1,6 @@
 
 const ENTITY_NAME = "Organização";
-export const  ORGNIZACAO = {
+export const  ORGANIZACAO = {
         ENTITY: ENTITY_NAME,
         ALIAS: "organizacao",
         DADOS_INICIAIS: {

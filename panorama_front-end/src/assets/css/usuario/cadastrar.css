@@ -1,73 +1,157 @@
+/* ═══════════════════════════════════════════════
+   cadastrar.css
+   Estilos da tela de cadastro de usuário.
+   Todos os seletores são escopados em .container-cadastro
+   ou são classes específicas desta página para não vazar
+   para outros componentes.
+   ═══════════════════════════════════════════════ */
 
-body{
-    height: 120vh;
-}
+/* ── Grid do formulário (2 colunas em desktop) ── */
 .form-grid-cadastro-usuario {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 20px;
-
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
+
 .form-grid-cadastro-usuario div {
-    display: flex;
-    flex-direction: column;
-   
-}
-.form-grid-cadastro-usuario input{
-    height: 35px;
+  display: flex;
+  flex-direction: column;
 }
 
-.buttons-form{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 3.5em;
-}
-.next{
-    justify-content: flex-end;
-}
-.btn-primary{
-    width: 10%;
-    height: 35px;
-    background-color: #C8F8CB;
-    border-radius: 3px;
-    border: 1px gray solid;
-    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+.form-grid-cadastro-usuario input,
+.form-grid-cadastro-usuario select {
+  height: 35px;
 }
 
-.btn-primary:hover{
-    cursor: pointer;
-    background-color: #b7e9ba;
+/* ── Labels ── */
+.container-cadastro label {
+  font-size: 1.1em;
+  margin-bottom: 4px;
 }
 
-.btn-secondary{
-    width: 10%;
-    height: 35px;
-    background-color: #e4ebe4;
-    border-radius: 3px;
-    border: 1px gray solid;
-    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+/* ── Asterisco de obrigatório ── */
+.asterisco {
+  color: #580202;
+  margin-right: 2px;
 }
 
-.btn-secondary:hover{
-    cursor: pointer;
-    background-color: #dcdddc;
+/* ── Seletor de tipo de organização ── */
+#tipoOrg {
+  width: 100%;
+  padding: 2px 6px;
+  border-radius: 4px;
+  height: 35px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 0.95em;
 }
 
-label{
-    font-size: 1.2em;
-}
-#tipoOrg, #uf{
-    width: 103%;
-    padding: 2px;
-    border-radius: 4px;
-}
-.asterisco{
-    color: #580202;
+/* ── Lista de erros de campo ── */
+.input-error-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
 }
 
-.cep-uf-inline{
-    display: flex;
-    gap: 5px;
+/* ── Mensagem de erro individual ── */
+.input-message-error {
+  color: #7a0000;
+  font-size: 0.8em;
+  margin-top: 2px;
+  display: block;
 }
 
+/* ── Caixa de erro do servidor (ex: email já cadastrado) ── */
+.server-error-box {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background-color: #fff0f0;
+  border: 1px solid #f5c6c6;
+  border-radius: 4px;
+  color: #7a0000;
+  font-size: 0.9em;
+}
 
+/* ── Área de botões ── */
+.buttons-form {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3.5em;
+}
+
+.next {
+  justify-content: flex-end;
+}
+
+/* ── Botão primário (Confirmar) ── */
+.btn-primary {
+  min-width: 110px;
+  height: 35px;
+  padding: 0 16px;
+  background-color: #c8f8cb;
+  border-radius: 3px;
+  border: 1px solid gray;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #b7e9ba;
+}
+
+/* Estado desabilitado durante o envio (isLoading) */
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Botão secundário ── */
+.btn-secondary {
+  min-width: 110px;
+  height: 35px;
+  padding: 0 16px;
+  background-color: #e4ebe4;
+  border-radius: 3px;
+  border: 1px solid gray;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #dcdddc;
+}
+
+/* ── Inline de CEP + UF (usado em outros forms da página) ── */
+.cep-uf-inline {
+  display: flex;
+  gap: 5px;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVIDADE
+   Em telas menores que 600px, o grid vira 1 coluna
+   e os botões ocupam largura razoável
+   ═══════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .form-grid-cadastro-usuario {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-width: 90px;
+    width: auto;
+  }
+
+  .buttons-form {
+    margin-top: 2em;
+  }
+
+  .container-cadastro label {
+    font-size: 1em;
+  }
+}
