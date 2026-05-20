@@ -18,11 +18,16 @@
   flex-direction: column;
 }
 
-.form-grid-cadastro-usuario input,
+.form-grid-cadastro-usuario .input,
 .form-grid-cadastro-usuario select {
   height: 35px;
-}
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 0.95em;
+  border-radius: 4px;
+  padding: 2px 6px;
 
+}
 /* ── Labels ── */
 .container-cadastro label {
   font-size: 1.1em;
@@ -38,12 +43,10 @@
 /* ── Seletor de tipo de organização ── */
 #tipoOrg {
   width: 100%;
-  padding: 2px 6px;
-  border-radius: 4px;
+  
+  
   height: 35px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 0.95em;
+
 }
 
 /* ── Lista de erros de campo ── */
@@ -130,7 +133,24 @@
   display: flex;
   gap: 5px;
 }
-
+ .success{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.icon-success{
+  width: 50px;
+  margin: auto;
+}
+.success-text, .feedback-message{
+  text-align: center;
+}
+.ok{
+  
+  width: 50%;
+  margin: 10px auto;
+  padding: 5px;
+}
 /* ═══════════════════════════════════════════════
    RESPONSIVIDADE
    Em telas menores que 600px, o grid vira 1 coluna

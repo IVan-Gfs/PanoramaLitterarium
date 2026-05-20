@@ -9,8 +9,8 @@ export const  JURADO = {
             profissao: "",
         },
         FIELDS: {
-           FORMACAO: "formacao",
-           PROFISSAO: "profissao",
+           FORMACAO: "perfil.jurado.formacao",
+           PROFISSAO: "perfil.jurado.profissao",
         },
         
         INPUT_ERROR: {

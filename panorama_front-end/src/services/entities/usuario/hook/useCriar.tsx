@@ -55,7 +55,7 @@ export const useCriar = () => {
   // Atualiza um campo no model e limpa seus erros
   // ─────────────────────────────────────────────
   const handleChangeField = (name: string, value: string) => {
-    console.log(value)
+    
     setModel((prev) => {
       // Copia rasa do topo + perfil para não mutar o state
       const next: FormModel = { ...prev, perfil: { ...prev.perfil } };
@@ -259,7 +259,7 @@ export const useCriar = () => {
     } else if (tipo === "jurado" && model.perfil?.jurado) {
       perfilBase.jurado = { ...model.perfil.jurado };
     }
-
+    console.log(perfilBase)
     return {
       email: model.email,
       senha: model.senha,

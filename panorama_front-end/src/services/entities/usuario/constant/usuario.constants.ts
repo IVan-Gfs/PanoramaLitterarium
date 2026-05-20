@@ -1,7 +1,7 @@
 import { criarMensagemOperacao } from "../../../constants/mensagem.operacao";
 import type { Usuario } from "../type/Usuario";
 
-const ENTITY_NAME = "Usuario";
+const ENTITY_NAME = "usuário";
 export const  USUARIO = {
         ENTITY: ENTITY_NAME,
         ALIAS: "users",

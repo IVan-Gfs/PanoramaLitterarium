@@ -8,7 +8,7 @@ export const  PARTICIPANTE = {
             pseudonimo: ""
         },
         FIELDS: {
-           PSEUDONIMO: "participante.pseudonimo"
+           PSEUDONIMO: "perfil.participante.pseudonimo"
         },
         
         INPUT_ERROR: {

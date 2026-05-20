@@ -37,6 +37,7 @@ export default function CadastrarUsuario() {
     onSubmitForm,
   } = useCriar();
 
+  console.log(errors)
   const { tipoConta } = useParams();
   const isLoading = submitStatus === "loading";
 
