@@ -7,4 +7,4 @@ import { PerfilService } from './services/pessoa.service';
   controllers: [PerfilController],
   providers: [PerfilService],
 })
-export class PessoaModule {}
+export class PerfilModule {}

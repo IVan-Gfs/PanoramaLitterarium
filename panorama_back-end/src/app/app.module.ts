@@ -5,7 +5,8 @@ import { join } from 'node:path';
 import { AuthModule } from 'src/auth/auth.module';
 import { CategoriaModule } from 'src/categoria/categoria.modele';
 import { ConcursoModule } from 'src/concursos/concursos.module';
-import { PessoaModule } from 'src/perfil/perfil.module';
+import { EmailModule } from 'src/mail/email.modules';
+import { PerfilModule } from 'src/perfil/perfil.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { UsuarioModule } from 'src/usuario/usuario.module';
 
@@ -21,9 +22,10 @@ import { UsuarioModule } from 'src/usuario/usuario.module';
        envFilePath: '.development.env',
     }),
     PrismaModule,
+    EmailModule,
     AuthModule,
     UsuarioModule,
-    PessoaModule,
+    PerfilModule,
     ConcursoModule,
     CategoriaModule,
   ],
