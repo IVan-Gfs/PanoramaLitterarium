@@ -1,44 +1,59 @@
+/* ═══════════════════════════════════════════════
+   login.css
+   Estilos da tela de login de usuário.
+   ═══════════════════════════════════════════════ */
 
-
-
-.authContainer form{
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+/* ── Form ── */
+.authContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.5vh, 25px);
 }
 
-
-.authContainer label{
-    display: block;
+.authContainer label {
+  display: block;
+  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+  margin-bottom: 4px;
 }
 
-.input{
-    font-size: 1.2em;
+/* ── Botão de submit ── */
+#submit {
+  width: clamp(100px, 40%, 160px);
+  height: 38px;
+  margin: 8px auto 0;
+  background-color: #C8F8CB;
+  border-radius: 3px;
+  border: 1px solid gray;
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-
-#submit{
-    width: 30%;
-    height: 35px;
-    margin: auto;
-    background-color: #C8F8CB;
-    border-radius: 3px;
-    border: 1px gray solid;
-    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
+#submit:hover {
+  background-color: #b7e9ba;
 }
 
-#submit:hover{
-    cursor: pointer;
-    background-color: #C5F5C8;
+/* ── Link de cadastro ── */
+#p-registrar {
+  margin: 20px auto 0;
+  width: clamp(220px, 80%, 320px);
+  text-align: center;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
 }
 
-#p-registrar{
-    margin: auto;
-    margin-top: 20px;
+#cadastrar {
+  text-decoration: none;
+  color: #0066CC;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 480px) {
+  #submit {
     width: 60%;
-    text-align: center;
-}
-#cadastrar{
-    text-decoration: none;
-    color: #0066CC;
+  }
+
+  #p-registrar {
+    width: 90%;
+  }
 }

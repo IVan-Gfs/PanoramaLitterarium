@@ -47,8 +47,6 @@ export interface Jurado {
 // ErrosUsuario
 //
 // As chaves de erro seguem o mesmo dot-notation dos FIELDS
-// para que errors[USUARIO.FIELDS.PERFIL.NOME] funcione
-// sem erro de TypeScript.
 // ─────────────────────────────────────────────
 export interface ErrosUsuario {
   // campos booleanos (true = campo tem erro)

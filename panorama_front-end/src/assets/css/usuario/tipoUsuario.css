@@ -1,35 +1,64 @@
-.card-user{
-   display: flex;
-   flex-direction: column;
-    margin: 20px;
-    background-color: #FFF;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: black;
+/* ═══════════════════════════════════════════════
+   tipoUsuario.css
+   Estilos da tela de seleção de perfil de usuário.
+   ═══════════════════════════════════════════════ */
+
+/* ── Cards de tipo de conta ── */
+.card-user {
+  display: flex;
+  flex-direction: column;
+  margin: clamp(10px, 1.5vh, 20px) 0;
+  background-color: #fff;
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 18px);
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  transition: box-shadow 0.15s ease, background-color 0.15s ease;
 }
+
+.card-user:hover {
+  cursor: pointer;
+  background-color: #f4fbf4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
 .card-user-flex {
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
-}
-.card-user:hover{
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.card-user img{
-    width: 40px;
-    
+.card-user img {
+  width: clamp(28px, 4vw, 40px);
 }
 
-.card-user p{
-    font-size: 1.2em;
-    
+.card-user p {
+  font-size: clamp(1rem, 1.5vw, 1.2em);
+  font-weight: 600;
 }
 
 .card-user legend {
-    display: inline-block;
-    font-size: 0.9em;
-    margin-left: 4px;
-    color: #3c3b3bc7;
+  display: inline-block;
+  font-size: clamp(0.8rem, 1.1vw, 0.9em);
+  margin-top: 4px;
+  margin-left: 2px;
+  color: #3c3b3bc7;
+}
+
+/* ── Título da página ── */
+.authContainer h2 {
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  margin-bottom: clamp(10px, 2vh, 18px);
+  text-align: center;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 480px) {
+  .card-user p {
+    font-size: 1rem;
+  }
+
+  .card-user img {
+    width: 28px;
+  }
 }

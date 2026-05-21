@@ -2,6 +2,9 @@ import { useState } from "react";
 import { USUARIO } from "../constant/usuario.constants";
 import type { ErrosUsuario, Usuario } from "../type/Usuario";
 import { apiPostUsuario } from "../api/usuario.api";
+import { ORGANIZACAO } from "../../organizacao/constants/org.constants";
+import { PARTICIPANTE } from "../../participante/constants/participante.constants";
+import { JURADO } from "../../jurado/constants/jurado.constants";
 
 // ─────────────────────────────────────────────
 // Helpers para objetos aninhados via dot-notation
@@ -55,7 +58,7 @@ export const useCriar = () => {
   // Atualiza um campo no model e limpa seus erros
   // ─────────────────────────────────────────────
   const handleChangeField = (name: string, value: string) => {
-    
+    console.log(value)
     setModel((prev) => {
       // Copia rasa do topo + perfil para não mutar o state
       const next: FormModel = { ...prev, perfil: { ...prev.perfil } };
@@ -129,6 +132,33 @@ export const useCriar = () => {
         break;
       }
 
+      case ORGANIZACAO.FIELDS.NOME_FANTASIA: {
+        if(!value || String(value).trim() === ""){
+          messages.push(ORGANIZACAO.INPUT_ERROR.NOME_FANTASIA.BLANK)
+        }
+        break;
+      }
+
+      case ORGANIZACAO.FIELDS.TIPO: {
+        if(!value || String(value).trim() === ""){
+          messages.push(ORGANIZACAO.INPUT_ERROR.TIPO.BLANK)
+        }
+        break;
+      }
+
+      case PARTICIPANTE.FIELDS.PSEUDONIMO: {
+         if(!value || String(value).trim() === ""){
+          messages.push(PARTICIPANTE.INPUT_ERROR.PSEUDONIMO.BLANK)
+        }
+        break;
+      }
+      case JURADO.FIELDS.PROFISSAO: {
+         if(!value || String(value).trim() === ""){
+          messages.push(JURADO.INPUT_ERROR.PROFISSAO.BLANK)
+        }
+        break;
+      }
+
       default:
         break;
     }
@@ -196,7 +226,9 @@ export const useCriar = () => {
 
     // — Campos por tipo de conta —
     if (tipo === "organizacao") {
+      
       const nomeFantasia = model.perfil?.organizacao?.nomeFantasia;
+      const tipoOrg = model.perfil?.organizacao?.tipo;
       if (!nomeFantasia || nomeFantasia.trim() === "") {
         newErrors["perfil.organizacao.nomeFantasia"] = true;
         newErrors["perfil.organizacao.nomeFantasiaMensagem"] = [
@@ -204,6 +236,13 @@ export const useCriar = () => {
         ];
         isValid = false;
       }
+      if(!tipoOrg || String(tipoOrg).trim() === ""){
+          newErrors["perfil.organizacao.tipo"] = true;
+          newErrors["perfil.organizacao.tipoMensagem"] = [
+          "O tipo da organização deve ser informado",
+        ];
+        isValid = false;
+        }
     }
 
     if (tipo === "participante") {

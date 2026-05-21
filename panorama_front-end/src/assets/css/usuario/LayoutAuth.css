@@ -1,74 +1,110 @@
+/* ═══════════════════════════════════════════════
+   LayoutAuth.css
+   Layout base de autenticação (header + main).
+   ═══════════════════════════════════════════════ */
 
-*{
-    padding: 0;
-    margin: 0;
-    font-family: 'Jost';
-}
-.goBack{
-    width: 60px;
-    position: absolute;
-    left: 20%;
-}
-.goBack:hover{
-    cursor: pointer;
-}
-.logo{
-    width: 200px;
-    margin: auto;
-    display: block;
-    margin-top: 80px;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Jost', sans-serif;
 }
 
-.title{
-    margin-bottom: 30px;
-    text-align: center;
+/* ── Header ── */
+#headerLogin {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0 0;
 }
 
-/*Interface de login de usuário*/
-.authContainer{
-    margin: auto;
-    margin-top: 30px;
-    background-color: #D6E6F7;
-    width: 400px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
-   
-}
-.authContainer input:focus{
-    outline: 0;
-    border-radius: 4px;
-    border: 2px solid #4CAFaa77;
-}
-.authContainer.input{
-    display: block;
-    height: 25px;
-    width: 100%;
-    border: 1px solid gray;
-    border-radius: 4px;
-    padding: 5px;
-}
-.input-error{
-    border: 2px solid #d32f2f ;
-    border-radius: 4px;
-}
-.input-message-error{
-    color:#d32f2f; 
-    margin: 5px;
-}
-/*Interface de cadastro de usuários*/
-.container-cadastro{
-    width: 800px;
-    padding: 30px 50px 30px 50px;
-    margin: auto;
-    margin-top: 30px;
+.goBack {
+  width: clamp(36px, 4vw, 60px);
+  position: absolute;
+  left: clamp(16px, 6vw, 10%);
+  top: clamp(26px, 20vh, 10%);
+  cursor: pointer;
 }
 
-.container-cadastro form{
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+.logo {
+  width: clamp(120px, 12vw, 200px);
+  display: block;
+  margin: 0 auto;
+  padding-top: clamp(20px, 0vw, 80px);
 }
 
+/* ── Títulos dentro dos containers ── */
+.title {
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+}
 
+/* ── Container compartilhado (login, cadastro, seleção) ── */
+.authContainer {
+  margin: clamp(16px, 3vh, 30px) auto;
+  background-color: #D6E6F7;
+  width: clamp(300px, 90vw, 420px);
+  padding: clamp(16px, 3vw, 28px) clamp(20px, 4vw, 36px);
+  border-radius: 6px;
+  box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
 
+/* Container de cadastro é mais largo */
+.container-cadastro {
+  width: clamp(320px, 92vw, 860px);
+  padding: clamp(20px, 3vw, 40px) clamp(20px, 4vw, 60px);
+}
+
+/* ── Inputs dentro do authContainer ── */
+.authContainer input:focus {
+  outline: 0;
+  border-radius: 4px;
+  border: 2px solid #4CAFaa77;
+}
+
+.authContainer .input,
+.input {
+  display: block;
+  height: 35px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  background-color: #fff;
+}
+
+/* ── Estados de erro de campo ── */
+.input-error {
+  border: 2px solid #d32f2f;
+  border-radius: 4px;
+  height: 35px;
+  width: 100%;
+  padding: 4px 8px;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+}
+
+.input-message-error {
+  color: #d32f2f;
+  font-size: 0.8em;
+  margin-top: 3px;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 480px) {
+  .logo {
+    padding-top: 16px;
+  }
+
+  .authContainer {
+    width: 95vw;
+    padding: 16px;
+  }
+
+  .container-cadastro {
+    width: 98vw;
+    padding: 16px;
+  }
+}

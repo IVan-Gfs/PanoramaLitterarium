@@ -7,12 +7,12 @@ export default function Login ( ){
         <form className="">
             <div>
                 <label htmlFor="email">Email: </label>
-                <input type="text" name="email" />
+                <input type="text" name="email" className="input" />
             </div>
             
             <div>
                 <label htmlFor="email">Senha: </label>
-                <input type="password" name="email" />
+                <input type="password" name="email" className="input" />
             </div>
         
             <input type="submit" value="ENTRAR" id="submit"/>

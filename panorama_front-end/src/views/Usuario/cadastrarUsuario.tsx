@@ -53,7 +53,7 @@ export default function CadastrarUsuario() {
       onSubmit={(e) => onSubmitForm(e, tipoConta)}
       noValidate
     >
-      <h2 className="title">DADOS DO USUÁRIO</h2>
+      <h2 className="title">Preencha seus dados</h2>
 
       <div className="form-grid-cadastro-usuario">
 
@@ -111,6 +111,7 @@ export default function CadastrarUsuario() {
               onChange={(e) =>
                 handleChangeField(PARTICIPANTE.FIELDS.PSEUDONIMO, e.target.value)
               }
+              onBlur={(e)=> validateField(PARTICIPANTE.FIELDS.PSEUDONIMO, e)}
               required
             />
             <ErrorMessages
@@ -138,6 +139,7 @@ export default function CadastrarUsuario() {
                 onChange={(e) =>
                   handleChangeField(JURADO.FIELDS.PROFISSAO, e.target.value)
                 }
+                onBlur={(e)=> validateField(JURADO.FIELDS.PROFISSAO, e)}
                 required
               />
               <ErrorMessages
@@ -149,7 +151,6 @@ export default function CadastrarUsuario() {
 
             <div>
               <label htmlFor="formacao">Formação:</label>
-              {/* CORREÇÃO: antes ambos usavam JURADO.FIELDS.PROFISSAO */}
               <input
                 id="formacao"
                 type="text"
@@ -183,6 +184,7 @@ export default function CadastrarUsuario() {
                     e.target.value
                   )
                 }
+                onBlur={(e)=> validateField(ORGANIZACAO.FIELDS.NOME_FANTASIA, e)}
               />
               <ErrorMessages
                 messages={
@@ -196,13 +198,11 @@ export default function CadastrarUsuario() {
                 <span className="asterisco">*</span>Tipo de Organização:
               </label>
               <select
-                id="tipoOrg"
+                id={errors[ORGANIZACAO.FIELDS.TIPO] ? "input-error" : " tipoOrg"}
                 name="perfil.organizacao.tipo"
-                className="input"
                 onChange={(e) =>
                   handleChangeField(ORGANIZACAO.FIELDS.TIPO, e.target.value)
                 }
-             
                 required
               >
                 <option value="" >
@@ -215,7 +215,14 @@ export default function CadastrarUsuario() {
                 <option value="ORGAO_PUBLICO">Órgão Público</option>
                 <option value="OUTRO">Outro</option>
               </select>
+              <ErrorMessages
+                messages={
+                  errors[`${ORGANIZACAO.FIELDS.TIPO}Mensagem`] as string[]
+                }
+              />
             </div>
+
+            
           </>
         )}
 

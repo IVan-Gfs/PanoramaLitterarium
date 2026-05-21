@@ -1,5 +1,5 @@
 
-const ENTITY_NAME = "Organização";
+const ENTITY_NAME = "organização";
 export const  ORGANIZACAO = {
         ENTITY: ENTITY_NAME,
         ALIAS: "organizacao",
@@ -25,9 +25,9 @@ export const  ORGANIZACAO = {
         
         INPUT_ERROR: {
             NOME_FANTASIA: {
-            BLANK: `O nome fantasia da ${ENTITY_NAME} deve ser informado`,
-            MAX_LEN: `O nome fantasia de ${ENTITY_NAME} deve ter no máximo 200 caracteres`,
-            MIN_LEN: `O nome fantasia de ${ENTITY_NAME} deve ter no mínimo 40 caracteres ` 
+            BLANK: `O nome da ${ENTITY_NAME} deve ser informado`,
+            MAX_LEN: `O nome da ${ENTITY_NAME} deve ter no máximo 200 caracteres`,
+            MIN_LEN: `O nome da ${ENTITY_NAME} deve ter no mínimo 40 caracteres ` 
             },
             RAZAO_SOCIAL: {
             BLANK: `A razão social de ${ENTITY_NAME} deve ser informado`,
@@ -40,6 +40,9 @@ export const  ORGANIZACAO = {
             VALID: `Informe um cep válido para ${ENTITY_NAME}`,
             NUMBER: `Deve conter apenas números`
             },
+            TIPO : {
+                BLANK: `O tipo da ${ENTITY_NAME} deve ser informado`,
+            }
         }
         
 

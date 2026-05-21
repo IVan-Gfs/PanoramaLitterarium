@@ -1,16 +1,13 @@
 /* ═══════════════════════════════════════════════
    cadastrar.css
    Estilos da tela de cadastro de usuário.
-   Todos os seletores são escopados em .container-cadastro
-   ou são classes específicas desta página para não vazar
-   para outros componentes.
    ═══════════════════════════════════════════════ */
 
 /* ── Grid do formulário (2 colunas em desktop) ── */
 .form-grid-cadastro-usuario {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: clamp(12px, 2vw, 20px);
 }
 
 .form-grid-cadastro-usuario div {
@@ -18,14 +15,19 @@
   flex-direction: column;
 }
 
-.form-grid-cadastro-usuario input,
+.form-grid-cadastro-usuario .input,
 .form-grid-cadastro-usuario select {
   height: 35px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  border-radius: 4px;
+  padding: 2px 8px;
 }
 
 /* ── Labels ── */
 .container-cadastro label {
-  font-size: 1.1em;
+  font-size: clamp(0.88rem, 1.2vw, 1.05rem);
   margin-bottom: 4px;
 }
 
@@ -34,16 +36,19 @@
   color: #580202;
   margin-right: 2px;
 }
+input[type="password"] {
+    font-size: 24px; 
+}
 
 /* ── Seletor de tipo de organização ── */
 #tipoOrg {
   width: 100%;
-  padding: 2px 6px;
-  border-radius: 4px;
   height: 35px;
+  padding: 2px 8px;
+  border-radius: 4px;
   border: 1px solid #ccc;
   background-color: #fff;
-  font-size: 0.95em;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
 }
 
 /* ── Lista de erros de campo ── */
@@ -61,7 +66,7 @@
   display: block;
 }
 
-/* ── Caixa de erro do servidor (ex: email já cadastrado) ── */
+/* ── Caixa de erro do servidor ── */
 .server-error-box {
   margin-top: 16px;
   padding: 10px 14px;
@@ -76,14 +81,14 @@
 .buttons-form {
   display: flex;
   justify-content: space-between;
-  margin-top: 3.5em;
+  margin-top: clamp(1.5em, 4vh, 3.5em);
 }
 
 .next {
   justify-content: flex-end;
 }
 
-/* ── Botão primário (Confirmar) ── */
+/* ── Botão primário ── */
 .btn-primary {
   min-width: 110px;
   height: 35px;
@@ -92,7 +97,7 @@
   border-radius: 3px;
   border: 1px solid gray;
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
-  font-size: 0.95em;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -101,7 +106,6 @@
   background-color: #b7e9ba;
 }
 
-/* Estado desabilitado durante o envio (isLoading) */
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -116,7 +120,7 @@
   border-radius: 3px;
   border: 1px solid gray;
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
-  font-size: 0.95em;
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -125,22 +129,55 @@
   background-color: #dcdddc;
 }
 
-/* ── Inline de CEP + UF (usado em outros forms da página) ── */
+/* ── Inline de CEP + UF ── */
 .cep-uf-inline {
   display: flex;
   gap: 5px;
 }
 
+/* ── Tela de sucesso ── */
+.success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.icon-success {
+  width: 50px;
+  margin: auto;
+}
+
+.success-text,
+.feedback-message {
+  text-align: center;
+}
+
+.ok {
+  width: 50%;
+  margin: 10px auto;
+  padding: 5px;
+  cursor: pointer;
+}
+
 /* ═══════════════════════════════════════════════
    RESPONSIVIDADE
-   Em telas menores que 600px, o grid vira 1 coluna
-   e os botões ocupam largura razoável
+   ─ ≤ 900px  → tablet / notebook pequeno
+   ─ ≤ 600px  → mobile
    ═══════════════════════════════════════════════ */
-@media (max-width: 600px) {
+
+/* Tablet / notebook menor: grid 1 coluna, container um pouco mais estreito */
+@media (max-width: 900px) {
   .form-grid-cadastro-usuario {
     grid-template-columns: 1fr;
   }
 
+  .container-cadastro label {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
   .btn-primary,
   .btn-secondary {
     min-width: 90px;
@@ -151,7 +188,7 @@
     margin-top: 2em;
   }
 
-  .container-cadastro label {
-    font-size: 1em;
+  .ok {
+    width: 70%;
   }
 }
