@@ -41,6 +41,57 @@ export default function LayoutMain() {
               Concursos
             </NavLink>
 
+
+            <NavLink
+              to="/categorias"
+              className={({ isActive }) =>
+                isActive ? "itemMenu active" : "itemMenu"
+              }
+            >
+              <img src="/imgs/categoria.svg" alt="categorias" />
+              Categorias
+            </NavLink>
+            
+            <NavLink
+              to="/para-organizadores"
+              className={({ isActive }) =>
+                isActive ? "itemMenu active" : "itemMenu"
+              }
+            >
+              <img src="/imgs/marcadores.png" alt="para-organizadores" />
+              Para Organizadores
+            </NavLink>
+
+            <NavLink
+              to="/parceiros"
+              className={({ isActive }) =>
+                isActive ? "itemMenu active" : "itemMenu"
+              }
+            >
+              <img src="/imgs/coracao.png" alt="para-parceiros" />
+              Parceiros
+            </NavLink>
+
+            <NavLink
+              to="/contato"
+              className={({ isActive }) =>
+                isActive ? "itemMenu active" : "itemMenu"
+              }
+            >
+              <img src="/imgs/envelope.png" alt="contato" />
+              Contato
+            </NavLink>
+
+             <NavLink
+              to="/sobre"
+              className={({ isActive }) =>
+                isActive ? "itemMenu active" : "itemMenu"
+              }
+            >
+              <img src="/imgs/info.png" alt="sobre" />
+              Sobre nós
+            </NavLink>
+
           </nav>
         </div>
 
