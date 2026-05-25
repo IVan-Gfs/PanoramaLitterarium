@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Home, Search, Settings } from 'lucide-react';
 
 import '../assets/css/home.css';
 /* ─── tipos ─── */
@@ -335,7 +336,7 @@ function SearchBar() {
           localidade e prazo. Leia os editais e inscreva-se diretamente pelo <em>Panorama Litterarium</em>.
         </p>
         <div className="search-box">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon"><Search /></span>
           <input
             type="text"
             placeholder="Buscar concurso por título, categoria ou localidade..."

@@ -5,6 +5,7 @@ import { apiGetCategoria } from "../../services/entities/categoria/api/api.categ
 import { ROTA } from "../../services/router/url";
 import customSelectStyles, { type OptionType } from "../../assets/styles/select.Style";
 import Select from "react-select";
+import { Search } from "lucide-react";
 
 
 export const FiltroConcursos: React.FC<{
@@ -92,12 +93,16 @@ export const FiltroConcursos: React.FC<{
         {/* Busca */}
         <div className="filtro-item grow">
           <label className="title-field">Buscar por título</label>
-          <input
+
+        <div className="input-busca-container">
+         <span className="search-icon"><Search  size={20}/></span>
+          <input className="input-busca"
             type="text"
             value={busca}
             onChange={ e => setBusca(e.target.value)}
-            placeholder="Digite o título do concurso..."
+            placeholder="Buque por título, tema ou gênero..."
           />
+        </div>
         </div>
 
         {/* Ordenação */}

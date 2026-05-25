@@ -81,6 +81,24 @@
   margin-bottom: 4px;
   color: #333;
 }
+.input-busca-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+.input-busca {
+  width: 100%;
+}
+.search-icon {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
 
 .filtro-item input,
 .filtro-item select {
