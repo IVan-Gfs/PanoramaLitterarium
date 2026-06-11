@@ -7,6 +7,7 @@ import { ORGANIZACAO } from "../../services/entities/organizacao/constants/org.c
 import { PARTICIPANTE } from "../../services/entities/participante/constants/participante.constants";
 import { JURADO } from "../../services/entities/jurado/constants/jurado.constants";
 import { useParams, useNavigate } from "react-router-dom";
+import { applyPhoneMask } from "../../utils/mask";
 
 // ─────────────────────────────────────────────
 // Componente auxiliar: lista de mensagens de erro
@@ -89,8 +90,11 @@ export default function CadastrarUsuario() {
             type="tel"
             name="perfil.tel"
             className="input"
-            onChange={(e) =>
-              handleChangeField(USUARIO.FIELDS.PERFIL.TEL, e.target.value)
+            onChange={(e) => {
+              const masked = applyPhoneMask(e.target.value);
+              handleChangeField(USUARIO.FIELDS.PERFIL.TEL, masked);
+            }
+              
             }
           />
         </div>
@@ -329,7 +333,7 @@ function SuccessScreen() {
         alt="Ícone de sucesso"
       />
       <p className="success-text">Faça o login com sua conta!</p>
-      <button className="ok" onClick={() => navigate("/login")}>
+      <button className="ok" onClick={() => navigate("/user/login")}>
         OK
       </button>
     </div>

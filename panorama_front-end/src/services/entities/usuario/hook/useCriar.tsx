@@ -5,6 +5,7 @@ import { apiPostUsuario } from "../api/usuario.api";
 import { ORGANIZACAO } from "../../organizacao/constants/org.constants";
 import { PARTICIPANTE } from "../../participante/constants/participante.constants";
 import { JURADO } from "../../jurado/constants/jurado.constants";
+import { stripPhoneMask } from "../../../../utils/mask";
 
 // ─────────────────────────────────────────────
 // Helpers para objetos aninhados via dot-notation
@@ -299,12 +300,15 @@ export const useCriar = () => {
       perfilBase.jurado = { ...model.perfil.jurado };
     }
     console.log(perfilBase)
+    perfilBase.tel = stripPhoneMask(model.perfil?.tel || ""); 
+
     return {
       email: model.email,
       senha: model.senha,
       roles: [tipo ? tipo.toUpperCase() : ""],
       perfil: perfilBase,
     };
+   
   };
 
   // ─────────────────────────────────────────────
