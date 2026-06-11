@@ -41,7 +41,7 @@ export class EmailService{
  
         if(options.context){
             Object.entries(options.context).forEach(([key, value]) => {
-                const regex = new RegExp(`{{${key}}`, "g");
+                const regex = new RegExp(`{{\\s*${key}\\s*}}`, "g");
 
                 if(options.html){
                     options.html = options.html.replace(regex, String(value))
@@ -84,12 +84,12 @@ export class EmailService{
     // async avisoDeLogin(email: string, nome: string){}
 
     async sendRegisterEmailConfirmation(email: string, nome: string, token: string){
-        const url = `http://localhost:8000/panorama-litterarium/api/v1/confirmation?token={token}`
+        const url = `http://localhost:8000/panorama-litterarium/api/v1/auth/confirmation?token=${token}`
         return this.prepararEnviar(
             email,
             "Verifique sua caixa postal de e-mail",
             "Confirmação de registro",
-            "Obrigado por registrar-se em nosso sistema! Utilize o link abaixo para confirma seu cadastro: ",
+            "Obrigado por registrar-se em nosso sistema! Utilize o link abaixo para confirmar seu cadastro:",
             url,
             nome
         )
@@ -103,7 +103,7 @@ export class EmailService{
         url: string,
         nome: string
     ){
-        const context = { nome, url, title, message };
+        const context = { nome, url, link: url, title, message };
         const html = this.generateHtml(title, message);
         const text = `Olá ${nome} \n \n ${message} \n \n Link: ${url}`
 

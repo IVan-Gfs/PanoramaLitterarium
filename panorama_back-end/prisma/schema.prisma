@@ -266,7 +266,7 @@ model Usuario {
   senha     String
   statusValidacao Boolean @default(false)
   recovery_token String?
-  token_expires DateTime?y
+  token_expires DateTime?
   
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt

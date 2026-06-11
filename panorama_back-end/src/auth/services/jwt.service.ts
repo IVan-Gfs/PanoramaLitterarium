@@ -6,6 +6,14 @@ export interface UserToken {
     id?: number;
     email?: string;
 }
+export type TokenType = 'access' | 'refresh' | 'verification';
+
+export interface TokenResponse {
+    accessToken: string;
+    refreshToken: string;
+    expireInAccessToken: number;
+    expireInRefreshToken: number;
+}
 @Injectable()
 export class JsonWebTokenService {
     constructor(
@@ -42,6 +50,22 @@ export class JsonWebTokenService {
         return { refreshToken, expireInRefreshToken}
     }
 
+    async createVerificationToken(usuario: UserToken, timer?: number){
+        const { id } = usuario;
+        const data: JwtPayload = {
+            id,
+        }
+
+        const expireInVerificationToken = timer ?? this.configService.getOrThrow('JWT_VERIFICATION_TOKEN_EXPIRATION_TIME');
+        const secretVerificationToken = this.configService.getOrThrow('JWT_VERIFICATION_TOKEN_SECRET');
+        const verificationToken = await this.jwtService.signAsync(data, {
+            secret: secretVerificationToken,
+            expiresIn: `${expireInVerificationToken}s`
+        });
+
+        return { verificationToken, expireInVerificationToken };
+    }
+
     private secretAccessToken(){
         return this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET')
     }
@@ -60,9 +84,22 @@ export class JsonWebTokenService {
         return this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_TIME')
     }
 
-    async verifyToken(token: string){
+    async verifyToken(token: string, type: TokenType = 'access'){
         return await this.jwtService.verify(token, {
-            secret: this.configService.getOrThrow('JWT_VERIFICATION_TOKEN_SECRET')
+            secret: this.getSecretByTokenType(type)
         })
+    }
+
+    private getSecretByTokenType(type: TokenType): string{
+        switch (type) {
+            case "access":
+                return this.secretAccessToken();
+            case "refresh":
+                return this.secretRefreshToken();
+            case "verification":
+                return this.configService.getOrThrow('JWT_VERIFICATION_TOKEN_SECRET');
+            default:
+                throw new Error('Invalid token type');
+        }
     }
 }

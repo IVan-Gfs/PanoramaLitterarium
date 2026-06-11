@@ -1,23 +1,30 @@
-import { Controller, Post, Req, UseGuards } from "@nestjs/common";
-import { UsuarioService } from "src/usuario/services/usuario.service";
+import { BadRequestException, Controller, Get, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { AuthService } from "../services/auth.service";
 import requestWithUser from "../config/requestWithUser.interface";
 import { LocalAuthGuard } from "../config/guard/local.auth.guard";
+import { ROTA } from "src/commons/constants/url.sistema";
 
-@Controller('auth')
+@Controller(ROTA.AUTH.BASE)
 export class AuthController{
     constructor(
         private readonly authService: AuthService,
-        //private readonly usuarioService: UsuarioService
     ){}
 
     @UseGuards(LocalAuthGuard)
-    @Post('/session/login')
+    @Post(ROTA.AUTH.LOGIN)
     async login(
         @Req() req: requestWithUser
     ){
+        console.log('User in request:', req.user); // Log para verificar o conteúdo de req.user
+        const accessToken = await this.authService.getJwtToken(req.user)
+        return { accessToken }
+    }
 
-       const accessToken = await this.authService.getJwtToken(req.user)
-        return 'token do usuário auteticado: ' + (accessToken)
+    @Get(ROTA.AUTH.CONFIRM_EMAIL)
+    async confirmEmail(@Query('token') token: string){
+        if(!token){
+            throw new BadRequestException('Token de confirmação não informado');
+        }
+        return this.authService.confirmEmail(token);
     }
 }

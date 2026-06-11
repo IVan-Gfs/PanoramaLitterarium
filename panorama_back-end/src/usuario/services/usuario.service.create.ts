@@ -8,11 +8,17 @@ import * as bcrypt from 'bcrypt';
 import { PerfilMapper } from "src/perfil/mapper/perfil.mapper";
 import { connect } from "node:http2";
 import { RoleUsuario } from "@prisma/client";
+import { AuthService } from "src/auth/services/auth.service";
+import { EmailService } from "src/mail/services/email.service";
 
 @Injectable()
 export class UsuarioServiceCreate {
 
-    constructor (private readonly prismaService: PrismaService){}
+    constructor (
+        private readonly prismaService: PrismaService,
+        private readonly authService: AuthService,
+        private readonly emailService: EmailService,
+    ){}
 
     async create(usuarioRequest: UsuarioCreateDTO): Promise<UsuarioResponseDTO>{
 
@@ -87,6 +93,9 @@ export class UsuarioServiceCreate {
             
         })
 
+        const verificationToken = await this.authService.createVerificationToken(usuario);
+        const nome = usuarioRequest.perfil?.nome ?? usuario.email;
+        await this.emailService.sendRegisterEmailConfirmation(usuario.email, nome, verificationToken);
        
         return UsuarioMapper.toDTOResponse(usuario)
     }

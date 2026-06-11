@@ -41,8 +41,19 @@ function gerarRotasSistema(entity: string){
     }
 }
 
+function gerarRotasAuth(){
+    const base = `/${ROTA_AUTH}`;
+    return {
+      BASE: base,
+      LOGIN: `/session/login`,
+      CONFIRM_EMAIL: `/confirmation`
+    }
+}
 
 export const ROTA = {
+
+  AUTH: gerarRotasAuth(),
+
   USUARIO: gerarRotasSistema(USUARIO),
   PESSOA: gerarRotasSistema(PESSOA),
   ORGANIZACAO: gerarRotasSistema(ORGANIZACAO),
