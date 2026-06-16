@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createTransport } from "nodemailer";
 import Mail from 'nodemailer/lib/mailer'
@@ -8,6 +8,7 @@ import { EmailException } from "src/commons/exceptions/erros/email.exception";
 @Injectable()
 export class EmailService{
     private MailTransport: Mail;
+    private readonly logger = new Logger(EmailService.name);
     constructor (private readonly configService: ConfigService){
         this.MailTransport = createTransport({
             host: this.configService.get("EMAIL_HOST"),
@@ -76,6 +77,17 @@ export class EmailService{
                 attachments: options.attachments,
             })
         } catch (error: any) {
+            // Em ambiente de desenvolvimento, não bloqueamos o fluxo por falta de SMTP;
+            // registramos o conteúdo do e-mail e seguimos em frente.
+            const nodeEnv = process.env.NODE_ENV || this.configService.get<string>('NODE_ENV');
+            this.logger.warn(`Falha no envio do email: ${error.message}`);
+            if(nodeEnv === 'development' || nodeEnv === 'dev'){
+                this.logger.log(`Email não enviado (dev). Para: ${options.to}. Assunto: ${options.subject}`);
+                if(options.html) this.logger.log(`HTML: ${options.html}`);
+                else if(options.text) this.logger.log(`Text: ${options.text}`);
+                return;
+            }
+
             throw new Error("Falha no envio do email: "+ error.message)
         }
         
