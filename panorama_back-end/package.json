@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^2.3.6",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -42,7 +43,7 @@
     "mailer": "^0.6.7",
     "mariadb": "^3.5.2",
     "mysql2": "^3.19.0",
-    "nodemailer": "^8.0.7",
+    "nodemailer": "^8.0.11",
     "oracledb": "^6.10.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -61,7 +62,7 @@
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.2",
-    "@types/nodemailer": "^8.0.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.2",

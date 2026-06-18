@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Usuario } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
-import bcrypt from "bcrypt"
+import * as bcrypt from 'bcrypt';
 import { JsonWebTokenService, UserToken } from "./jwt.service";
 
 
@@ -81,11 +81,13 @@ export class AuthService {
         })
     }
 
-    async verifyPassword(senha: string, hashedSenha: string): Promise<boolean>{
-        const isSenhaMatching = await bcrypt.compare(senha, hashedSenha)
-        if(!isSenhaMatching){
-            throw new HttpException('Credenciais inválidas', HttpStatus.BAD_REQUEST)
-        }
-        return true;
+    async verifyPassword(senha: string, hashedSenha: string): Promise<boolean> {
+
+    const isSenhaMatching = await bcrypt.compare(senha, hashedSenha);
+    
+    if (!isSenhaMatching) {
+        throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
     }
+    return true;
+}
 }

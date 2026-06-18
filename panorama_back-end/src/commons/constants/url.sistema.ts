@@ -46,7 +46,8 @@ function gerarRotasAuth(){
     return {
       BASE: base,
       LOGIN: `/session/login`,
-      CONFIRM_EMAIL: `/confirmation`
+      CONFIRM_EMAIL: `/confirmation`,
+      LOGOUT: `/session/logout`
     }
 }
 

@@ -75,6 +75,7 @@ export class EmailService{
                 subject: options.subject,
                 html: options.html,
                 attachments: options.attachments,
+                replyTo: 'no-reply@localhost.com',
             })
         } catch (error: any) {
             // Em ambiente de desenvolvimento, não bloqueamos o fluxo por falta de SMTP;
