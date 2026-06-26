@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "../services/auth.service";
 import requestWithUser from "../config/requestWithUser.interface";
 import { LocalAuthGuard } from "../config/guard/local.auth.guard";
@@ -50,4 +50,33 @@ export class AuthController{
         }
         return this.authService.confirmEmail(token);
     }
+
+    
+    // @Post('forgot-password')
+    // @HttpCode(HttpStatus.OK)
+    // async forgotPassword(@Body('email') email: string) {
+    //     if (!email) {
+    //         throw new BadRequestException('O e-mail é obrigatório');
+    //     }
+    //     await this.forgotPasswordService.execute(email);
+    //     return { message: 'Se o e-mail existir em nosso sistema, um link de redefinição será enviado.' };
+    // }
+
+    // @Post('reset-password')
+    // @HttpCode(HttpStatus.OK)
+    // async resetPassword(
+    //     @Query('token') token: string,
+    //     @Body('novaSenha') novaSenha: string
+    // ) {
+    //     if (!token || !novaSenha) {
+    //         throw new BadRequestException('Token e nova senha são obrigatórios');
+    //     }
+    //     await this.resetPasswordService.execute(token, novaSenha);
+    //     return { message: 'Senha redefinida com sucesso!' };
+    // }
+
+
+
+    
+    
 }

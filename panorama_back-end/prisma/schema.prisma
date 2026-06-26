@@ -265,7 +265,7 @@ model Usuario {
   email     String       @unique(map: "Usuario_email_key")
   senha     String
   statusValidacao Boolean @default(false)
-  recovery_token String?
+  recovery_token String?  @unique(map: "Usuario_recovery_token_key")
   token_expires DateTime?
   
   createdAt DateTime     @default(now())

@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "jsonwebtoken";
 export interface UserToken {
-    id?: number;
+    id?: number | bigint;
     email?: string;
 }
 export type TokenType = 'access' | 'refresh' | 'verification';

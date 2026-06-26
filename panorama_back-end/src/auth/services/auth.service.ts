@@ -3,6 +3,7 @@ import { Usuario } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from 'bcrypt';
 import { JsonWebTokenService, UserToken } from "./jwt.service";
+import { UsuarioService } from "src/usuario/services/usuario.service";
 
 
 @Injectable()
@@ -83,11 +84,12 @@ export class AuthService {
 
     async verifyPassword(senha: string, hashedSenha: string): Promise<boolean> {
 
-    const isSenhaMatching = await bcrypt.compare(senha, hashedSenha);
-    
-    if (!isSenhaMatching) {
-        throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
+        const isSenhaMatching = await bcrypt.compare(senha, hashedSenha);
+        
+        if (!isSenhaMatching) {
+            throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
+        }
+        return true;
     }
-    return true;
-}
+   
 }
