@@ -23,11 +23,17 @@
  * Remove tudo que não for dígito.
  */
 export function stripPhoneMask(value: string): string {
+  
   return value.replace(/\D/g, '');
+}
+export function stripOnlyLetterMask(value: string): string {
+   return value
+    .replace(/[^A-Za-zÀ-ÿ\s'-]/g, '')
+    .replace(/\s{2,}/g, ' ')         
+    .trim();    
 }
 
 /**
- * Aplica a máscara de telefone brasileiro ao valor digitado.
  * Aceita tanto fixo (8 dígitos) quanto celular (9 dígitos).
  */
 export function applyPhoneMask(value: string): string {

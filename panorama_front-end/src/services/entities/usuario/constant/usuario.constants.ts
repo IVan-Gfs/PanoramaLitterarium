@@ -44,7 +44,7 @@ export const  USUARIO = {
                 MAX_LEN: `O email da ${ENTITY_NAME} deve ter no máximo 240 caracteres`,
                 MIN_LEN: `O email da ${ENTITY_NAME} deve ter no mínimo 20 caracteres `,
                 
-                VALID: `Informe um código de identificação válido para ${ENTITY_NAME}`,
+                VALID: `Informe um email válido`,
                 
             },
             SENHA:{

@@ -7,7 +7,7 @@ import { ORGANIZACAO } from "../../services/entities/organizacao/constants/org.c
 import { PARTICIPANTE } from "../../services/entities/participante/constants/participante.constants";
 import { JURADO } from "../../services/entities/jurado/constants/jurado.constants";
 import { useParams, useNavigate } from "react-router-dom";
-import { applyPhoneMask } from "../../utils/mask";
+import { applyPhoneMask, stripOnlyLetterMask } from "../../utils/mask";
 
 // ─────────────────────────────────────────────
 // Componente auxiliar: lista de mensagens de erro
@@ -38,7 +38,7 @@ export default function CadastrarUsuario() {
     onSubmitForm,
   } = useCriar();
 
-  console.log(errors)
+  
   const { tipoConta } = useParams();
   const isLoading = submitStatus === "loading";
 
@@ -58,10 +58,7 @@ export default function CadastrarUsuario() {
 
       <div className="form-grid-cadastro-usuario">
 
-        {/* ── Nome ──
-            CORREÇÃO: errors[USUARIO.FIELDS.PERFIL.NOME] resolve para
-            errors["perfil.nome"], que agora existe em ErrosUsuario com [key: string].
-            Antes falhava porque ErrosUsuario só tinha "nome?: boolean". */}
+      
         <div>
           <label htmlFor="nome">
             <span className="asterisco">*</span>Seu nome:
@@ -71,8 +68,11 @@ export default function CadastrarUsuario() {
             type="text"
             name="perfil.nome"
             className={errors[USUARIO.FIELDS.PERFIL.NOME] ? "input-error" : "input"}
-            onChange={(e) =>
-              handleChangeField(USUARIO.FIELDS.PERFIL.NOME, e.target.value)
+            onChange={(e) => {
+                const masked =  stripOnlyLetterMask(e.target.value);
+                e.target.value = masked;
+                handleChangeField(USUARIO.FIELDS.PERFIL.NOME, masked);
+              }
             }
             onBlur={(e) => validateField(USUARIO.FIELDS.PERFIL.NOME, e)}
             required
@@ -90,8 +90,11 @@ export default function CadastrarUsuario() {
             type="tel"
             name="perfil.tel"
             className="input"
+            placeholder="(99) 99999-9999"
             onChange={(e) => {
+              e.target.value = applyPhoneMask(e.target.value);
               const masked = applyPhoneMask(e.target.value);
+              console.log("Masked phone:", masked);
               handleChangeField(USUARIO.FIELDS.PERFIL.TEL, masked);
             }
               
@@ -239,6 +242,7 @@ export default function CadastrarUsuario() {
             id="email"
             type="email"
             name="email"
+            placeholder="example@gmail.com"
             className={errors["email"] ? "input-error" : "input"}
             onChange={(e) =>
               handleChangeField(USUARIO.FIELDS.EMAIL, e.target.value)
@@ -311,7 +315,7 @@ export default function CadastrarUsuario() {
           disabled={isLoading}
           aria-busy={isLoading}
         >
-          {isLoading ? "Enviando..." : "Confirmar"}
+          {isLoading ? "ENVIANDO..." : "CONFIRMAR"}
         </button>
       </div>
     </form>

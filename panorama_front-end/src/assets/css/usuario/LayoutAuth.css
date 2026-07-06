@@ -67,13 +67,21 @@
 .authContainer .input,
 .input {
   display: block;
-  height: 35px;
+  height: 45px;
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 4px 8px;
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
   background-color: #fff;
+}
+
+input[type="password"]::placeholder {
+    font-family: 'Jost', sans-serif;
+}
+
+input[type="password"] {
+    font-family: 'Arial', sans-serif;
 }
 
 /* ── Estados de erro de campo ── */

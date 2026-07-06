@@ -4,6 +4,7 @@ import { CONCURSO } from "../entities/concurso/constants/concurso.constants";
 import { USUARIO } from "../entities/usuario/constant/usuario.constants";
 
 export const ROTA_SISTEMA = `panorama-litterarium/api/v1`;
+export const ROTA_AUTH = `panorama-litterarium/api/v1/auth/session`
 export const DASHBOARD = `dashboard`;
 
 const LISTAR = `list`;
@@ -11,6 +12,8 @@ const CRIAR = "create";
 const POR_ID = `get`;
 const ATUALIZAR = `update`;
 const EXCLUIR = `delete`;
+
+const login = `login`;
 
 function gerarRotaSistema(entity: string, folder?: string) {
   const base = `${ROTA_SISTEMA}/${entity}`;
@@ -22,6 +25,7 @@ function gerarRotaSistema(entity: string, folder?: string) {
     ATUALIZAR: `/${base}/${ATUALIZAR}`,
     EXCLUIR: `/${base}/${EXCLUIR}`,
     IMAGE_PATH: `/${base_path}/`,
+    LOGIN: `/${ROTA_AUTH}/${login}`
   };
 }
 

@@ -95,11 +95,13 @@ input[type="password"] {
   padding: 0 16px;
   background-color: #c8f8cb;
   border-radius: 3px;
-  border: 1px solid gray;
+  border: NONE;
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
   font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  color: #333;
 }
 
 .btn-primary:hover:not(:disabled) {
