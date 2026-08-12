@@ -12,9 +12,9 @@ export class concursoControllerFindOne{
     constructor(private readonly concursoServiceFindOne: concursoServiceFindOne){}
 
     
-    @Get(':id')
+    @Get(ROTA.CONCURSO.BY_ID)
     async findOne(@Param('id') id: string, @Req() res: Request): Promise<Result<ConcursoDetailDTO>>{
-        
+    console.log("ID recebido no controller:", id);  
     const reponse = await this.concursoServiceFindOne.findOne(+id)
 
     return MensagemSistema.showMensagem(HttpStatus.OK, 'Concurso encontrado com sucesso', reponse, res.path, null);

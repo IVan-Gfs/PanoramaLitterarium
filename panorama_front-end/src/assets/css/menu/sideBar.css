@@ -1,0 +1,148 @@
+/* Sidebar.css */
+
+:root {
+  --bg-sidebar: #D6E6F7;       /* Tom azul pastel claro de fundo */
+  --text-primary: #1e293b;     /* Texto escuro legível */
+  --text-muted: #64748b;       /* Submenus e setas */
+  --active-blue: #2563eb;      /* Destaque para link ativo */
+  --border-submenu: #cbd5e1;   /* Linha cinza conectora vertical */
+}
+
+.sidebar-container {
+  width: 260px;
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  position: relative; 
+  flex-shrink: 0; 
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Header & Logo */
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logo-placeholder h3 {
+  margin: 8px 0 2px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.logo-placeholder p {
+  margin: 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Lista de navegação */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-menu li {
+  margin-bottom: 4px;
+}
+
+/* Links principais e Gatilhos do Dropdown */
+.menu-link, .menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-link {
+  display: flex;
+  gap: 12px;
+}
+
+/* Hover simples */
+.menu-link:hover, .menu-trigger:hover {
+  background-color: #ffffff66;
+}
+
+/* Estado Ativo do NavLink */
+.menu-link.active {
+  background-color: #ffffffb3;
+  color: var(--active-blue);
+  font-weight: 600;
+}
+
+/* Ícone de seta */
+.arrow-icon {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.arrow-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Estrutura do Submenu (Linha vertical igual à imagem) */
+.submenu {
+  list-style: none;
+  padding-left: 22px; /* Alinha os textos embaixo do texto do pai */
+  margin: 4px 0 8px 22px; /* Margem esquerda cria o recuo */
+  border-left: 1.5px solid var(--border-submenu); /* Linha indicadora cinza */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out;
+}
+
+.submenu-open {
+  max-height: 500px; /* Altura máxima para permitir a animação suave */
+}
+
+.submenu-link {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.submenu-link:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.submenu-link.sub-active {
+  color: var(--active-blue);
+  font-weight: 600;
+}
+
+/* Fixação das Configurações no Rodapé */
+.sidebar-footer {
+  margin-top: auto; /* Empurra para o fim da tela */
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 16px;
+}
+
+.footer-link {
+  margin-bottom: 0;
+}

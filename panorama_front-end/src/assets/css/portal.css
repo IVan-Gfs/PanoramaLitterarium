@@ -1,0 +1,17 @@
+/* LayoutPortal.css */
+
+.portal-layout-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Evita barras de rolagem duplas na tela inteira */
+}
+
+.portal-main-content {
+  flex: 1; /* Ocupa 100% do espaço restante ao lado do menu */
+  height: 100vh;
+  overflow-y: auto; /* A rolagem vertical acontece apenas aqui dentro se o conteúdo crescer */
+  padding: 40px; /* Espaçamento opcional para as suas páginas respirarem */
+  background-color: #ffffff; /* Cor de fundo da área de conteúdo */
+  box-sizing: border-box;
+}

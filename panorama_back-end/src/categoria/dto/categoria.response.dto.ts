@@ -12,4 +12,7 @@ export class CategoriaResponseDTO {
 
     // @Expose()
     // descricao!: string | null;
+
+    // @Expose()
+    // descricao!: string | null;
 }
