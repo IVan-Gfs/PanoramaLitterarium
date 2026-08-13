@@ -1,5 +1,7 @@
 import type { RouteObject } from "react-router-dom";
+import { Navigate } from "react-router-dom"; // Importado para fallback ou redirecionamentos extras se necessário
 import LayoutMain from "../../components/layouts/LayoutMain";
+import { ProtectedRoute } from "../../components/ProtectedRoute"; // 👈 CERTIFIQUE-SE DE IMPORTAR AQUI
 
 // USUÁRIO
 import Login from "../../views/Usuario/login";
@@ -36,10 +38,6 @@ import MinhasObrasPortal from "../../views/Portal/Obras";
 import AvaliacoesPortal from "../../views/Portal/Avaliacoes";
 import ConfiguracoesPortal from "../../views/Portal/Configuracoes";
 import PerfilPortal from "../../views/Portal/Perfil";
-
-// ==========================================
-// IMPORTAÇÕES DO PORTAL (Substitua pelos seus caminhos e views reais)
-// ==========================================
 
 export const routes: RouteObject[] = [
     {
@@ -100,86 +98,85 @@ export const routes: RouteObject[] = [
         ]
     },
     {
-        path: "/portal",
-        element: <LayoutPortal/>,
+        element: <ProtectedRoute />, 
         children: [
             {
-                path: "visao-geral", // Carrega em /portal/visao-geral
-                element: <VisaoGeral />
-            },
-            // Sublinks do Dropdown de Concursos
-            {
-                path: "concursos/publicar",
-                element: <PublicarConcurso />
-            },
-            {
-                path: "concursos/listagem",
-                element: <ListagemConcursoPortal />
-            },
-            // Sublinks do Dropdown de Biblioteca
-            {
-                path: "biblioteca/criterios",
-                element: <CriteriosBiblioteca />
-            },
-            {
-                path: "biblioteca/modelos",
-                element: <ModelosInscricao />
-            },
-            // Sublinks do Dropdown de Talentos
-            {
-                path: "talentos/autores",
-                element: <BancoAutores />
-            },
-            {
-                path: "talentos/destaques",
-                element: <DestaquesTalentos />
-            },
-            {
-                path: "talentos/convites",
-                element: <ConvitesTalentos />
-            },
-            {
-                path: "talentos/historico",
-                element: <HistoricoTalentos />
-            },
-            // Links Simples do Portal
-            {
-                path: "resultados",
-                element: <ResultadosPortal />
-            },
-            {
-                path: "financeiro",
-                element: <FinanceiroPortal />
-            },
-            {
-                path: "comunicacao",
-                element: <ComunicacaoPortal />
-            },
-            // Rotas de Participantes e Jurados
-            {
-                path: "inscricoes",
-                element: <MinhasInscricoesPortal />
-            },
-            {
-                path: "explorar",
-                element: <ConsultarConcursos />
-            },
-            {
-                path: "obras",
-                element: <MinhasObrasPortal />
-            },
-            {
-                path: "avaliacoes",
-                element: <AvaliacoesPortal />
-            },
-            // Configurações (Rodapé)
-            {
-                path: "configuracoes",
-                element: <ConfiguracoesPortal />
-            },
-            {
-                path: "perfil",
-                element: <PerfilPortal />
+                path: "/portal",
+                element: <LayoutPortal/>,
+                children: [
+                    {
+                        path: "visao-geral", 
+                        element: <VisaoGeral />
+                    },
+                    {
+                        path: "concursos/publicar",
+                        element: <PublicarConcurso />
+                    },
+                    {
+                        path: "concursos/listagem",
+                        element: <ListagemConcursoPortal />
+                    },
+                    {
+                        path: "biblioteca/criterios",
+                        element: <CriteriosBiblioteca />
+                    },
+                    {
+                        path: "biblioteca/modelos",
+                        element: <ModelosInscricao />
+                    },
+                    {
+                        path: "talentos/autores",
+                        element: <BancoAutores />
+                    },
+                    {
+                        path: "talentos/destaques",
+                        element: <DestaquesTalentos />
+                    },
+                    {
+                        path: "talentos/convites",
+                        element: <ConvitesTalentos />
+                    },
+                    {
+                        path: "talentos/historico",
+                        element: <HistoricoTalentos />
+                    },
+                    {
+                        path: "resultados",
+                        element: <ResultadosPortal />
+                    },
+                    {
+                        path: "financeiro",
+                        element: <FinanceiroPortal />
+                    },
+                    {
+                        path: "comunicacao",
+                        element: <ComunicacaoPortal />
+                    },
+                    {
+                        path: "inscricoes",
+                        element: <MinhasInscricoesPortal />
+                    },
+                    {
+                        path: "explorar",
+                        element: <ConsultarConcursos />
+                    },
+                    {
+                        path: "obras",
+                        element: <MinhasObrasPortal />
+                    },
+                    {
+                        path: "avaliacoes",
+                        element: <AvaliacoesPortal />
+                    },
+                    {
+                        path: "configuracoes",
+                        element: <ConfiguracoesPortal />
+                    },
+                    {
+                        path: "perfil",
+                        element: <PerfilPortal />
+                    }
+                ]
             }
         ]
     }

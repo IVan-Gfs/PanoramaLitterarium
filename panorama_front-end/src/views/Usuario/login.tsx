@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../../assets/css/usuario/login.css";    
 import { useState } from "react";
 import { loginUsuario } from "../../services/entities/usuario/api/usuario.api";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export default function Login ( ){
@@ -15,6 +16,9 @@ export default function Login ( ){
     const [errorSenha, setErrorSenha] = useState(false);
 
     const [serverError, setServerError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
+    const {login} = useAuth();
 
     function validatedForm() {
         if(email.trim() === "" || senha.trim() === "") {
@@ -44,8 +48,10 @@ export default function Login ( ){
         try {
             const response = await loginUsuario({ email, senha });
             console.log("Login bem-sucedido:", response.data);
-            localStorage.setItem("token", response.data.token); // Armazena o token no localStorage
-            // Aqui você pode redirecionar o usuário para outra página ou armazenar o token de autenticação, se necessário.
+            localStorage.setItem("token", response.data.token);
+            
+            login(response.data);
+            navigate("/portal/visao-geral");
         } catch (error: any) {
             console.error("Erro ao fazer login:", error);
             const msg =

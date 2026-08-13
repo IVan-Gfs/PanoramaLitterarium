@@ -14,10 +14,9 @@ import {
   UserCircle
 } from 'lucide-react';
 import '../../assets/css/menu/sideBar.css';
+import { useAuth } from "../../contexts/AuthContext";
 
-interface SidebarProps {
-  userRole: UserRole;
-}
+
 
 // Helper para renderizar dinamicamente os ícones mapeados na config
 const renderIcon = (iconName?: string) => {
@@ -40,8 +39,13 @@ const renderIcon = (iconName?: string) => {
   }
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
+export const Sidebar: React.FC = () => {
   // Guarda o estado de quais menus suspensos estão abertos usando o label/path como chave
+
+  const { user } = useAuth();
+
+  const userRole = user?.role || 'PARTICIPANTE';
+
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
   const toggleDropdown = (label: string) => {
@@ -110,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
       {/* Cabeçalho com a Logo */}
       <div className="sidebar-header">
         <div className="logo-placeholder">
-          {/* Substitua pelo seu componente <img src={logo} alt="Logo" /> */}
+
           <Link to="/portal/visao-geral">
                     <img src="/logo.svg" alt="logo" className="logo" />
           </Link>
@@ -123,6 +127,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
       </ul>
 
       {/* Rodapé fixado para o botão de Configurações */}
+      {profileItem && (
+        <div className="sidebar-footer">
+          <NavLink 
+            to={profileItem.path} 
+            className={({ isActive }) => `menu-link footer-link ${isActive ? 'active' : ''}`}
+          >
+            {renderIcon(profileItem.icon)}
+            <span>{profileItem.label}</span>
+          </NavLink>
+        </div>
+      )}
       {settingsItem && (
         <div className="sidebar-footer">
           <NavLink 
@@ -134,6 +149,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
           </NavLink>
         </div>
       )}
+
     </nav>
   );
 };

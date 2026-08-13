@@ -11,7 +11,7 @@ function LayoutPortal() {
   // Simulação de estado de autenticação
   const [currentUser, setCurrentUser] = useState<User>({
     name: 'Amanda Costa',
-    role: 'ORGANIZADOR', 
+    role: 'PARTICIPANTE', 
   });
 
   // Função apenas para você testar mudando as roles em tempo de execução
