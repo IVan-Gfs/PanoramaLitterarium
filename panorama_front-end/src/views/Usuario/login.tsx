@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/css/usuario/login.css";    
 import { useState } from "react";
 import { loginUsuario } from "../../services/entities/usuario/api/usuario.api";
@@ -48,9 +48,8 @@ export default function Login ( ){
         try {
             const response = await loginUsuario({ email, senha });
             console.log("Login bem-sucedido:", response.data);
-            localStorage.setItem("token", response.data.token);
-            
-            login(response.data);
+            localStorage.setItem("token", response.data.accessToken);
+            login(response.data.user);
             navigate("/portal/visao-geral");
         } catch (error: any) {
             console.error("Erro ao fazer login:", error);

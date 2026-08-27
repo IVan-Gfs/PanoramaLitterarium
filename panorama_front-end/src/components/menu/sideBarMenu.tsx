@@ -1,8 +1,8 @@
 // Sidebar.tsx
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { sidebarMenuConfig } from '../../mocks/menuConfig';
-import { type MenuItem, type UserRole } from '../../types/typesMenu';
+import { type MenuItem } from '../../types/typesMenu';
 
 // Importação de ícones correspondentes à imagem (instale lucide-react)
 import { 
@@ -11,7 +11,8 @@ import {
   Compass,
   Clipboard,
   Book,
-  UserCircle
+  UserCircle,
+  LogOutIcon
 } from 'lucide-react';
 import '../../assets/css/menu/sideBar.css';
 import { useAuth } from "../../contexts/AuthContext";
@@ -42,7 +43,9 @@ const renderIcon = (iconName?: string) => {
 export const Sidebar: React.FC = () => {
   // Guarda o estado de quais menus suspensos estão abertos usando o label/path como chave
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  console.log("User from AuthContext:", user?.email); // Para depuração
 
   const userRole = user?.role || 'PARTICIPANTE';
 
@@ -51,6 +54,11 @@ export const Sidebar: React.FC = () => {
   const toggleDropdown = (label: string) => {
     setOpenDropdowns(prev => ({ ...prev, [label]: !prev[label] }));
   };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/user/login');
+  }
 
   // Filtra itens com base na role do usuário autenticado
   const allowedItems = sidebarMenuConfig.filter(item => item.allowedRoles.includes(userRole));
@@ -97,15 +105,19 @@ export const Sidebar: React.FC = () => {
     }
 
     return (
-      <li key={item.path}>
-        <NavLink 
-          to={item.path} 
-          className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`}
-        >
-          {renderIcon(item.icon)}
-          <span>{item.label}</span>
-        </NavLink>
-      </li>
+        <li key={item.path}>
+          <NavLink 
+            to={item.path} 
+            className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`}
+          >
+            {renderIcon(item.icon)}
+            <span>{item.label}</span>
+          </NavLink>
+          
+        </li>
+    
+      
+      
     );
   };
 
@@ -150,6 +162,7 @@ export const Sidebar: React.FC = () => {
         </div>
       )}
 
+      <button className='menu-link footer-link logout' onClick={handleLogout}><LogOutIcon size={20}/>Sair</button>
     </nav>
   );
 };

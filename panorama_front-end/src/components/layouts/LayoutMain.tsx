@@ -1,11 +1,25 @@
 import '../../assets/css/main.css';
 import '../../assets/css/footer.css'
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { User2 } from 'lucide-react';
 
 export default function LayoutMain() {
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const {user, logout} = useAuth();
+  
+
+  const handleLogout = async () =>{
+    await logout();
+    setProfileDropdownOpen(false);
+    navigate("/");
+  }
   return (
     <div id="defaultLayout">
 
@@ -111,23 +125,53 @@ export default function LayoutMain() {
         {/* LADO DIREITO */}
 
         <div className='rightHeader'>
-            <NavLink
-            to="/user/login"
-            className={({ isActive }) =>
-                isActive ? "itemMenu login active" : "itemMenu login"
-            }
-            >
-            Entrar
-            </NavLink>
+          {!user ? (
+            <>
+              <NavLink to="/user/login" className={({ isActive }) => isActive ? "itemMenu login active" : "itemMenu login"}>
+                Entrar
+              </NavLink>
 
-            <NavLink
-            to="/user/cadastrar"
-            className={({ isActive }) =>
-                isActive ? "itemMenu cadastrar active" : "itemMenu cadastrar"
-            }
-            >
-            Cadastrar
-            </NavLink>
+              <NavLink to="/user/cadastrar" className={({ isActive }) => isActive ? "itemMenu cadastrar active" : "itemMenu cadastrar"}>
+                Cadastrar
+              </NavLink>
+            </>
+          ) : (
+            <div className="profileContainer">
+              <button 
+                className="profileButton" 
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                aria-haspopup="true"
+                aria-expanded={profileDropdownOpen}
+              ><User2/></button>
+
+              {profileDropdownOpen && (
+                <div className="profileDropdown">
+                  <div className="dropdownHeader">
+                    <span className="userName">{user.perfil.nome}</span>
+                    <span className="userRole">{user.role}</span>
+                  </div>
+                  
+                  {user.role === 'ORGANIZADOR' && (
+                    <NavLink to="/portal" className="dropdownItem" onClick={() => setProfileDropdownOpen(false)}>
+                      Portal do Organizador
+                    </NavLink>
+                  )}
+                  
+                  {user.role === 'PARTICIPANTE' && (
+                    <NavLink to="/portal" className="dropdownItem" onClick={() => setProfileDropdownOpen(false)}>
+                      Portal do Autor
+                    </NavLink>
+                  )}
+
+                  <hr className="dropdownDivider" />
+
+                  <button onClick={handleLogout} className="dropdownItem logoutBtn">
+                    Sair
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
       </header>

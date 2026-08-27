@@ -105,6 +105,10 @@ export const routes: RouteObject[] = [
                 element: <LayoutPortal/>,
                 children: [
                     {
+                        index: true,
+                        element: <Navigate to="visao-geral" replace />,
+                    },
+                    {
                         path: "visao-geral", 
                         element: <VisaoGeral />
                     },

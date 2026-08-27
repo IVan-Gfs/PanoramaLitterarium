@@ -13,7 +13,7 @@ const POR_ID = `get`;
 const ATUALIZAR = `update`;
 const EXCLUIR = `delete`;
 
-const login = `login`;
+
 
 function gerarRotaSistema(entity: string, folder?: string) {
   const base = `${ROTA_SISTEMA}/${entity}`;
@@ -25,12 +25,22 @@ function gerarRotaSistema(entity: string, folder?: string) {
     ATUALIZAR: `/${base}/${ATUALIZAR}`,
     EXCLUIR: `/${base}/${EXCLUIR}`,
     IMAGE_PATH: `/${base_path}/`,
-    LOGIN: `/${ROTA_AUTH}/${login}`
   };
+}
+
+
+function gerarRotaAuth(){
+    const base = `/${ROTA_AUTH}`;
+    return {
+      BASE: base,
+      LOGIN: `/${ROTA_AUTH}/login`,
+      LOGOUT: `/${ROTA_AUTH}/logout`,
+    }
 }
 
 export const ROTA = {
   CONCURSO: gerarRotaSistema(CONCURSO.ALIAS, CONCURSO.UPLOAD_FOLDER),
   CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS),
-  USUARIO: gerarRotaSistema(USUARIO.ALIAS)
+  USUARIO: gerarRotaSistema(USUARIO.ALIAS),
+  AUTH: gerarRotaAuth()
 };
