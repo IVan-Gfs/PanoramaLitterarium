@@ -21,7 +21,25 @@ export class AuthService {
         }
         const { accessToken } = await this.jsonWeTokenService.createAccessToken(userToken);
 
-        return accessToken;
+        const usuarioRole = await this.prisma.usuarioRole.findFirst({
+            where: { usuarioId: usuario.id },
+            include: { role: true },
+        });
+
+        const usuarioPerfil = await this.prisma.perfil.findFirst({
+            where: {usuarioId: usuario.id}
+        })
+
+        return {
+            accessToken,
+            user: {
+                email: usuario.email,
+                role: usuarioRole?.role.role === 'ORGANIZACAO'
+                    ? 'ORGANIZADOR'
+                    : usuarioRole?.role.role,
+                perfil: usuarioPerfil        
+            },
+        };
     }
 
     async getAuthenticated(email: string, pass: string): Promise<Usuario>{
