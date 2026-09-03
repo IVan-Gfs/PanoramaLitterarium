@@ -1,4 +1,4 @@
-import { Usuario } from "@prisma/client";
+import { Prisma, Usuario } from "@prisma/client";
 import { Request } from "express";
 
 export interface AuthMeta {
@@ -8,9 +8,19 @@ export interface AuthMeta {
     os: string;
     platform: string;
 }
-
+type UsuarioComRelacoes = Prisma.UsuarioGetPayload<{
+  include: {
+    perfil: {
+      include: {
+        organizacao: true;
+        jurado: true;
+        participante: true;
+      };
+    };
+  };
+}>;
 interface requestWithUser extends Request{
-    user: Usuario;
+    user: UsuarioComRelacoes;
     authMeta?: AuthMeta;
 }
 
