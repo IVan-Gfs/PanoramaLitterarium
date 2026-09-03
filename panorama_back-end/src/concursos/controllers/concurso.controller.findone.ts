@@ -14,9 +14,9 @@ export class concursoControllerFindOne{
     
     @Get(':id')
     async findOne(@Param('id') id: string, @Req() res: Request): Promise<Result<ConcursoDetailDTO>>{   
-    const reponse = await this.concursoServiceFindOne.findOne(+id)
+    const response = await this.concursoServiceFindOne.findOne(+id)
 
-    return MensagemSistema.showMensagem(HttpStatus.OK, 'Concurso encontrado com sucesso', reponse, res.path, null);
+    return MensagemSistema.showMensagem(HttpStatus.OK, 'Concurso encontrado com sucesso', response, res.path, null);
 
     }
 }
