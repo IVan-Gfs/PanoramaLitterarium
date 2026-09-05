@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
+import cookieParser = require('cookie-parser');
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
- 
+  app.use(cookieParser()); 
   (BigInt.prototype as any).toJSON = function () { //converte todos os tipos BigInt em Int normal
     return Number(this); 
   };
 
+ 
   app.enableCors({
     origin: ['http://localhost:5173'],
     methods: 'GET, HEAD, PUT, POST, DELETE, PATCH',

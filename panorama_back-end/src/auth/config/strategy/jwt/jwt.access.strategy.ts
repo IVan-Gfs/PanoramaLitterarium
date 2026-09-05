@@ -20,10 +20,6 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt-access') 
     });
   }
 
-  // async validate(payload: any) {
-  //   return payload;
-  // }
-
   async validate(payload: any) {
   // Captura o ID de onde ele estiver guardado no payload (geralmente payload.id ou payload.sub)
   const usuarioId = payload.id || payload.sub;
