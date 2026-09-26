@@ -1,0 +1,862 @@
+/* =========================================================
+   BASE
+========================================================= */
+
+.organizadores {
+  width: 100%;
+  min-height: 100vh;
+
+  background: #ffffff;
+  color: #111111;
+}
+
+.organizadores__section,
+.organizadores__hero,
+.organizadores__cta {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   TIPOGRAFIA
+========================================================= */
+
+.section-label {
+  display: block;
+
+  margin-bottom: 16px;
+
+  color: #243D60;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.organizadores h1,
+.organizadores h2,
+.organizadores h3 {
+  margin-top: 0;
+
+  color: #111111;
+}
+
+.organizadores h1 {
+  max-width: 760px;
+  text-align: center;
+  margin-bottom: 24px;
+
+  font-size: clamp(2.7rem, 5vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.organizadores h2 {
+  max-width: 760px;
+
+  margin-bottom: 20px;
+
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.organizadores h3 {
+  margin-bottom: 10px;
+
+  font-size: 1.05rem;
+}
+
+.organizadores p {
+  color: #555555;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.organizadores__hero {
+  min-height: 620px;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 80px;
+
+  padding-top: 60px;
+  padding-bottom: 70px;
+}
+
+.organizadores__hero > p {
+  max-width: 650px;
+
+  margin-bottom: 30px;
+
+  font-size: 1.05rem;
+}
+
+.organizadores__hero > img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/*
+  Área reservada para futuramente colocar:
+  - screenshot do sistema
+  - mockup
+  - imagem institucional
+  - ilustração
+*/
+
+
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+
+  padding: 0 22px;
+
+  border-radius: 4px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.button--primary {
+  background: #243D60;
+  color: #ffffff;
+
+  border: 1px solid #243D60;
+}
+
+.button--primary:hover {
+  background: #1B2E4B;
+}
+
+.button--secondary {
+  background: #ffffff;
+  color: #243D60;
+
+  border: 1px solid #243D60;
+}
+
+.button--secondary:hover {
+  background: #e6ebed;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.organizadores__section {
+  padding-top: 110px;
+  padding-bottom: 110px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+
+/* =========================================================
+   PROBLEMA
+========================================================= */
+
+.organizadores__problem {
+  width: 100%;
+  max-width: none;
+
+  box-sizing: border-box;
+
+  padding-left: max(40px, calc((100% - 1180px) / 2));
+  padding-right: max(40px, calc((100% - 1180px) / 2));
+
+  background: #fafafa;
+}
+
+.organizadores__problem > h2 {
+  max-width: 850px;
+}
+
+.organizadores__problem > p {
+  max-width: 650px;
+}
+
+.simple-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 70px;
+
+  max-width: 900px;
+
+  margin: 40px 0 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.simple-list li {
+  padding: 17px 0;
+  display: flex;
+  justify-content:  space-between;
+  
+
+  border-bottom: 1px solid #dddddd;
+
+  color: #444444;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SOLUÇÃO / WORKFLOW
+========================================================= */
+
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  margin-top: 55px;
+  border-top: 1px solid #d9e1e4;
+  border-bottom: 1px solid #d9e1e4;
+  border-radius: 10px;
+}
+
+.workflow__item {
+  min-height: 190px;
+
+  padding: 28px 24px;
+
+  border-right: 1px solid #d9e1e4;
+  border-radius: 10px;
+}
+
+.workflow__item:first-child {
+  border-left: 1px solid #d9e1e4;
+}
+
+.workflow__item strong {
+  display: block;
+
+  margin-bottom: 35px;
+
+  color: #27749a;
+
+  font-size: 0.75rem;
+}
+
+.workflow__item h3 {
+  margin-bottom: 8px;
+}
+
+.workflow__item p {
+  margin-bottom: 0;
+
+  font-size: 0.88rem;
+}
+
+
+/* =========================================================
+   BENEFÍCIOS
+========================================================= */
+
+.organizadores__benefits {
+  width: 100%;
+  max-width: none;
+
+  box-sizing: border-box;
+
+  padding-left: max(40px, calc((100% - 1180px) / 2));
+  padding-right: max(40px, calc((100% - 1180px) / 2));
+
+  background: #f2f7f9;
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  margin-top: 50px;
+
+  border-top: 1px solid #d8e3e7;
+  border-bottom: 1px solid #d8e3e7;
+  border-radius: 10px;
+}
+
+.benefit {
+  min-height: 230px;
+
+  padding: 30px 28px;
+
+  border-right: 1px solid #d8e3e7;
+
+  background: transparent;
+  border-radius: 10px;
+}
+
+.benefit:first-child {
+  border-left: 1px solid #d8e3e7;
+  
+}
+
+.benefit__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 35px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #27749a;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.benefit p {
+  margin-bottom: 0;
+
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   DEMONSTRAÇÃO
+========================================================= */
+
+.product-demo {
+  margin-top: 60px;
+}
+#como-funciona > p{
+font-size: 1.2rem;
+}
+.product-demo__item {
+  display: grid;
+  grid-template-columns: 55% 1fr;
+  align-items: center;
+  gap: 70px;
+
+  padding: 55px 0;
+
+  border-bottom: 1px solid #dddddd;
+}
+
+.product-demo__item:nth-child(even) {
+  grid-template-columns: 1fr 55%;
+}
+
+.product-demo__item:nth-child(even) .product-demo__image {
+  order: 2;
+}
+
+.product-demo__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+
+  background: #fdfdfb;
+
+  border: 1px solid #dce4e7;
+
+  color: #8999a1;
+
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+.product-demo-img{
+  width: 80%;
+}
+
+.product-demo__content > span {
+  color: #27749a;
+
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.product-demo__content h3 {
+  margin-top: 12px;
+  font-size: 3.2rem;
+}
+
+.product-demo__content p {
+  max-width: 420px;
+  font-size: 1.6rem;
+}
+
+
+/* =========================================================
+   PARA QUEM É
+========================================================= */
+
+.audience {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  margin-top: 55px;
+
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-radius: 10px;
+}
+
+.audience__item {
+  min-height: 190px;
+
+  padding: 30px;
+
+  border-right: 1px solid #dddddd;
+  border-radius: 10px;
+}
+
+
+.audience-icon-container{
+  display: flex;
+  justify-content: center;
+  background: #D6E6F7;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 10px;
+}
+.audience-icon{
+  width: 20%;
+  height: 20%;
+  
+}
+
+.audience__item:first-child {
+  border-left: 1px solid #dddddd;
+}
+
+.audience__item p {
+  margin-bottom: 0;
+
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   DEPOIMENTOS
+========================================================= */
+
+.organizadores__testimonials {
+  width: 100%;
+  max-width: none;
+
+  box-sizing: border-box;
+
+  padding-left: max(40px, calc((100% - 1180px) / 2));
+  padding-right: max(40px, calc((100% - 1180px) / 2));
+
+  background: #fafafa;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+
+  max-width: 950px;
+
+  margin-top: 50px;
+}
+
+.testimonial {
+  padding: 35px;
+
+  background: #ffffff;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+}
+
+.testimonial p {
+  margin-bottom: 25px;
+
+  color: #333333;
+
+  font-size: 1rem;
+}
+
+.testimonial span {
+  color: #777777;
+
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.organizadores__testimonials small {
+  display: block;
+
+  margin-top: 20px;
+
+  color: #888888;
+}
+
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+.faq {
+  max-width: 950px;
+
+  margin-top: 45px;
+
+  border-top: 1px solid #dddddd;
+}
+
+.faq details {
+  border-bottom: 1px solid #dddddd;
+}
+
+.faq summary {
+  padding: 24px 5px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  list-style: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: "+";
+
+  float: right;
+
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.faq details[open] summary::after {
+  content: "−";
+}
+
+.faq details p {
+  max-width: 700px;
+
+  padding: 0 5px 24px;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.organizadores__cta {
+  max-width: none;
+
+  box-sizing: border-box;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  padding: 60px max(40px, calc((100% - 1180px) / 2));
+
+  background: #D6E6F7;
+
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.organizadores__cta h2 {
+  max-width: 700px;
+
+  color: #000;
+}
+.organizadores__cta span {
+  color: #959102;
+}
+.organizadores__cta > #logo-panorama{
+  display: flex;
+  
+  justify-content: right;
+}
+#logo-panorama > img{
+  width: 25%;
+}
+.organizadores__cta p {
+  max-width: 600px;
+
+  color: #000;
+  margin: 40px 0px 40px 0px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.organizadores__contact {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 100px;
+  align-items: start;
+}
+
+.contact-form {
+  max-width: 650px;
+
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  font-family: inherit;
+  font-size: 0.95rem;
+
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #27749a;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .organizadores__section,
+  .organizadores__hero,
+  .organizadores__cta {
+    width: min(100% - 40px, 720px);
+  }
+
+  .organizadores__hero {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+
+    padding-top: 80px;
+  }
+
+  .organizadores__hero::after {
+    min-height: 260px;
+  }
+
+  .workflow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .benefits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  
+  .audience {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .simple-list {
+    grid-template-columns: 1fr;
+  }
+
+  .organizadores__contact {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .organizadores__section,
+  .organizadores__hero,
+  .organizadores__cta {
+    width: calc(100% - 28px);
+  }
+
+  .organizadores__section {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  .organizadores__hero {
+    padding-top: 55px;
+    padding-bottom: 70px;
+  }
+
+  .organizadores h1 {
+    font-size: 2.4rem;
+  }
+
+  .organizadores h2 {
+    font-size: 2rem;
+  }
+
+  .section-actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .workflow,
+  .benefits,
+  .audience,
+  .testimonials {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow__item,
+  .benefit,
+  .audience__item {
+    border-left: 1px solid #d9e1e4;
+    border-right: 1px solid #d9e1e4;
+  }
+
+  .benefit{
+    padding: 0px 20px 10px 20px;
+    border: 1px solid #d9e1e4;;
+    min-height: 120px;
+  }
+  .benefits{
+    gap: 10px;
+  }
+  .benefit__icon{
+    margin: 10px 0px 10px 0px;
+  }
+  .workflow__item{
+    padding: 0px 20px 10px 20px;
+    border: 1px solid #d9e1e4;;
+    min-height: 120px;
+
+  }
+  .workflow__item > strong{
+    margin: 10px 0px 10px 0px;
+  }
+  .workflow{
+    max-height: 700px;
+    gap: 5px;
+    
+  }
+    
+  .product-demo__content h3 {
+    margin-top: 12px;
+    font-size: 1.9rem;
+  }
+
+  .product-demo__content p {
+    max-width: 420px;
+    font-size: 1.1rem;
+  }
+  .product-demo__item,
+  .product-demo__item:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .product-demo__item:nth-child(even) .product-demo__image {
+    order: 0;
+  }
+
+  .product-demo__image {
+    min-height: 220px;
+  }
+
+  .audience{
+    gap: 20px;
+  }
+  .audience__item{
+    border: 1px solid #dddddd;
+  }
+  .audience-icon-container{
+    margin-bottom: 20px;
+
+  }
+  .audience-icon{
+    width: 15%;
+  }
+
+  .organizadores__problem,
+  .organizadores__benefits,
+  .organizadores__testimonials {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .organizadores__contact {
+    display: block;
+  }
+
+  .organizadores__cta > #logo-panorama{
+    display: flex;
+    justify-content: center;
+  }
+  #logo-panorama > img{
+    margin-top: 50px;
+    width: 50%;
+  }
+}

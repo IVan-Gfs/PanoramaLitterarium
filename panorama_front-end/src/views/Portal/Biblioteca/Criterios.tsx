@@ -1,45 +1,152 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { apiGetCriterios } from "../../../services/entities/criterio/api/criterio.api";
-import type { GrupoCriterio, GrupoCriterioPaginado, GrupoCriterioSemPaginacao } from "../../../services/entities/criterio/type/Criterio";
+import React, { useState } from "react";
+
+import type {
+    GrupoCriterio,
+} from "../../../services/entities/criterio/type/Criterio";
+
+import Listagem, {
+    type ListagemColumn,
+} from "../../../components/search/listagem";
+
+
+import "../../../assets/css/criterios/criteriosListagem.css";
+import { useGrupoCriterios } from "../../../services/entities/criterio/hook/useGrupoCriterios";
+import ModalEditarGrupoCriterio from "../../../components/modal/modalGrupoCriterio";
+
 
 const CriteriosBiblioteca: React.FC = () => {
 
-  const [criterios, setCriterios] = useState<GrupoCriterio[]>([]);
+    const {
+        criterios,
+        loading,
 
-  const [loading, setLoading] = useState(true);
-  const fetchCriterios = useCallback(
-    async (): Promise<GrupoCriterioPaginado | null> => {
-      try {
-        const response = await apiGetCriterios();
-        console.log("Critérios carregados com sucesso:", response.data.dados.content);
-        return response.data.dados.content;
-        
-      } catch (error: any) {
-        console.log("Erro ao buscar critérios:", error);
-      }finally{
-        setLoading(false);
-      }
-      return null;
-    }, []
-  )
+        currentPage,
+        pageSize,
+        totalPages,
 
-  useEffect(() => {
-    const payload = fetchCriterios();
-    if(payload){
-      const { content } = payload;
-      setCriterios(content);
-    }
-  }, []);
+        handlePageChange,
+        handlePageSizeChange,
+    } = useGrupoCriterios();
 
-  if(loading){ 
-    return <div>Carregando critérios...</div>;
-  }
-  return (
-    <div>
-      <h1>Critérios da Avaliativos</h1>
-      <p>Página de critérios da biblioteca</p>
-    </div>
-  );
+
+    /*
+     * Grupo selecionado para edição
+     */
+    const [grupoSelecionado, setGrupoSelecionado] =
+        useState<GrupoCriterio | null>(null);
+
+
+    /*
+     * Abre modal
+     */
+    const handleEdit = (
+        grupo: GrupoCriterio
+    ) => {
+
+        setGrupoSelecionado(grupo);
+    };
+
+
+    /*
+     * Fecha modal
+     */
+    const handleCloseModal = () => {
+
+        setGrupoSelecionado(null);
+    };
+
+
+    /*
+     * Exclusão
+     */
+    const handleDelete = (
+        grupo: GrupoCriterio
+    ) => {
+
+        console.log(
+            "Excluir grupo:",
+            grupo
+        );
+
+        // futuramente:
+        // abrir modal de confirmação
+    };
+
+
+    /*
+     * Colunas da listagem
+     */
+    const columns: ListagemColumn<GrupoCriterio>[] = [
+
+        {
+            key: "nome",
+            label: "Nome",
+            width: "100%",
+
+            render: (grupo) => (
+                <span className="criterios-listagem__nome">
+                    {grupo.nome}
+                </span>
+            ),
+        },
+
+    ];
+
+
+    return (
+        <div className="criterios-biblioteca">
+
+            <header className="criterios-biblioteca__header">
+
+                <h1>
+                    Critérios Avaliativos
+                </h1>
+
+
+            </header>
+
+
+            <section className="criterios-biblioteca__content">
+
+                <Listagem
+                    data={criterios}
+                    columns={columns}
+
+                    loading={loading}
+
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    itemsPerPage={pageSize}
+
+                    onPageChange={handlePageChange}
+
+                    onItemsPerPageChange={
+                        handlePageSizeChange
+                    }
+
+                    onRowClick={handleEdit}
+
+                    onEdit={handleEdit}
+
+                    onDelete={handleDelete}
+
+                    emptyMessage={
+                        "Nenhum grupo de critérios encontrado."
+                    }
+                />
+
+            </section>
+
+
+            {grupoSelecionado && (
+                <ModalEditarGrupoCriterio
+                    grupo={grupoSelecionado}
+                    onClose={handleCloseModal}
+                />
+            )}
+
+        </div>
+    );
 };
 
 

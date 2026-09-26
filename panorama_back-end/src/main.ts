@@ -14,10 +14,14 @@ async function bootstrap() {
 
  
   app.enableCors({
-    origin: ['http://localhost:5173'],
-    methods: 'GET, HEAD, PUT, POST, DELETE, PATCH',
-    credentials: true,
-  })
+  origin: [
+    'http://localhost:5173',        
+    'http://192.168.2.109:5173',
+    'http://10.38.253.233:5173',     
+  ],
+  methods: 'GET, HEAD, PUT, POST, DELETE, PATCH',
+  credentials: true,
+});
 
   //ativa o classtransform
  app.useGlobalPipes(new ValidationPipe({ 
@@ -26,7 +30,7 @@ async function bootstrap() {
 }));
 
   const port = process.env.PORT ?? 8000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   
   console.log(`Aplicação rodando em: http://localhost:${port}`);
 }

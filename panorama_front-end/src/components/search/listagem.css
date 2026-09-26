@@ -1,0 +1,138 @@
+.listagem {
+    width: 100%;
+    margin-top: 100px;
+}
+
+.listagem-table-container {
+    width: 100%;
+    overflow-x: auto;
+
+    border: 1px solid #dce5ef;
+    border-radius: 6px;
+
+    background-color: #ffffff;
+    margin-bottom: 80px;
+}
+
+.listagem-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.listagem-table thead {
+    background-color: #f4f7fa;
+}
+
+.listagem-table th {
+    height: 48px;
+
+    padding: 0 16px;
+
+    border-bottom: 1px solid #dce5ef;
+
+    color: #172b4d;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.listagem-table td {
+    height: 52px;
+
+    padding: 0 16px;
+
+    border-bottom: 1px solid #edf1f5;
+
+    color: #334e68;
+
+    font-size: 14px;
+}
+
+.listagem-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.listagem-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.listagem-message {
+    height: 160px !important;
+
+    text-align: center !important;
+
+    color: #718096 !important;
+}
+
+.listagem-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 16px;
+}
+
+.listagem-row-clickable {
+    cursor: pointer;
+}
+
+.listagem-row-clickable:hover {
+    background-color: #f5f8fc;
+}
+
+.listagem-actions-header {
+    width: 120px;
+
+    text-align: center !important;
+}
+
+.listagem-actions {
+    width: 120px;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.listagem-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    margin: 0 3px;
+
+    border: 0;
+    border-radius: 5px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.listagem-action-edit {
+    color: #315a7d;
+}
+
+.listagem-action-edit:hover {
+    background-color: #e8f1f8;
+    color: #1f4d70;
+}
+
+.listagem-action-delete {
+    color: #c24141;
+}
+
+.listagem-action-delete:hover {
+    background-color: #fdecec;
+    color: #a52f2f;
+}

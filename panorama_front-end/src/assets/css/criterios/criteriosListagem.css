@@ -1,0 +1,39 @@
+.criterios-biblioteca {
+    width: 100%;
+    padding: 32px 40px;
+    box-sizing: border-box;
+
+}
+
+/* Título da página */
+.criterios-biblioteca h1 {
+    margin: 0 0 10px;
+
+    color: #000000;
+
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Descrição */
+.criterios-biblioteca > p {
+    margin: 0 0 28px;
+
+    color: #52667a;
+
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Link da listagem, caso alguma coluna utilize link */
+.criterios-biblioteca .listagem-link {
+    color: #5b21b6;
+    text-decoration: underline;
+
+    cursor: pointer;
+}
+
+.criterios-biblioteca .listagem-link:hover {
+    color: #43148c;
+}
