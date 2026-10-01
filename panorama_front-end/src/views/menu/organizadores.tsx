@@ -19,7 +19,7 @@ export default function Organizadores() {
 
         <p>
           O <strong>Panorama Litterarium</strong> conecta organizadores, escritores e jurados
-          em uma plataforma única! <strong>Faça a gestão completa das suas seleções lietarárias:</strong> publique, receba as inscrições, faça a triagem, avaliação e divulgue os resultados.
+          em uma plataforma única! <strong>Faça a gestão completa das suas seleções literárias:</strong> publique, receba as inscrições, faça a triagem, avaliação e divulgue os resultados.
         </p>
 
         <div className="section-actions">
