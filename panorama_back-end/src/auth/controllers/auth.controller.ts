@@ -18,23 +18,23 @@ export class AuthController{
         @Res({ passthrough: true }) res: Response
     ){
         console.log('User in request:', req.user);
-        const accessToken = await this.authService.getJwtToken(req.user)
+        const { accessToken, user } = await this.authService.getJwtToken(req.user)
 
-        res.cookie('accessToken', accessToken, {
+        res.cookie('access_token', accessToken, {
             httpOnly: true,                      // Protege contra ataques XSS (scripts maliciosos)
             secure: false,                       
             sameSite: 'lax',                     // Permite o envio do cookie em requisições do mesmo domínio
             maxAge: 1000 * 60 * 60 * 24,         // Tempo de expiração do cookie (1 dia)
         });
 
-        return { accessToken }
+        return { accessToken, user }
     }
 
 
     @Post(ROTA.AUTH.LOGOUT)
     async logout(@Res({ passthrough: true }) res: Response) {
         
-        res.clearCookie('accessToken', {
+        res.clearCookie('access_token', {
             httpOnly: true,
             secure: false, 
             sameSite: 'lax',

@@ -1,8 +1,8 @@
 // Sidebar.tsx
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { sidebarMenuConfig } from '../../mocks/menuConfig';
-import { type MenuItem, type UserRole } from '../../types/typesMenu';
+import { type MenuItem } from '../../types/typesMenu';
 
 // Importação de ícones correspondentes à imagem (instale lucide-react)
 import { 
@@ -11,13 +11,13 @@ import {
   Compass,
   Clipboard,
   Book,
-  UserCircle
+  UserCircle,
+  LogOutIcon
 } from 'lucide-react';
 import '../../assets/css/menu/sideBar.css';
+import { useAuth } from "../../contexts/AuthContext";
 
-interface SidebarProps {
-  userRole: UserRole;
-}
+
 
 // Helper para renderizar dinamicamente os ícones mapeados na config
 const renderIcon = (iconName?: string) => {
@@ -40,13 +40,25 @@ const renderIcon = (iconName?: string) => {
   }
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
+export const Sidebar: React.FC = () => {
   // Guarda o estado de quais menus suspensos estão abertos usando o label/path como chave
+
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  console.log("User from AuthContext:", user?.email); // Para depuração
+
+  const userRole = user?.role || 'PARTICIPANTE';
+
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
   const toggleDropdown = (label: string) => {
     setOpenDropdowns(prev => ({ ...prev, [label]: !prev[label] }));
   };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/user/login');
+  }
 
   // Filtra itens com base na role do usuário autenticado
   const allowedItems = sidebarMenuConfig.filter(item => item.allowedRoles.includes(userRole));
@@ -93,15 +105,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
     }
 
     return (
-      <li key={item.path}>
-        <NavLink 
-          to={item.path} 
-          className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`}
-        >
-          {renderIcon(item.icon)}
-          <span>{item.label}</span>
-        </NavLink>
-      </li>
+        <li key={item.path}>
+          <NavLink 
+            to={item.path} 
+            className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`}
+          >
+            {renderIcon(item.icon)}
+            <span>{item.label}</span>
+          </NavLink>
+          
+        </li>
+    
+      
+      
     );
   };
 
@@ -110,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
       {/* Cabeçalho com a Logo */}
       <div className="sidebar-header">
         <div className="logo-placeholder">
-          {/* Substitua pelo seu componente <img src={logo} alt="Logo" /> */}
+
           <Link to="/portal/visao-geral">
                     <img src="/logo.svg" alt="logo" className="logo" />
           </Link>
@@ -123,6 +139,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
       </ul>
 
       {/* Rodapé fixado para o botão de Configurações */}
+      {profileItem && (
+        <div className="sidebar-footer">
+          <NavLink 
+            to={profileItem.path} 
+            className={({ isActive }) => `menu-link footer-link ${isActive ? 'active' : ''}`}
+          >
+            {renderIcon(profileItem.icon)}
+            <span>{profileItem.label}</span>
+          </NavLink>
+        </div>
+      )}
       {settingsItem && (
         <div className="sidebar-footer">
           <NavLink 
@@ -134,6 +161,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
           </NavLink>
         </div>
       )}
+
+      <button className='menu-link footer-link logout' onClick={handleLogout}><LogOutIcon size={20}/>Sair</button>
     </nav>
   );
 };

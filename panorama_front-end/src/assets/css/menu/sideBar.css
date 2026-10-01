@@ -80,9 +80,21 @@
   gap: 12px;
 }
 
+.logout {
+height: 40px;
+background-color: #f5e1e0;
+border: 1px solid #f5aba9;
+}
+
+
+
 /* Hover simples */
 .menu-link:hover, .menu-trigger:hover {
   background-color: #ffffff66;
+}
+
+.logout:hover{
+  background-color: #f5d2cf;
 }
 
 /* Estado Ativo do NavLink */
