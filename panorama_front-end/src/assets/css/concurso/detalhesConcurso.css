@@ -1,0 +1,264 @@
+.paginaDetalhes {
+    background-color: #f2f5fa;
+    min-height: 100vh;
+    padding: 24px 40px;
+}
+
+.linkVoltar {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: #1e3a8a;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.linkVoltar:hover {
+    text-decoration: underline;
+}
+
+.containerPrincipal {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 970px;
+    margin: 0 auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.topo {
+    display: flex;
+    gap: 32px;
+}
+
+.imagem {
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.infoTopo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tags {
+    display: flex;
+    gap: 8px;
+}
+
+.tag {
+    padding: 4px 14px;
+    border: 1px solid #c7d2fe;
+    border-radius: 20px;
+    color: #1e3a8a;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.titulo {
+    font-size: 26px;
+    color: #1e3a8a;
+    font-weight: 700;
+    margin: 0;
+}
+
+.boxInfo {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.boxLabel {
+    font-size: 18px;
+    color: #64748b;
+}
+
+.boxValor {
+    font-size: 18px;
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+.boxValorGrande {
+    font-size: 18px;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.linhaAcao {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+}
+
+.boxInscricao {
+    flex: 1;
+}
+
+.btnInscreva {
+    background-color: #1d4ed8;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0 32px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btnInscreva:hover {
+    background-color: #1e40af;
+}
+
+.divisor {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 28px 0;
+}
+
+.secao {
+    margin-bottom: 24px;
+}
+
+.secaoTitulo {
+    font-size: 18px;
+    color: #1e3a8a;
+    margin-bottom: 12px;
+}
+
+.descricaoTexto {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #475569;
+}
+
+.cardEdital {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    text-decoration: none;
+}
+
+.editalNome {
+    color: #1e3a8a;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.editalAcao {
+    color: #1e3a8a;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.gridDetalhes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.colunaDetalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.itemDetalhe {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.itemIcone {
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.itemLabel {
+    font-size: 18px;
+    color: #64748b;
+    margin: 0 0 2px 0;
+}
+
+.itemValor {
+    font-size: 18px;
+    color: #1e293b;
+    font-weight: 500;
+    margin: 0;
+}
+
+.criteriosBox {
+    margin-top: 8px;
+}
+
+.criteriosTitulo {
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 10px;
+}
+
+.tabelaCriterios {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+.tabelaCriterios th {
+    text-align: left;
+    color: #64748b;
+    font-weight: 500;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tabelaCriterios td {
+    padding: 8px 0;
+    color: #1e293b;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.cardLocalidade {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 18px 24px;
+}
+
+@media (max-width: 720px) {
+    .topo {
+        flex-direction: column;
+    }
+
+    .gridDetalhes {
+        grid-template-columns: 1fr;
+    }
+
+    .imagem {
+        width: 100%;
+        height: 260px;
+    }
+}

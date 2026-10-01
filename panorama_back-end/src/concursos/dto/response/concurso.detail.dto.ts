@@ -33,4 +33,16 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
 
     @Expose()
     organizacao?: OrganizacaoResumoDto;
+
+    @Expose()
+    linkEdital?: string | null;
+
+    @Expose()
+    restricao?: string | null;
+
+    @Expose()
+    limiteObras?: number | null;
+
+    @Expose()
+    grupoCriterio?: string | null;
 }

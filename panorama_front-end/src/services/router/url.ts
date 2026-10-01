@@ -21,7 +21,7 @@ function gerarRotaSistema(entity: string, folder?: string) {
   return {
     LISTAR: `/${base}/${LISTAR}`,
     CRIAR: `/${base}/${CRIAR}`,
-    POR_ID: `/${base}/${POR_ID}`,
+    POR_ID: `/${base}`,
     ATUALIZAR: `/${base}/${ATUALIZAR}`,
     EXCLUIR: `/${base}/${EXCLUIR}`,
     IMAGE_PATH: `/${base_path}/`,
@@ -31,6 +31,6 @@ function gerarRotaSistema(entity: string, folder?: string) {
 
 export const ROTA = {
   CONCURSO: gerarRotaSistema(CONCURSO.ALIAS, CONCURSO.UPLOAD_FOLDER),
-  CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS),
+  CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS, CATEGORIA.UPLOAD_FOLDER),
   USUARIO: gerarRotaSistema(USUARIO.ALIAS)
 };
