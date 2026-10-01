@@ -151,15 +151,15 @@ export default function ConsultarConcursos ( ){
         <div className="listagem-container">
       
             { concursos.map((c) => (
-                <Link key={c.id} to={`./detalhes`} className='item-concurso'>
+                <Link key={c.id} to={`./detalhes/?id=${c.id}`} className='item-concurso'>
                     <h2 className='titulo-concurso'>{c.titulo}</h2>
                     <img
-                        src={img_path+c.imgCapa || "/logo_default.svg"}
+                        src={img_path+c.imgCapa || "/logo.svg"}
                         alt="capa-concurso"
                         className='capa-concurso'
                         onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/logo_default.svg";
+                            e.currentTarget.src = "/logo.svg";
                         }}
                     />
                     <div className="footer-concurso">
