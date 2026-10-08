@@ -25,6 +25,14 @@ export class EmailService{
     }
 
     async sendMail(options: MailPayload){
+
+        options.attachments = [ 
+            {
+                filename: 'logo.png',
+                path: 'uploads/sistema/logo.png',
+                cid: 'logo'
+            }
+        ]
         if(!options.from){
             throw new EmailException(
                 'Erro nos dados de envio do Email',
@@ -32,13 +40,6 @@ export class EmailService{
                 "Campo 'from' do e-mail não informado"
             )
         }
-
-        // context: [
-        //  "nome": "Ivan",
-        //  "texto": "Você efetuou o cadastro em nosso sistema",
-        //  "motivo": "Utilize o link para confirmar o seu registro",
-        //  "url": "http://localhost:8084"
-        // ]
  
         if(options.context){
             Object.entries(options.context).forEach(([key, value]) => {
@@ -133,65 +134,224 @@ export class EmailService{
     private generateHtml(title: string, message: string) { 
 
         return `
-                <!DOCTYPE html>
-                <html lang="pt-BR">
+            <!DOCTYPE html>
+            <html lang="pt-BR">
 
-                <head>
-                    <meta charset="UTF-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <title>${title}</title>
-                </head>
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>${title}</title>
+            </head>
 
-                <body
-                    style=" margin: 0; padding: 0; background-color: #f4f7fb; font-family: Arial, Helvetica, sans-serif; color: #333333; ">
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7fb; padding: 40px 0;">
-                        <tr>
-                            <td align="center">
-                                <table width="600" cellpadding="0" cellspacing="0" border="0"
-                                    style=" background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); ">
-                                    <!-- HEADER -->
-                                    <tr>
-                                        <td
-                                            style=" background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 40px; text-align: center; color: white; ">
-                                            <h1 style=" margin: 0; font-size: 28px; font-weight: bold; "> ${title} </h1>
-                                            <p style=" margin-top: 10px; font-size: 16px; opacity: 0.9; "> Estamos felizes em ter você
-                                                conosco 🚀 </p>
-                                        </td>
-                                    </tr> <!-- CONTENT -->
-                                    <tr>
-                                        <td style="padding: 40px;">
-                                            <p style=" margin: 0 0 20px; font-size: 18px; line-height: 1.6; "> Olá, <strong>{{ nome
-                                                    }}</strong> 👋 </p>
-                                            <p style=" margin: 0 0 20px; font-size: 16px; line-height: 1.8; color: #555; "> ${message}
-                                            </p>
-                                            <p style=" margin: 0 0 30px; font-size: 16px; line-height: 1.8; color: #555; "> Sua conta
-                                                foi criada com sucesso e agora você já pode acessar todos os recursos da plataforma.
-                                            </p> <!-- BUTTON -->
-                                            <table cellpadding="0" cellspacing="0" border="0" align="center">
-                                                <tr>
-                                                    <td align="center" bgcolor="#4f46e5" style=" border-radius: 8px; "> <a
-                                                            href="{{ link }}" target="_blank"
-                                                            style=" display: inline-block; padding: 14px 28px; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: bold; ">
-                                                            Acessar Plataforma </a> </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr> <!-- FOOTER -->
-                                    <tr>
-                                        <td
-                                            style=" padding: 30px; text-align: center; background-color: #f9fafb; color: #888; font-size: 13px; line-height: 1.6; ">
-                                            <p style="margin: 0;"> Este e-mail foi enviado automaticamente. </p>
-                                            <p style="margin: 8px 0 0;"> © ${new Date().getFullYear()} Sua Empresa. Todos os direitos
-                                                reservados. </p>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
+            <body style="
+                margin: 0;
+                padding: 0;
+                background-color: #eef4fa;
+                font-family: Arial, Helvetica, sans-serif;
+                color: #202020;
+            ">
 
-                </html>
+                <table
+                    width="100%"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                    style="background-color: #eef4fa; padding: 40px 16px;"
+                >
+                    <tr>
+                        <td align="center">
+
+                            <!-- CONTAINER -->
+                            <table
+                                width="600"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                                style="
+                                    width: 100%;
+                                    max-width: 600px;
+                                    background-color: #ffffff;
+                                    border-radius: 12px;
+                                    overflow: hidden;
+                                    border: 1px solid #dce7f2;
+                                "
+                            >
+
+                                <!-- HEADER -->
+                                <tr>
+                                    <td
+                                        align="center"
+                                        style="
+                                            background-color: #d6e6f7;
+                                            padding: 36px 40px 32px;
+                                        "
+                                    >
+
+                                        <!-- LOGO -->
+                                        <img
+                                            src="cid:logo"
+                                            alt="Panorama Litterarium"
+                                            width="150"
+                                            style="
+                                                display: block;
+                                                width: 150px;
+                                                max-width: 100%;
+                                                height: auto;
+                                                margin: 0 auto 24px;
+                                            "
+                                        />
+
+                                        <h1 style="
+                                            margin: 0;
+                                            color: #1f1f1f;
+                                            font-size: 25px;
+                                            line-height: 1.3;
+                                            font-weight: 600;
+                                        ">
+                                            ${title}
+                                        </h1>
+
+                                        <p style="
+                                            margin: 10px 0 0;
+                                            color: #4b5563;
+                                            font-size: 15px;
+                                            line-height: 1.5;
+                                        ">
+                                            Literatura, encontros e novas possibilidades.
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+
+                                <!-- CONTENT -->
+                                <tr>
+                                    <td style="padding: 40px;">
+
+                                        <p style="
+                                            margin: 0 0 20px;
+                                            font-size: 18px;
+                                            line-height: 1.6;
+                                            color: #202020;
+                                        ">
+                                            Olá, <strong>{{ nome }}</strong>.
+                                        </p>
+
+                                        <p style="
+                                            margin: 0 0 20px;
+                                            font-size: 16px;
+                                            line-height: 1.8;
+                                            color: #4b4b4b;
+                                        ">
+                                            ${message}
+                                        </p>
+
+                                        <p style="
+                                            margin: 0 0 30px;
+                                            font-size: 16px;
+                                            line-height: 1.8;
+                                            color: #4b4b4b;
+                                        ">
+                                            Sua conta foi criada com sucesso. A partir de agora,
+                                            você poderá participar das oportunidades literárias
+                                            disponíveis no Panorama Litterarium.
+                                        </p>
+
+
+                                        <!-- BUTTON -->
+                                        <table
+                                            cellpadding="0"
+                                            cellspacing="0"
+                                            border="0"
+                                            align="center"
+                                        >
+                                            <tr>
+                                                <td
+                                                    align="center"
+                                                    style="
+                                                        background-color: #202020;
+                                                        border-radius: 6px;
+                                                    "
+                                                >
+                                                    <a
+                                                        href="{{ link }}"
+                                                        target="_blank"
+                                                        style="
+                                                            display: inline-block;
+                                                            padding: 14px 30px;
+                                                            color: #ffffff;
+                                                            text-decoration: none;
+                                                            font-size: 15px;
+                                                            font-weight: bold;
+                                                        "
+                                                    >
+                                                        Acessar Panorama
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+
+
+                                <!-- DIVIDER -->
+                                <tr>
+                                    <td style="padding: 0 40px;">
+                                        <div style="
+                                            height: 1px;
+                                            background-color: #e5e7eb;
+                                            font-size: 0;
+                                            line-height: 0;
+                                        ">
+                                            &nbsp;
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <!-- FOOTER -->
+                                <tr>
+                                    <td
+                                        align="center"
+                                        style="
+                                            padding: 28px 40px;
+                                            background-color: #f8fafc;
+                                        "
+                                    >
+
+                                        <p style="
+                                            margin: 0 0 8px;
+                                            color: #6b7280;
+                                            font-size: 13px;
+                                            line-height: 1.6;
+                                        ">
+                                            Este e-mail foi enviado automaticamente pelo
+                                            Panorama Litterarium.
+                                        </p>
+
+                                        <p style="
+                                            margin: 0;
+                                            color: #9ca3af;
+                                            font-size: 12px;
+                                            line-height: 1.6;
+                                        ">
+                                            © ${new Date().getFullYear()} Panorama Litterarium.
+                                            Todos os direitos reservados.
+                                        </p>
+
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </body>
+
+            </html>
         `;
      }
 

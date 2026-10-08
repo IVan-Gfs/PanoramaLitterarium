@@ -4,16 +4,19 @@ import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from 'bcrypt';
 import { JsonWebTokenService, UserToken } from "./jwt.service";
 import { UsuarioService } from "src/usuario/services/usuario.service";
+import { confirmationTemplate } from "src/mail/template/confirmation-model";
+import { ConfigService } from "@nestjs/config/dist/config.service";
 
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly prisma: PrismaService, 
-        private readonly jsonWeTokenService: JsonWebTokenService
-    ){}
+        private readonly prisma: PrismaService,
+        private readonly jsonWeTokenService: JsonWebTokenService,
+        private readonly configService: ConfigService,
+    ) { }
 
-    async getJwtToken(usuario: Usuario){
+    async getJwtToken(usuario: Usuario) {
         const userToken: UserToken = {
             id: Number(usuario.id),
             email: usuario.email
@@ -27,7 +30,7 @@ export class AuthService {
         });
 
         const usuarioPerfil = await this.prisma.perfil.findFirst({
-            where: {usuarioId: usuario.id}
+            where: { usuarioId: usuario.id }
         })
 
         return {
@@ -37,19 +40,19 @@ export class AuthService {
                 role: usuarioRole?.role.role === 'ORGANIZACAO'
                     ? 'ORGANIZADOR'
                     : usuarioRole?.role.role,
-                perfil: usuarioPerfil        
+                perfil: usuarioPerfil
             },
         };
     }
 
-    async getAuthenticated(email: string, pass: string): Promise<Usuario>{
+    async getAuthenticated(email: string, pass: string): Promise<Usuario> {
         const usuario = await this.findByEmail(email)
 
-        if(!usuario){
+        if (!usuario) {
             throw new HttpException('Usuário não cadastrado', HttpStatus.NOT_FOUND)
         }
 
-        if(!usuario.statusValidacao){
+        if (!usuario.statusValidacao) {
             throw new HttpException('Email ainda não validado', HttpStatus.UNAUTHORIZED)
         }
 
@@ -57,7 +60,7 @@ export class AuthService {
         return usuario;
     }
 
-    async createVerificationToken(usuario: Usuario){
+    async createVerificationToken(usuario: Usuario) {
         const userToken: UserToken = {
             id: Number(usuario.id),
             email: usuario.email
@@ -66,21 +69,21 @@ export class AuthService {
         return verificationToken;
     }
 
-    async confirmEmail(token: string){
+    async confirmEmail(token: string) {
         const payload = await this.jsonWeTokenService.verifyToken(token, 'verification') as UserToken;
 
-        if(!payload?.id){
+        if (!payload?.id) {
             throw new HttpException('Token de confirmação inválido', HttpStatus.BAD_REQUEST)
         }
 
         const userId = Number(payload.id);
         const usuario = await this.prisma.usuario.findUnique({ where: { id: userId } });
 
-        if(!usuario){
+        if (!usuario) {
             throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
         }
 
-        if(usuario.statusValidacao){
+        if (usuario.statusValidacao) {
             return { message: 'Email já validado' };
         }
 
@@ -89,7 +92,14 @@ export class AuthService {
             data: { statusValidacao: true },
         })
 
-        return { message: 'Email validado com sucesso' };
+        const frontendUrl = this.configService.getOrThrow<string>("FRONTEND_URL");
+        const loginUrl = `${frontendUrl}/user/login`;
+
+        return confirmationTemplate(
+            'E-mail confirmado!',
+            'Seu cadastro no Panorama Litterarium foi confirmado com sucesso. Agora você já pode acessar sua conta e participar das oportunidades literárias.',
+            loginUrl
+        );
     }
 
     async findByEmail(email: string): Promise<Usuario | null> {
@@ -103,11 +113,11 @@ export class AuthService {
     async verifyPassword(senha: string, hashedSenha: string): Promise<boolean> {
 
         const isSenhaMatching = await bcrypt.compare(senha, hashedSenha);
-        
+
         if (!isSenhaMatching) {
             throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
         }
         return true;
     }
-   
+
 }
