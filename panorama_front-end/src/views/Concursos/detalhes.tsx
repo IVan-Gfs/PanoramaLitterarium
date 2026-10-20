@@ -7,6 +7,7 @@ import { REST_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import '../../assets/css/concurso/detalhesConcurso.css';
 import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag } from 'lucide-react';
+import setaVoltar from '../../../public/imgs/arrow-back.png';
 
 export default function DetalhesConcurso() {
 
@@ -48,7 +49,7 @@ export default function DetalhesConcurso() {
         <div className="paginaDetalhes">
 
             <Link to={ROTA.CONCURSO.LISTAR} className="linkVoltar">
-                {"<"} Voltar para concursos
+                 <img src={setaVoltar} alt="" className="iconeVoltar" />
             </Link>
 
             <div className="containerPrincipal">
