@@ -15,8 +15,8 @@ export class CreateGrupoCriterioDTO {
   @IsNotEmpty()
   nome!: string;
 
-   @IsOptional()
-   @IsString()
+  @IsOptional()
+  @IsString()
   organizacaoId!: string;
 
   @IsArray()

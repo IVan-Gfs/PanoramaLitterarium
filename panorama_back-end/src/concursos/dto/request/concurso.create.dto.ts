@@ -4,8 +4,9 @@ import {
   IsInt,
   IsNumber,
   IsDateString,
-  IsEmpty,
   IsNotEmpty,
+  IsArray,
+  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -18,6 +19,10 @@ export class ConcursoCreateDto {
   @IsOptional()
   @IsString()
   imgCapa?: string;
+
+  @IsNotEmpty({message: 'A descrição do concurso deve ser informada'})
+  @IsString()
+  descricao?: string;
 
   @IsNotEmpty({message: 'O gênero iterário deve ser informado'})
   @IsString()
@@ -75,12 +80,16 @@ export class ConcursoCreateDto {
   @IsOptional()
   @IsDateString()
   dataFinalizacao?: string;
+  
+  @IsOptional()
+  organizacaoId?: string;
 
   @IsInt()
-  @IsNotEmpty({message: 'Id da ornização deve ser informado'})
-  organizacaoId!: number;
+  @IsOptional()
+  grupoCriterioId?: number;
 
-  @IsInt()
-  @IsNotEmpty({message: 'Grupo de critérios avaliativos deve ser informado'})
-  grupoCriterioId!: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => BigInt)
+  categoriaIds!: bigint[];
 }

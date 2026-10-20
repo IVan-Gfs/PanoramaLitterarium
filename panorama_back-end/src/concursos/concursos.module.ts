@@ -3,10 +3,20 @@ import { ConcursoControllerFindAll } from "./controllers/concurso.controller.fin
 import { ConcursoServiceFindAll } from "./services/concurso.service.findall";
 import { concursoControllerFindOne } from "./controllers/concurso.controller.findone";
 import { concursoServiceFindOne } from "./services/concurso.service.findone";
+import { ConcursoControllerCreate } from "./controllers/concurso.controller.create";
+import { ConcursoServiceCreate } from "./services/concurso.service.create";
 
 
-const controllers = [ConcursoControllerFindAll, concursoControllerFindOne]
-const services = [ConcursoServiceFindAll, concursoServiceFindOne]
+const controllers = [
+    ConcursoControllerCreate,
+    ConcursoControllerFindAll, 
+    concursoControllerFindOne
+]
+const services = [
+    ConcursoServiceCreate,
+    ConcursoServiceFindAll, 
+    concursoServiceFindOne
+]
 @Module({
     controllers: [...controllers],
     providers: [...services]

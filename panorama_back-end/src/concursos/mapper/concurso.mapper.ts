@@ -17,11 +17,11 @@
           : undefined,
 
         organizacao: {
-          connect: { id: BigInt(dto.organizacaoId) },
+          connect: { id: dto.organizacaoId ? BigInt(dto.organizacaoId) : undefined },
         },
 
         grupoCriterio: {
-          connect: { id: BigInt(dto.grupoCriterioId) },
+          connect: { id: dto.grupoCriterioId ? BigInt(dto.grupoCriterioId) : undefined },
         },
       };
     }
