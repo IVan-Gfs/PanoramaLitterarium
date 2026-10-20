@@ -15,6 +15,6 @@ export const apiGetConcursos = async (url: string, params: SearchParams) =>{
 }
 
 export const apiGetConcursoById = async (idConcurso: number) => {
-    const response = await api.get(`${ROTA.CONCURSO.POR_ID}/${idConcurso}`);
+    const response = await api.get(`${ROTA.CONCURSO.POR_ID}${idConcurso}`);
     return response;
 }

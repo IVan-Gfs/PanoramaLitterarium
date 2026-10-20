@@ -248,6 +248,17 @@
     padding: 18px 24px;
 }
 
+.linkVoltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.iconeVoltar {
+  width: 40px;
+  height: 40px;
+}
+
 @media (max-width: 720px) {
     .topo {
         flex-direction: column;
@@ -262,3 +273,4 @@
         height: 260px;
     }
 }
+

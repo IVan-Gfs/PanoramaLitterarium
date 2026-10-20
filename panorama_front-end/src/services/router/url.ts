@@ -33,7 +33,7 @@ function rotaSistema(entity: string, folder?: string) {
   const base_path = `uploads/${folder}`;
   return {
     BASE: `/${base}`,
-    IMAGE_PATH: `/${base_path}/`,
+    IMAGE_PATH: `/${base_path}`,
   };
 }
 
