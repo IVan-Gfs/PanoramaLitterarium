@@ -1,11 +1,13 @@
 .paginaDetalhes {
     background-color: #f2f5fa;
     min-height: 100vh;
-    padding: 24px 40px;
+    padding: 24px max(40px, calc((100% - 970px) / 2));
 }
 
 .linkVoltar {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
     margin-bottom: 16px;
     color: #1e3a8a;
     font-size: 14px;
@@ -16,12 +18,15 @@
     text-decoration: underline;
 }
 
+.iconeVoltar {
+    width: 40px;
+    height: 40px;
+}
+
 .containerPrincipal {
     background-color: #ffffff;
     border-radius: 16px;
     padding: 32px;
-    max-width: 970px;
-    margin: 0 auto;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -248,17 +253,6 @@
     padding: 18px 24px;
 }
 
-.linkVoltar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.1rem;
-}
-
-.iconeVoltar {
-  width: 40px;
-  height: 40px;
-}
-
 @media (max-width: 720px) {
     .topo {
         flex-direction: column;
@@ -273,4 +267,3 @@
         height: 260px;
     }
 }
-

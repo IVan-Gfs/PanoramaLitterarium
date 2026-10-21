@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiGetConcursoById } from '../../services/entities/concurso/api/api.concurso';
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import type { DetalhesConcurso } from '../../services/entities/concurso/type/Concurso';
 import { ROTA } from '../../services/router/url';
 import { REST_CONFIG } from '../../services/constants/sistema.constants';
@@ -30,6 +30,17 @@ export default function DetalhesConcurso() {
     const [searchParams] = useSearchParams();
     const id = Number(searchParams.get("id"));
 
+    const caminho_lista_concursos = "/concursos";
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const voltar = () => {
+        if (location.key !== "default") {navigate(-1);
+        } else {
+            navigate(caminho_lista_concursos);
+        }
+    };
+
     useEffect(() => {
         const buscarDetalhes = async () => {
             const detalhes = await buscarConcursoPorId(id);
@@ -48,9 +59,15 @@ export default function DetalhesConcurso() {
     return (
         <div className="paginaDetalhes">
 
-            <Link to={ROTA.CONCURSO.LISTAR} className="linkVoltar">
-                 <img src={setaVoltar} alt="" className="iconeVoltar" />
-            </Link>
+            <button
+                type="button"
+                onClick={voltar}
+                className="linkVoltar"
+                aria-label="Voltar para concursos"
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+            >
+                <img src={setaVoltar} alt="" className="iconeVoltar" />
+            </button>
 
             <div className="containerPrincipal">
 
