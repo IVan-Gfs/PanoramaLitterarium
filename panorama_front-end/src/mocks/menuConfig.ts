@@ -28,30 +28,30 @@ export const sidebarMenuConfig: MenuItem[] = [
       { label: 'Modelos de inscrição', path: '/portal/biblioteca/modelos', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
     ]
   },
-  {
-    label: 'Talentos',
-    path: '/portal/talentos',
-    icon: 'user-badge',
-    allowedRoles: ['ADMIN', 'ORGANIZADOR'],
-    children: [
-      { label: 'Banco de autores', path: '/portal/talentos/autores', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
-      { label: 'Destaques', path: '/portal/talentos/destaques', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
-      { label: 'Convites', path: '/portal/talentos/convites', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
-      { label: 'Histórico', path: '/portal/talentos/historico', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
-    ]
-  },
+  // {
+  //   label: 'Talentos',
+  //   path: '/portal/talentos',
+  //   icon: 'user-badge',
+  //   allowedRoles: ['ADMIN', 'ORGANIZADOR'],
+  //   children: [
+  //     { label: 'Banco de autores', path: '/portal/talentos/autores', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
+  //     { label: 'Destaques', path: '/portal/talentos/destaques', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
+  //     { label: 'Convites', path: '/portal/talentos/convites', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
+  //     { label: 'Histórico', path: '/portal/talentos/historico', allowedRoles: ['ADMIN', 'ORGANIZADOR'] },
+  //   ]
+  // },
   {
     label: 'Resultados',
     path: '/portal/resultados',
     icon: 'chart-bar',
     allowedRoles: ['ADMIN', 'ORGANIZADOR'],
   },
-  {
-    label: 'Financeiro',
-    path: '/portal/financeiro',
-    icon: 'wallet',
-    allowedRoles: ['ADMIN', 'ORGANIZADOR'],
-  },
+  // {
+  //   label: 'Financeiro',
+  //   path: '/portal/financeiro',
+  //   icon: 'wallet',
+  //   allowedRoles: ['ADMIN', 'ORGANIZADOR'],
+  // },
   {
     label: 'Comunicação',
     path: '/portal/comunicacao',
