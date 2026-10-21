@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { apiGetConcursoById } from '../../services/entities/concurso/api/api.concurso';
-import { Link, useSearchParams, useLocation, useNavigate } from "react-router-dom";
+import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import type { DetalhesConcurso } from '../../services/entities/concurso/type/Concurso';
 import { ROTA } from '../../services/router/url';
 import { REST_CONFIG } from '../../services/constants/sistema.constants';
