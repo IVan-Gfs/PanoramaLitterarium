@@ -82,14 +82,15 @@ export class ConcursoCreateDto {
   dataFinalizacao?: string;
   
   @IsOptional()
-  organizacaoId?: string;
+  organizacao!: number;
 
   @IsInt()
   @IsOptional()
-  grupoCriterioId?: number;
+  grupoCriterio?: number;
+  
+	@IsArray({message: 'A categoria deve ser um array de números'})
+  @IsNumber({}, { each: true })
+  @IsNotEmpty({ message: 'É obrigatório informar ao menos uma categoria para o concurso' })
+  categoria!: number[];
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => BigInt)
-  categoriaIds!: bigint[];
 }

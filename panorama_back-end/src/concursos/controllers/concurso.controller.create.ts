@@ -27,7 +27,7 @@ export class ConcursoControllerCreate {
             throw new Error('Apenas usuários vinculados a uma Organização podem cadastrar concursos');
         }
 
-        const response = await this.concursoServiceCreate.create(concursoRequest, organizacaoId);
+        const response = await this.concursoServiceCreate.create(concursoRequest, Number(organizacaoId));
 
         return MensagemSistema.showMensagem(
             HttpStatus.CREATED,

@@ -74,12 +74,12 @@ model Concurso {
   premioEmDinheiro Boolean      @default(false)
   valorTotalPremios Decimal?    @db.Decimal(10, 2)
   organizacaoId   BigInt
-  grupoCriterioId BigInt
+  grupoCriterioId BigInt?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  descricao       String?
+  descricao       String? @db.Text
   banca           Banca[]
-  grupoCriterio   GrupoCriterio @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
+  grupoCriterio   GrupoCriterio? @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
   organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
   inscricao       Inscricao[]
   categoria       CategoriaConcurso[]

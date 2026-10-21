@@ -10,21 +10,21 @@ export class ConcursoServiceCreate {
 
     async create(
         ConcursoRequest: ConcursoCreateDto, 
-        organizacaoId: bigint 
+        organizacaoId: number 
     ): Promise<ConcursoDetailDTO> {
 
-        if(!ConcursoRequest.categoriaIds || ConcursoRequest.categoriaIds.length === 0) {
+        if(!ConcursoRequest.categoria || ConcursoRequest.categoria.length === 0) {
             throw new Error('É obrigatório informar ao menos uma categoria para o concurso');
         }
 
-        ConcursoRequest.organizacaoId = organizacaoId.toString();
+        ConcursoRequest.organizacao = organizacaoId;
         const createInput = ConcursoMapper.toCreateInput(ConcursoRequest);
 
         const concurso = await this.prismaService.concurso.create({
             data: createInput,
         })
 
-        const categoriaConnect = ConcursoRequest.categoriaIds.map(
+        const categoriaConnect = ConcursoRequest.categoria.map(
             categoriaId => ({ id: categoriaId })
         )
 

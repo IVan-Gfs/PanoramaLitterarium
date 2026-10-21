@@ -7,9 +7,17 @@
 
     
     static toCreateInput(dto: ConcursoCreateDto): Prisma.ConcursoCreateInput {
-      return {
-        ...dto,
 
+      const {categoria, ...rest} = dto;
+        const grupoCriterioConnect = dto.grupoCriterio
+          ? {
+              connect: {
+                id: BigInt(dto.grupoCriterio),
+              },
+            }
+          : {};
+      return {
+        ...rest,
         taxaInscricao: dto.taxaInscricao ?? null,
 
         prazoInscricao: dto.prazoInscricao
@@ -17,12 +25,10 @@
           : undefined,
 
         organizacao: {
-          connect: { id: dto.organizacaoId ? BigInt(dto.organizacaoId) : undefined },
+          connect: { id: BigInt(dto.organizacao) },
         },
-
-        grupoCriterio: {
-          connect: { id: dto.grupoCriterioId ? BigInt(dto.grupoCriterioId) : undefined },
-        },
+        
+        grupoCriterio:  grupoCriterioConnect
       };
     }
 
