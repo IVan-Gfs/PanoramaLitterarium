@@ -100,7 +100,7 @@ export const FiltroConcursos: React.FC<{
             type="text"
             value={busca}
             onChange={ e => setBusca(e.target.value)}
-            placeholder="Buque por título, tema ou gênero..."
+            placeholder="Busque por título da seletiva..."
           />
         </div>
         </div>
