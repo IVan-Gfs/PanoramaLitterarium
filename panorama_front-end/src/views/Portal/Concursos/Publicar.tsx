@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../../assets/css/concurso/criarConcurso.css';
-import { ArrowBigRight, BookText, ClipboardPen, CloudUpload, FileText, Image, Info, SquareDashedText, Upload } from "lucide-react";
+import { ArrowBigRight, Ban, BlocksIcon, BookText, CircleDollarSign, ClipboardPen, CloudUpload, FileText, Image, Info, SquareDashedText, Upload } from "lucide-react";
 
 interface ImagemSelecionada {
     arquivo: File;
@@ -41,8 +41,6 @@ export default function CriarConcursoPortal() {
     const [restricoes, setRestricoes] = useState("");
     const [taxaInscricao, setTaxaInscricao] = useState("");
     const [erroEdital, setErroEdital] = useState("");
-
-    type UnidadeLimite = "versos" | "caracteres" | "palavras";
 
 
     function atualizarImagem(arquivo?: File) {
@@ -511,7 +509,7 @@ export default function CriarConcursoPortal() {
 
                             <div className="criacao-card">
                                 <div className="card-titulo">
-                                    <span className="card-icone">☷</span>
+                                    <Ban />
                                     <h3>Restrições do concurso</h3>
                                 </div>
 
@@ -573,7 +571,7 @@ export default function CriarConcursoPortal() {
         
                             <div className="criacao-card taxa-card">
                                 <div className="card-titulo">
-                                    <span className="card-icone">R$</span>
+                                    <CircleDollarSign/>
                                     <h3>Taxa de inscrição</h3>
                                 </div>
 
