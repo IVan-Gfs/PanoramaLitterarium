@@ -271,11 +271,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border: 1px solid #d7e5fb;
-    border-radius: 50%;
-    font-size: 25px;
+    width: 25px;
+    height: 25px;
+    font-size: 20px;
 }
 
 .imagem-upload strong {
@@ -373,6 +371,7 @@
     font: inherit;
     cursor: pointer;
 }
+
 
 .etapa-futura {
     min-height: 220px;
@@ -522,6 +521,216 @@
     }
 }
 
+
+/* Seção 2 — Regras e inscrições */
+
+.regras-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 16px;
+}
+
+.regras-grid .criacao-card {
+    height: 100%;
+}
+
+.opcoes-edital {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.opcoes-edital button {
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 6px;
+    background: #fff;
+    color: #526078;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.opcoes-edital button:hover {
+    border-color: #8bb0ef;
+    background: #f7faff;
+}
+
+.opcoes-edital button.selecionada {
+    border-color: var(--cor-primaria);
+    background: #eef4ff;
+    color: var(--cor-primaria);
+    font-weight: 600;
+}
+
+.edital-upload {
+    display: flex;
+    min-height: 125px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    border: 1px dashed #8bb0ef;
+    border-radius: 7px;
+    background: #fafdff;
+    color: var(--cor-primaria);
+    text-align: center;
+    cursor: pointer;
+}
+
+.edital-upload:hover {
+    border-color: var(--cor-primaria);
+    background: #f0f6ff;
+}
+
+.edital-upload .upload-icone {
+    width: 34px;
+    height: 34px;
+    font-size: 22px;
+}
+
+.edital-upload strong {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.edital-upload small {
+    color: var(--cor-texto-secundario);
+    font-size: 11px;
+}
+
+.input-arquivo-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.input-arquivo-oculto:focus-visible + .edital-upload {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 3px;
+}
+
+.edital-arquivo-selecionado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    background: #f8faff;
+    font-size: 12px;
+}
+
+.edital-arquivo-selecionado span {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--cor-texto);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.edital-arquivo-selecionado button {
+    flex-shrink: 0;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    color: #d83b48;
+    font: inherit;
+    cursor: pointer;
+}
+
+.edital-arquivo-selecionado button:hover {
+    text-decoration: underline;
+}
+
+.regras-grid .campo input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.regras-grid .campo input[type="number"]::-webkit-inner-spin-button,
+.regras-grid .campo input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.regras-grid .campo textarea {
+    min-height: 145px;
+}
+
+.taxa-card {
+    grid-column: 1 / -1;
+}
+
+
+/* Limites da obra */
+
+.limites-obra-campos {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+}
+
+.limites-obra-campos .campo {
+    min-width: 0;
+}
+
+.regras-grid .campo select {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 5px;
+    outline: none;
+    background: #fff;
+    color: var(--cor-texto);
+    font: inherit;
+    font-size: 13px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.regras-grid .campo select:focus {
+    border-color: #7ba7ed;
+    box-shadow: 0 0 0 3px rgb(23 77 165 / 8%);
+}
+
+/* Taxa de inscrição: ocupa apenas uma coluna */
+
+.taxa-card {
+    grid-column: auto;
+}
+
+.taxa-card .campo {
+    max-width: 300px;
+}
+
+
+@media (max-width: 900px) {
+    .regras-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .taxa-card {
+        grid-column: auto;
+    }
+     .taxa-card {
+        grid-column: auto;
+    }
+}
+
+
+
 @media (max-width: 560px) {
     .criar-concurso {
         padding: 18px 14px;
@@ -593,5 +802,21 @@
 
     .modal-acoes button {
         width: 100%;
+    }
+    .opcoes-edital button {
+        padding: 9px 6px;
+        font-size: 11px;
+    }
+
+    .edital-arquivo-selecionado {
+        align-items: flex-start;
+    }
+     .limites-obra-campos {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .taxa-card .campo {
+        max-width: none;
     }
 }

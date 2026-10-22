@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../../assets/css/concurso/criarConcurso.css';
-import { ArrowBigRight, ArrowUpWideNarrow, CloudUpload, Image, Info } from "lucide-react";
+import { ArrowBigRight, BookText, ClipboardPen, CloudUpload, FileText, Image, Info, SquareDashedText, Upload } from "lucide-react";
 
 interface ImagemSelecionada {
     arquivo: File;
@@ -30,6 +30,20 @@ export default function CriarConcursoPortal() {
     const [modalCancelarAberto, setModalCancelarAberto] =
         useState<boolean>(false);
     const [erroImagem, setErroImagem] = useState<string>("");
+    type TipoEdital = "link" | "pdf";
+
+    const [tipoEdital, setTipoEdital] = useState<TipoEdital>("link");
+    const [editalLink, setEditalLink] = useState("");
+    const [editalArquivo, setEditalArquivo] = useState<File | null>(null);
+    const [formularioInscricao, setFormularioInscricao] = useState("");
+    const [limiteObras, setLimiteObras] = useState("1");
+    const [limitesObra, setLimitesObra] = useState<string>("");
+    const [restricoes, setRestricoes] = useState("");
+    const [taxaInscricao, setTaxaInscricao] = useState("");
+    const [erroEdital, setErroEdital] = useState("");
+
+    type UnidadeLimite = "versos" | "caracteres" | "palavras";
+
 
     function atualizarImagem(arquivo?: File) {
         if (!arquivo) return;
@@ -79,6 +93,47 @@ export default function CriarConcursoPortal() {
         setErroImagem("");
     }
 
+    function formatarMoeda(valor: string): string {
+        const digitos = valor.replace(/\D/g, "");
+
+        if (!digitos) return "";
+
+        const centavos = Number(digitos);
+
+        return (centavos / 100).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        });
+    }
+
+    function atualizarTaxaInscricao(valor: string) {
+        const digitos = valor.replace(/\D/g, "");
+
+        setTaxaInscricao(digitos);
+    }
+
+    function selecionarEditalPdf(
+        event: ChangeEvent<HTMLInputElement>
+    ) {
+        const arquivo = event.currentTarget.files?.[0];
+
+        if (!arquivo) return;
+
+        if (
+            arquivo.type !== "application/pdf" &&
+            !arquivo.name.toLowerCase().endsWith(".pdf")
+        ) {
+            setErroEdital("Selecione um arquivo PDF.");
+            event.currentTarget.value = "";
+            return;
+        }
+
+        setErroEdital("");
+        setEditalArquivo(arquivo);
+        event.currentTarget.value = "";
+    }
+
+
     function cancelarCriacao() {
         if (imagem) {
             URL.revokeObjectURL(imagem.url);
@@ -105,11 +160,9 @@ export default function CriarConcursoPortal() {
             >
                 {etapas.map((etapa, index) => (
                     <div
-                        className={`criacao-etapa ${
-                            index === etapaAtual ? "ativa" : ""
-                        } ${
-                            index < etapaAtual ? "concluida" : ""
-                        }`}
+                        className={`criacao-etapa ${index === etapaAtual ? "ativa" : ""
+                            } ${index < etapaAtual ? "concluida" : ""
+                            }`}
                         key={etapa}
                     >
                         <div className="etapa-indicador">
@@ -128,7 +181,7 @@ export default function CriarConcursoPortal() {
                         <section className="identidade-grid">
                             <div className="criacao-card dados-card">
                                 <div className="card-titulo">
-                                    <Info/>
+                                    <Info />
                                     <h3>Informações básicas</h3>
                                 </div>
 
@@ -179,11 +232,11 @@ export default function CriarConcursoPortal() {
 
                             <div className="criacao-card imagem-card">
                                 <div className="card-titulo">
-                                    <Image/>
+                                    <Image />
                                     <h3>Imagem de capa</h3>
                                 </div>
 
-                                
+
                                 <div className="imagem-layout">
                                     <button
                                         type="button"
@@ -202,7 +255,7 @@ export default function CriarConcursoPortal() {
                                             hidden
                                         />
 
-                                         <CloudUpload/>
+                                        <CloudUpload />
                                         <strong>
                                             Clique para enviar
                                             <br />
@@ -271,15 +324,291 @@ export default function CriarConcursoPortal() {
                             </div>
                         </section>
                     </>
+                ) : etapaAtual === 1 ? (
+                    <>
+                        
+
+                        <section className="regras-grid">
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <BookText/>
+                                    <h3>Edital do concurso</h3>
+                                </div>
+
+                                <div className="campo">
+                                    <label>Como deseja disponibilizar o edital?</label>
+
+                                    <div className="opcoes-edital">
+                                        <button
+                                            type="button"
+                                            className={
+                                                tipoEdital === "link" ? "selecionada" : ""
+                                            }
+                                            onClick={() => {
+                                                setTipoEdital("link");
+                                                setErroEdital("");
+                                            }}
+                                        >
+                                            Link externo
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            className={
+                                                tipoEdital === "pdf" ? "selecionada" : ""
+                                            }
+                                            onClick={() => {
+                                                setTipoEdital("pdf");
+                                                setErroEdital("");
+                                            }}
+                                        >
+                                            Arquivo PDF
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {tipoEdital === "link" ? (
+                                    <div className="campo">
+                                        <label htmlFor="edital-link">
+                                            Link do edital
+                                        </label>
+
+                                        <input
+                                            id="edital-link"
+                                            type="url"
+                                            value={editalLink}
+                                            onChange={(event) =>
+                                                setEditalLink(event.currentTarget.value)
+                                            }
+                                            placeholder="https://exemplo.com/edital"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="campo">
+                                        <label htmlFor="edital-pdf">
+                                            Arquivo do edital
+                                        </label>
+
+                                        <label
+                                            className="edital-upload"
+                                            htmlFor="edital-pdf"
+                                        >
+                                            
+                                            <Upload className="upload-icone"/>
+
+                                            <strong>
+                                                {editalArquivo
+                                                    ? "Selecionar outro PDF"
+                                                    : "Clique para selecionar o PDF"}
+                                            </strong>
+                                        </label>
+
+                                        <input
+                                            id="edital-pdf"
+                                            className="input-arquivo-oculto"
+                                            type="file"
+                                            accept=".pdf,application/pdf"
+                                            onChange={selecionarEditalPdf}
+                                        />
+
+                                        {editalArquivo && (
+                                            <div className="edital-arquivo-selecionado">
+                                                <span title={editalArquivo.name}>
+                                                    {editalArquivo.name}
+                                                </span>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditalArquivo(null)}
+                                                >
+                                                    Remover
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {erroEdital && (
+                                    <p className="erro-imagem" role="alert">
+                                        {erroEdital}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <ClipboardPen/>
+                                    <h3>Formulário de inscrição</h3>
+                                </div>
+
+                            
+
+                                <div className="campo">
+                                    <label htmlFor="formulario-inscricao">
+                                        Link do formulário
+                                    </label>
+
+                                    <input
+                                        id="formulario-inscricao"
+                                        type="url"
+                                        value={formularioInscricao}
+                                        onChange={(event) =>
+                                            setFormularioInscricao(
+                                                event.currentTarget.value
+                                            )
+                                        }
+                                        placeholder="https://exemplo.com/inscricao"
+                                    />
+
+                                    <p className="campo-ajuda">
+                                        Pode ser um formulário externo, como Google Forms,
+                                        ou uma página própria de inscrição.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <FileText/>
+                                    <h3>Limite de obras por participante</h3>
+                                </div>
+
+                                <div className="campo">
+                                    <label htmlFor="limite-obras">
+                                        Quantidade máxima de obras
+                                    </label>
+
+                                    <input
+                                        id="limite-obras"
+                                        type="number"
+                                        min={1}
+                                        step={1}
+                                        inputMode="numeric"
+                                        value={limiteObras}
+                                        onChange={(event) => {
+                                            const valor = event.currentTarget.value;
+
+                                            if (/^\d*$/.test(valor)) {
+                                                setLimiteObras(valor);
+                                            }
+                                        }}
+                                        onBlur={() => {
+                                            if (
+                                                !limiteObras ||
+                                                Number(limiteObras) < 1
+                                            ) {
+                                                setLimiteObras("1");
+                                            }
+                                        }}
+                                        onKeyDown={(event) => {
+                                            if (["-", "+", "e", "E", "."].includes(event.key)) {
+                                                event.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <span className="card-icone">☷</span>
+                                    <h3>Restrições do concurso</h3>
+                                </div>
+
+                                <div className="campo">
+                                    <label htmlFor="restricoes-concurso">
+                                        Restrições e requisitos
+                                    </label>
+
+                                    <textarea
+                                        id="restricoes-concurso"
+                                        value={restricoes}
+                                        onChange={(event) =>
+                                            setRestricoes(event.currentTarget.value)
+                                        }
+                                        placeholder="Ex.: Permitida a participação apenas de residentes do estado de São Paulo."
+                                        maxLength={1000}
+                                        rows={5}
+                                    />
+
+                                    <div className="contador">
+                                        {restricoes.length}/1000
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <SquareDashedText/>
+                                    <h3>Limites das obras</h3>
+                                </div>
+
+                                <div className="campo">
+                                    <label htmlFor="limites-obra">
+                                        Limites e especificações
+                                    </label>
+
+                                    <textarea
+                                        id="limites-obra"
+                                        value={limitesObra}
+                                        onChange={(event) =>
+                                            setLimitesObra(event.currentTarget.value)
+                                        }
+                                        placeholder={"Ex.: Poesias: até 40 versos.\nContos: entre 1.000 e 5.000 palavras.\nCrônicas: até 3.000 caracteres."}
+                                        maxLength={2000}
+                                        rows={5}
+                                    />
+
+                                    <div className="contador">
+                                        {limiteObras.length}/2000
+                                    </div>
+
+                                    <p className="campo-ajuda">
+                                        Informe livremente as quantidades, unidades de medida
+                                        e regras específicas de cada categoria.
+                                    </p>
+                                </div>
+                            </div>
+
+        
+                            <div className="criacao-card taxa-card">
+                                <div className="card-titulo">
+                                    <span className="card-icone">R$</span>
+                                    <h3>Taxa de inscrição</h3>
+                                </div>
+
+                                <div className="campo">
+                                    <label htmlFor="taxa-inscricao">
+                                        Valor da taxa (R$)
+                                    </label>
+
+                                    <input
+                                        id="taxa-inscricao"
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={formatarMoeda(taxaInscricao)}
+                                        onChange={(event) =>
+                                            atualizarTaxaInscricao(
+                                                event.currentTarget.value
+                                            )
+                                        }
+                                        placeholder="R$ 0,00"
+                                    />
+
+                                    <p className="campo-ajuda">
+                                        Deixar em branco se não houver.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </>
                 ) : (
                     <section className="criacao-card etapa-futura">
                         <h2>
                             {etapaAtual + 1}. {etapas[etapaAtual]}
                         </h2>
 
-                        <p>
-                            Esta etapa será implementada posteriormente.
-                        </p>
+                        <p>Esta etapa será implementada posteriormente.</p>
                     </section>
                 )}
             </main>
@@ -301,7 +630,7 @@ export default function CriarConcursoPortal() {
                         disabled={etapaAtual === etapas.length - 1}
                     >
                         Próximo passo
-                        <ArrowBigRight/>
+                        <ArrowBigRight />
                     </button>
                 </div>
             </footer>
