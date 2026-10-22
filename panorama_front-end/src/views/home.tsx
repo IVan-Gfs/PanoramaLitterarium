@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import '../assets/css/home.css';
 
-// Ajuste as rotas conforme o seu router (services/router/url ou App.tsx)
+
 const ROTA_PARTICIPANTE = "/concursos";
 const ROTA_ORGANIZADOR = "/para-organizadores";
 const ROTA_CATEGORIAS = "/categorias";
@@ -27,7 +27,9 @@ export default function HomePage() {
     <main className="ini-main">
 
       <section className="ini-hero">
+        
         <div className="ini-hero-inner">
+          <img src="/logo-white.png" alt="logo" className="ini-hero-logo" />
           <h1 className="ini-hero-titulo">Concursos literários, reunidos num só lugar</h1>
           <p className="ini-hero-texto">
             O Panorama Litterarium conecta quem escreve a quem organiza. Encontre editais de poesia,
