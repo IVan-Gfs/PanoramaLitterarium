@@ -19,6 +19,10 @@ import {
     ChevronUp,
     Trophy,
     Megaphone,
+    ClipboardClock,
+    Sparkle,
+    Sparkles,
+    ChartColumnStacked,
 } from "lucide-react";
 import '../../../assets/css/concurso/criarConcurso.css';
 export default function CriarConcursoPortal() {
@@ -200,181 +204,209 @@ export default function CriarConcursoPortal() {
                             <p>Informe como os participantes poderão se inscrever.</p>
                         </div>
                         <section className="regras-grid">
-                        <div className="criacao-card">
-                            <div className="card-titulo">
-                                <BookText/>
-                                <h3>Edital</h3>
-                            </div>
-                            <p className="card-descricao">
-                                Informe o link do edital ou envie o documento em PDF.
-                            </p>
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <BookText />
+                                    <h3>Edital</h3>
+                                </div>
+                                <p className="card-descricao">
+                                    Informe o link do edital ou envie o documento em PDF.
+                                </p>
 
-                            <div className="opcoes-edital">
-                                <button
-                                    type="button"
-                                    className={c.tipoEdital === "link" ? "selecionada" : ""}
-                                    onClick={() => {
-                                        c.setTipoEdital("link");
-                                        c.setErroEdital("");
-                                    }}
-                                >
-                                    Inserir link
-                                </button>
-                                <button
-                                    type="button"
-                                    className={c.tipoEdital === "pdf" ? "selecionada" : ""}
-                                    onClick={() => {
-                                        c.setTipoEdital("pdf");
-                                        c.setErroEdital("");
-                                    }}
-                                >
-                                    Enviar PDF
-                                </button>
+                                <div className="opcoes-edital">
+                                    <button
+                                        type="button"
+                                        className={c.tipoEdital === "link" ? "selecionada" : ""}
+                                        onClick={() => {
+                                            c.setTipoEdital("link");
+                                            c.setErroEdital("");
+                                        }}
+                                    >
+                                        Inserir link
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={c.tipoEdital === "pdf" ? "selecionada" : ""}
+                                        onClick={() => {
+                                            c.setTipoEdital("pdf");
+                                            c.setErroEdital("");
+                                        }}
+                                    >
+                                        Enviar PDF
+                                    </button>
+                                </div>
+
+                                {c.tipoEdital === "link" ? (
+                                    <div className="campo">
+                                        <label htmlFor="edital-link">Link do edital</label>
+                                        <input
+                                            id="edital-link"
+                                            type="url"
+                                            value={c.editalLink}
+                                            onChange={(e) => c.setEditalLink(e.currentTarget.value)}
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="campo">
+                                        <label htmlFor="edital-pdf">Arquivo do edital</label>
+                                        <input
+                                            ref={c.inputEditalRef}
+                                            id="edital-pdf"
+                                            type="file"
+                                            accept=".pdf,application/pdf"
+                                            onChange={c.selecionarEditalPdf}
+                                        />
+                                        {c.editalArquivo && (
+                                            <div className="edital-arquivo-selecionado">
+                                                <span>{c.editalArquivo.name}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => c.setEditalArquivo(null)}
+                                                >
+                                                    Remover
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {c.erroEdital && (
+                                    <p className="campo-erro">{c.erroEdital}</p>
+                                )}
                             </div>
 
-                            {c.tipoEdital === "link" ? (
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <ClipboardPen />
+                                    <h3>Formulário de inscrição</h3>
+                                </div>
                                 <div className="campo">
-                                    <label htmlFor="edital-link">Link do edital</label>
+                                    <label htmlFor="formulario-inscricao">
+                                        Link do formulário
+                                    </label>
                                     <input
-                                        id="edital-link"
+                                        id="formulario-inscricao"
                                         type="url"
-                                        value={c.editalLink}
-                                        onChange={(e) => c.setEditalLink(e.currentTarget.value)}
+                                        value={c.formularioInscricao}
+                                        onChange={(e) =>
+                                            c.setFormularioInscricao(e.currentTarget.value)
+                                        }
                                         placeholder="https://..."
                                     />
                                 </div>
-                            ) : (
-                                <div className="campo">
-                                    <label htmlFor="edital-pdf">Arquivo do edital</label>
-                                    <input
-                                        ref={c.inputEditalRef}
-                                        id="edital-pdf"
-                                        type="file"
-                                        accept=".pdf,application/pdf"
-                                        onChange={c.selecionarEditalPdf}
-                                    />
-                                    {c.editalArquivo && (
-                                        <div className="edital-arquivo-selecionado">
-                                            <span>{c.editalArquivo.name}</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => c.setEditalArquivo(null)}
-                                            >
-                                                Remover
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {c.erroEdital && (
-                                <p className="campo-erro">{c.erroEdital}</p>
-                            )}
-                        </div>
-
-                        <div className="criacao-card">
-                            <div className="card-titulo">
-                                <ClipboardPen/>
-                                <h3>Formulário de inscrição</h3>
                             </div>
-                            <div className="campo">
-                                <label htmlFor="formulario-inscricao">
-                                    Link do formulário
-                                </label>
-                                <input
-                                    id="formulario-inscricao"
-                                    type="url"
-                                    value={c.formularioInscricao}
-                                    onChange={(e) =>
-                                        c.setFormularioInscricao(e.currentTarget.value)
-                                    }
-                                    placeholder="https://..."
-                                />
-                            </div>
-                        </div>
-                        <div className="criacao-card">
-                            <div className="card-titulo">
-                               <SquareDashedText/>
-                                <h3>Limites da obra</h3>
-                            </div>
-                            <p className="card-descricao">
-                                Descreva livremente os limites de extensão. Você pode definir
-                                regras diferentes para cada categoria.
-                            </p>
-                            <div className="campo">
-                                <label htmlFor="limites-obra">Limites e especificações</label>
-                                <textarea
-                                    id="limites-obra"
-                                    value={c.limitesObra}
-                                    onChange={(e) => c.setLimitesObra(e.currentTarget.value)}
-                                    placeholder={
-                                        "Ex.: Poesias: até 40 versos.\nContos: entre 1.000 e 5.000 palavras.\nCrônicas: até 3.000 caracteres."
-                                    }
-                                    rows={5}
-                                    maxLength={2000}
-                                />
-                                <div className="contador">{c.limitesObra.length}/2000</div>
-                            </div>
-                        </div>
-                        <div className="criacao-card">
-                            <div className="card-titulo">
-                                <Ban />
-                                <h3>Restrições</h3>
-                            </div>
-                            <div className="campo">
-                                <label htmlFor="restricoes">Regras para participação</label>
-                                <textarea
-                                    id="restricoes"
-                                    value={c.restricoes}
-                                    onChange={(e) => c.setRestricoes(e.currentTarget.value)}
-                                    placeholder="Ex.: Apenas residentes do estado de São Paulo."
-                                    rows={4}
-                                    maxLength={3000}
-                                />
-                            </div>
-                        </div>
-                        <div className="regras-grid">
                             <div className="criacao-card">
                                 <div className="card-titulo">
-                                    <FileText />
-                                    <h3>Limite de obras</h3>
+                                    <ClipboardClock />
+                                    <h3>Prazo de inscrição</h3>
                                 </div>
-                                <div className="campo">
-                                    <label htmlFor="limite-obras">
-                                        Obras por participante
-                                    </label>
-                                    <input
-                                        id="limite-obras"
-                                        type="number"
-                                        min="1"
-                                        step="1"
-                                        value={c.limiteObras}
-                                        onChange={(e) =>
-                                            c.setLimiteObras(e.currentTarget.value.replace(/\D/g, ""))
-                                        }
-                                    />
-                                </div>
-                            </div>
 
-                            <div className="criacao-card taxa-card">
-                                <div className="card-titulo">
-                                    <CircleDollarSign />
-                                    <h3>Taxa de inscrição</h3>
-                                </div>
+                                <p className="card-descricao">
+                                    Informe até quando os participantes poderão realizar suas inscrições.
+                                </p>
+
                                 <div className="campo">
-                                    <label htmlFor="taxa-inscricao">Valor</label>
+                                    <label htmlFor="prazo-inscricao">
+                                        Data limite para inscrição
+                                        <span className="obrigatorio">*</span>
+                                    </label>
+
                                     <input
-                                        id="taxa-inscricao"
-                                        inputMode="numeric"
-                                        value={c.formatarMoeda(c.taxaInscricao)}
+                                        id="prazo-inscricao"
+                                        type="date"
+                                        value={c.prazoInscricao}
                                         onChange={(e) =>
-                                            c.atualizarTaxaInscricao(e.currentTarget.value)
+                                            c.setPrazoInscricao(e.currentTarget.value)
                                         }
-                                        placeholder="R$ 0,00"
+                                        min={new Date().toLocaleDateString("en-CA")}
+                                        required
                                     />
                                 </div>
                             </div>
-                        </div>    
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <SquareDashedText />
+                                    <h3>Limites da obra</h3>
+                                </div>
+                                <p className="card-descricao">
+                                    Descreva livremente os limites de extensão. Você pode definir
+                                    regras diferentes para cada categoria.
+                                </p>
+                                <div className="campo">
+                                    <label htmlFor="limites-obra">Limites e especificações</label>
+                                    <textarea
+                                        id="limites-obra"
+                                        value={c.limitesObra}
+                                        onChange={(e) => c.setLimitesObra(e.currentTarget.value)}
+                                        placeholder={
+                                            "Ex.: Poesias: até 40 versos.\nContos: entre 1.000 e 5.000 palavras.\nCrônicas: até 3.000 caracteres."
+                                        }
+                                        rows={5}
+                                        maxLength={2000}
+                                    />
+                                    <div className="contador">{c.limitesObra.length}/2000</div>
+                                </div>
+                            </div>
+                            <div className="criacao-card">
+                                <div className="card-titulo">
+                                    <Ban />
+                                    <h3>Restrições</h3>
+                                </div>
+                                <div className="campo">
+                                    <label htmlFor="restricoes">Regras para participação</label>
+                                    <textarea
+                                        id="restricoes"
+                                        value={c.restricoes}
+                                        onChange={(e) => c.setRestricoes(e.currentTarget.value)}
+                                        placeholder="Ex.: Apenas residentes do estado de São Paulo."
+                                        rows={4}
+                                        maxLength={3000}
+                                    />
+                                </div>
+                            </div>
+                            <div className="regras-grid">
+                                <div className="criacao-card">
+                                    <div className="card-titulo">
+                                        <FileText />
+                                        <h3>Limite de obras</h3>
+                                    </div>
+                                    <div className="campo">
+                                        <label htmlFor="limite-obras">
+                                            Obras por participante
+                                        </label>
+                                        <input
+                                            id="limite-obras"
+                                            type="number"
+                                            min="1"
+                                            step="1"
+                                            value={c.limiteObras}
+                                            onChange={(e) =>
+                                                c.setLimiteObras(e.currentTarget.value.replace(/\D/g, ""))
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="criacao-card taxa-card">
+                                    <div className="card-titulo">
+                                        <CircleDollarSign />
+                                        <h3>Taxa de inscrição</h3>
+                                    </div>
+                                    <div className="campo">
+                                        <label htmlFor="taxa-inscricao">Valor</label>
+                                        <input
+                                            id="taxa-inscricao"
+                                            inputMode="numeric"
+                                            value={c.formatarMoeda(c.taxaInscricao)}
+                                            onChange={(e) =>
+                                                c.atualizarTaxaInscricao(e.currentTarget.value)
+                                            }
+                                            placeholder="R$ 0,00"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </section>
                     </>
                 )}
@@ -388,15 +420,16 @@ export default function CriarConcursoPortal() {
                             </p>
                         </div>
 
-                        <div className="criacao-card">
+                        <div className="estrutura-concurso-grid">
+                            <div className="criacao-card">
                             <div className="card-titulo">
-                               <Search/>
+                                <ChartColumnStacked />
                                 <h3>
                                     Categorias aceitas<span className="obrigatorio">*</span>
                                 </h3>
                             </div>
                             <p className="card-descricao">
-                                Pesquise e selecione uma ou mais categorias.
+                                Informe as categorias literárias aceitas no concurso. Você pode selecionar mais de uma categoria.
                             </p>
 
                             <div className="seletor-categorias">
@@ -412,7 +445,7 @@ export default function CriarConcursoPortal() {
                                                     aria-label={`Remover ${categoria.nome}`}
                                                     onClick={() => c.removerCategoria(categoria.id)}
                                                 >
-                                                    <CircleX/>
+                                                    <CircleX />
                                                 </button>
                                             </span>
                                         ))}
@@ -448,7 +481,7 @@ export default function CriarConcursoPortal() {
                                                     onClick={() => c.alternarCategoria(categoria.id)}
                                                 >
                                                     <span>{categoria.nome}</span>
-                                                    <Plus/>
+                                                    <Plus />
                                                 </button>
                                             ))
                                         ) : (
@@ -464,14 +497,38 @@ export default function CriarConcursoPortal() {
                                     }
                                 >
                                     {c.listaCategoriasAberta
-                                        ? <ChevronDown/>
-                                        : <ChevronUp/>}
+                                        ? <ChevronDown />
+                                        : <ChevronUp />}
                                 </button>
-
-                                
-
-                                
                             </div>
+                        </div>
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                                <Sparkles />
+                                <h3>Tema</h3>
+                            </div>
+
+                            <p className="card-descricao">
+                                Informe a temática central que deverá orientar
+                                as obras participantes.
+                            </p>
+
+                            <div className="campo">
+
+                                <textarea
+                                    id="tema-concurso"
+                                    value={c.tema}
+                                    onChange={(e) => c.setTema(e.currentTarget.value)}
+                                    placeholder="Ex.: Luta antirracista, feminismo interseccional, diversidade cultural, preservação ambiental, entre outros."
+                                    rows={5}
+                                    maxLength={1000}
+                                />
+
+                                <div className="contador">
+                                    {c.tema.length}/1000
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </>
                 )}
@@ -485,7 +542,7 @@ export default function CriarConcursoPortal() {
 
                         <div className="criacao-card">
                             <div className="card-titulo">
-                                <Trophy/>
+                                <Trophy />
                                 <h3>
                                     Premiação <span className="obrigatorio">*</span>
                                 </h3>
@@ -584,7 +641,7 @@ export default function CriarConcursoPortal() {
                                 disabled={c.enviando}
                             >
                                 {c.enviando ? "Publicando..." : "Publicar"}
-                                <Megaphone/>
+                                <Megaphone />
                             </button>
                         )}
                     </div>

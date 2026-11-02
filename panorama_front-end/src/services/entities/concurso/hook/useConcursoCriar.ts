@@ -6,6 +6,7 @@ import { apiGetCategoria } from "../../categoria/api/api.categoria";
 import { ROTA } from "../../../router/url";
 import { apiPostConcurso } from "../api/api.concurso";
 import type { CategoriaReponse } from "../../categoria/type/Categoria";
+import type { ConcursoCreate } from "../type/Concurso";
 
 
 // Ajuste estes caminhos para os arquivos existentes no seu projeto.
@@ -51,7 +52,9 @@ export function useCriarConcurso() {
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [imagem, setImagem] = useState<ImagemSelecionada | null>(null);
+  const [prazoInscricao, setPrazoInscricao] = useState("");
 
+  const [tema, setTema] = useState("");
   const [tipoEdital, setTipoEdital] = useState<TipoEdital>("link");
   const [editalLink, setEditalLink] = useState("");
   const [editalArquivo, setEditalArquivo] = useState<File | null>(null);
@@ -239,6 +242,18 @@ export function useCriarConcurso() {
       }
     }
 
+    if (etapa === 1) {
+    if (!prazoInscricao) {
+        setErroValidacao("Informe o prazo de inscrição.");
+        return false;
+    }
+
+    if (new Date(`${prazoInscricao}T23:59:59`) < new Date()) {
+        setErroValidacao("O prazo de inscrição não pode estar no passado.");
+        return false;
+    }
+}
+
     if (etapa === 2 && categoriasSelecionadas.length === 0) {
       setErroValidacao("Selecione pelo menos uma categoria.");
       return false;
@@ -275,43 +290,56 @@ export function useCriarConcurso() {
     setErroRequisicao("");
 
     try {
-      const data = new FormData();
+        const concurso: ConcursoCreate = {
+            titulo: titulo.trim(),
+            descricao: descricao.trim(),
+            premiacao: premiacao.trim(),
+            prazoInscricao: new Date(`${prazoInscricao}T12:00:00`).toISOString(),
+            tema: tema.trim() || undefined,
+            limiteObras: Number(limiteObras),
+            taxaInscricao: taxaInscricao
+                ? Number(taxaInscricao) / 100
+                : 0,
+            restricao: restricoes.trim(),
+            linkEdital: tipoEdital === "link" ? editalLink.trim() : undefined,
+            linkInscricao: formularioInscricao.trim(),
+            categorias: categoriasSelecionadas.map(Number),
+        };
 
-      data.append("titulo", titulo.trim());
-      data.append("descricao", descricao.trim());
-      data.append("categorias", JSON.stringify(categoriasSelecionadas));
-      data.append("premiacao", premiacao.trim());
-      data.append("premiacaoEmDinheiro", String(premiacaoEmDinheiro));
-      data.append("tipoEdital", tipoEdital);
-      data.append("editalLink", tipoEdital === "link" ? editalLink.trim() : "");
-      data.append("formularioInscricao", formularioInscricao.trim());
-      data.append("limiteObras", limiteObras);
-      data.append("limitesObra", limitesObra.trim());
-      data.append("restricoes", restricoes.trim());
+        const data = new FormData();
 
-      // A taxa é guardada em centavos para evitar erros de máscara.
-      data.append(
-        "taxaInscricao",
-        taxaInscricao ? String(Number(taxaInscricao) / 100) : "0",
-      );
+        Object.entries(concurso).forEach(([chave, valor]) => {
+            if (valor !== undefined) {
+                data.append(
+                    chave,
+                    Array.isArray(valor) ? JSON.stringify(valor) : String(valor)
+                );
+            }
+        });
 
-      if (imagem) data.append("imgCapa", imagem.arquivo);
+        if (tema.trim()) {
+            data.append("tema", tema.trim());
+        }
+        if (imagem) {
+            data.append("imgCapa", imagem.arquivo);
+        }
 
-      if (tipoEdital === "pdf" && editalArquivo) {
-        data.append("editalArquivo", editalArquivo);
-      }
+        if (tipoEdital === "pdf" && editalArquivo) {
+            data.append("pdfEdital", editalArquivo);
+        }
 
-      await apiPostConcurso(data);
-      navigate("../concursos/listagem");
+        await apiPostConcurso(data);
+
+        navigate("../concursos/listagem");
     } catch (erro: any) {
-      setErroRequisicao(
-        erro?.response?.data?.message ??
-          "Não foi possível criar o concurso. Verifique os dados e tente novamente.",
-      );
+        setErroRequisicao(
+            erro?.response?.data?.message ??
+            "Não foi possível criar o concurso. Verifique os dados e tente novamente."
+        );
     } finally {
-      setEnviando(false);
+        setEnviando(false);
     }
-  }
+}
 
   return {
     etapas,
@@ -324,6 +352,8 @@ export function useCriarConcurso() {
     setTitulo,
     descricao,
     setDescricao,
+    prazoInscricao,
+    setPrazoInscricao,
     imagem,
     selecionarImagem,
     arrastarImagem,
@@ -331,6 +361,8 @@ export function useCriarConcurso() {
     removerImagem,
     erroImagem,
 
+    tema,
+    setTema,
     tipoEdital,
     setTipoEdital,
     editalLink,

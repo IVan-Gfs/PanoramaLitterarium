@@ -854,6 +854,19 @@
 
 /* Seleção múltipla de categorias */
 
+.estrutura-concurso-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+}
+
+.estrutura-concurso-grid .criacao-card {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+}
+
 .seletor-categorias {
   position: relative;
 }
@@ -1051,5 +1064,11 @@
   .imagem-selecionada {
     align-items: flex-start;
   }
+}
+
+@media (max-width: 900px) {
+    .estrutura-concurso-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
