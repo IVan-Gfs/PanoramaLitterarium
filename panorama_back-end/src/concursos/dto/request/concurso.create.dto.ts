@@ -6,7 +6,6 @@ import {
   IsDateString,
   IsNotEmpty,
   IsArray,
-  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -23,10 +22,6 @@ export class ConcursoCreateDto {
   @IsNotEmpty({message: 'A descrição do concurso deve ser informada'})
   @IsString()
   descricao?: string;
-
-  @IsNotEmpty({message: 'O gênero iterário deve ser informado'})
-  @IsString()
-  generoLiterario?: string;
 
   @IsOptional()
   @IsInt()
@@ -71,6 +66,14 @@ export class ConcursoCreateDto {
 
   @IsOptional()
   @IsString()
+  limitesTexto?: string;
+
+  @IsOptional()
+  @IsString()
+  linkInscricao?: string;
+  
+  @IsOptional()
+  @IsString()
   linkEdital?: string;
 
   @IsOptional()
@@ -80,6 +83,16 @@ export class ConcursoCreateDto {
   @IsOptional()
   @IsDateString()
   dataFinalizacao?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  valorTotalPremios?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  custoSelecionados?: number;
   
   @IsOptional()
   organizacao!: number;

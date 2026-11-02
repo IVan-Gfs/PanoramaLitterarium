@@ -59,17 +59,20 @@ model Concurso {
   generoLiterario String?       @default("DIVERSOS")
   qtdVencedores   Int?
   taxaInscricao   Decimal?
-  tema            String?       @default("LIVRE")
+  tema            String?       @default("Livre")
   municipio       String?
   uf              String?       @db.Char(2)
   premiacao       String?
   prazoInscricao  DateTime?
   limiteObras     Int?          @default(1)
-  restricao       String?       @default("NENHUMA")
+  limitesTexto    String?       @default("Sem limites")
+  restricao       String?       @default("Nenhuma restrição")
   etapaAtual      Int?          @default(1)
+  linkInscricao   String?
   linkEdital      String?
   pdfEdital       String?
   dataFinalizacao DateTime?
+  CustoSelecionados Decimal?     @db.Decimal(10, 2)
   gratuito        Boolean       @default(true)
   premioEmDinheiro Boolean      @default(false)
   valorTotalPremios Decimal?    @db.Decimal(10, 2)

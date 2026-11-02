@@ -21,7 +21,7 @@ function gerarRotaSistema(entity: string, folder?: string) {
   const base_path = `uploads/${folder}`;
   return {
     LISTAR: `/${base}/${LISTAR}`,
-    CRIAR: `/${base}/${CRIAR}`,
+    CRIAR: `/${base}`,
     POR_ID: `/${base}/`,
     ATUALIZAR: `/${base}/${ATUALIZAR}`,
     EXCLUIR: `/${base}/${EXCLUIR}`,

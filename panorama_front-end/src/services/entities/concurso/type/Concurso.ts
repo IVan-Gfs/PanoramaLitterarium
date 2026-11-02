@@ -6,8 +6,32 @@ export interface Concurso {
     descricao: string;
     prazoInscricao: string;
     imgCapa: string;
-    generoLiterario: string;
-    categorias: Categoria[]; // Adiciona o campo categorias como um array de strings
+    categorias: Categoria[]; 
+}
+
+export interface ConcursoCreate {
+    titulo: string;
+    imgCapa?: string;
+    descricao: string;
+    qtdVencedores?: number;
+    taxaInscricao?: number;
+    tema?: string;
+    municipio?: string;
+    uf?: string;
+    premiacao: string;
+    prazoInscricao: string;
+    limiteObras?: number;
+    restricao?: string;
+    etapaAtual?: number;
+    limitesTexto?: string;
+    linkInscricao?: string;
+    linkEdital?: string;
+    pdfEdital?: string;
+    dataFinalizacao?: string;
+    valorTotalPremios?: number;
+    custoSelecionados?: number;
+    grupoCriterio?: number;
+    categorias: Number[];
 }
 
 export interface Organizacao {
