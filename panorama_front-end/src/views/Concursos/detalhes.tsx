@@ -8,6 +8,7 @@ import { formatarData } from '../../utils/date';
 import '../../assets/css/concurso/detalhesConcurso.css';
 import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag } from 'lucide-react';
 import setaVoltar from '../../../public/imgs/arrow-back.png';
+import type { Categoria } from '../../services/entities/categoria/type/Categoria';
 
 export default function DetalhesConcurso() {
 
@@ -56,6 +57,7 @@ export default function DetalhesConcurso() {
     // a esses campos extras sem mexer no type compartilhado.
     const dados = detalhesConcurso?.dados as any;
 
+
     return (
         <div className="paginaDetalhes">
 
@@ -85,11 +87,8 @@ export default function DetalhesConcurso() {
 
                     <div className="infoTopo">
                         <div className="tags">
-                            {dados?.generoLiterario && (
-                                <span className="tag">{dados.generoLiterario}</span>
-                            )}
 
-                            {dados?.categorias?.map((categoria: any) => (
+                            {dados?.categorias?.map((categoria: Categoria) => (
                                 <span key={categoria.id} className="tag">{categoria.nome.toLocaleUpperCase()}</span>
                             ))}
                         </div>
