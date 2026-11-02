@@ -321,7 +321,7 @@ export function useCriarConcurso() {
             data.append("tema", tema.trim());
         }
         if (imagem) {
-            data.append("imgCapa", imagem.arquivo);
+            data.append("imgCapa", imagem.url);
         }
 
         if (tipoEdital === "pdf" && editalArquivo) {
