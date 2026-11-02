@@ -1,180 +1,64 @@
 
-
-
-import { useRef, useState } from "react";
-import type { ChangeEvent, DragEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCriarConcurso } from '../../../services/entities/concurso/hook/useConcursoCriar';
+import {
+    ArrowBigRight,
+    Ban,
+    BookText,
+    CircleDollarSign,
+    ClipboardPen,
+    CloudUpload,
+    FileText,
+    Image,
+    Info,
+    SquareDashedText,
+    Search,
+    ArrowBigLeft,
+    Plus,
+    CircleX,
+    ChevronDown,
+    ChevronUp,
+    Trophy,
+    Megaphone,
+} from "lucide-react";
 import '../../../assets/css/concurso/criarConcurso.css';
-import { ArrowBigRight, Ban, BlocksIcon, BookText, CircleDollarSign, ClipboardPen, CloudUpload, FileText, Image, Info, SquareDashedText, Upload } from "lucide-react";
-
-interface ImagemSelecionada {
-    arquivo: File;
-    url: string;
-}
-
-const etapas: string[] = [
-    "Identidade",
-    "Regras e inscrições",
-    "Estrutura do concurso",
-    "Premiação",
-];
-
 export default function CriarConcursoPortal() {
-    const navigate = useNavigate();
-    const inputImagemRef = useRef<HTMLInputElement>(null);
+    const c = useCriarConcurso();
 
-    const [etapaAtual, setEtapaAtual] = useState<number>(0);
-    const [titulo, setTitulo] = useState<string>("");
-    const [descricao, setDescricao] = useState<string>("");
-    const [imagem, setImagem] = useState<ImagemSelecionada | null>(null);
-    const [modalCancelarAberto, setModalCancelarAberto] =
-        useState<boolean>(false);
-    const [erroImagem, setErroImagem] = useState<string>("");
-    type TipoEdital = "link" | "pdf";
-
-    const [tipoEdital, setTipoEdital] = useState<TipoEdital>("link");
-    const [editalLink, setEditalLink] = useState("");
-    const [editalArquivo, setEditalArquivo] = useState<File | null>(null);
-    const [formularioInscricao, setFormularioInscricao] = useState("");
-    const [limiteObras, setLimiteObras] = useState("1");
-    const [limitesObra, setLimitesObra] = useState<string>("");
-    const [restricoes, setRestricoes] = useState("");
-    const [taxaInscricao, setTaxaInscricao] = useState("");
-    const [erroEdital, setErroEdital] = useState("");
-
-
-    function atualizarImagem(arquivo?: File) {
-        if (!arquivo) return;
-
-        if (!arquivo.type.startsWith("image/")) {
-            setErroImagem("Selecione um arquivo de imagem válido.");
-            return;
-        }
-
-        setErroImagem("");
-
-        setImagem((imagemAnterior) => {
-            if (imagemAnterior) {
-                URL.revokeObjectURL(imagemAnterior.url);
-            }
-
-            return {
-                arquivo,
-                url: URL.createObjectURL(arquivo),
-            };
-        });
-    }
-
-    function selecionarImagem(event: ChangeEvent<HTMLInputElement>) {
-        atualizarImagem(event.currentTarget.files?.[0]);
-        event.currentTarget.value = "";
-    }
-
-    function arrastarImagem(event: DragEvent<HTMLButtonElement>) {
-        event.preventDefault();
-    }
-
-    function soltarImagem(event: DragEvent<HTMLButtonElement>) {
-        event.preventDefault();
-        atualizarImagem(event.dataTransfer.files?.[0]);
-    }
-
-    function removerImagem() {
-        setImagem((imagemAnterior) => {
-            if (imagemAnterior) {
-                URL.revokeObjectURL(imagemAnterior.url);
-            }
-
-            return null;
-        });
-
-        setErroImagem("");
-    }
-
-    function formatarMoeda(valor: string): string {
-        const digitos = valor.replace(/\D/g, "");
-
-        if (!digitos) return "";
-
-        const centavos = Number(digitos);
-
-        return (centavos / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        });
-    }
-
-    function atualizarTaxaInscricao(valor: string) {
-        const digitos = valor.replace(/\D/g, "");
-
-        setTaxaInscricao(digitos);
-    }
-
-    function selecionarEditalPdf(
-        event: ChangeEvent<HTMLInputElement>
-    ) {
-        const arquivo = event.currentTarget.files?.[0];
-
-        if (!arquivo) return;
-
-        if (
-            arquivo.type !== "application/pdf" &&
-            !arquivo.name.toLowerCase().endsWith(".pdf")
-        ) {
-            setErroEdital("Selecione um arquivo PDF.");
-            event.currentTarget.value = "";
-            return;
-        }
-
-        setErroEdital("");
-        setEditalArquivo(arquivo);
-        event.currentTarget.value = "";
-    }
-
-
-    function cancelarCriacao() {
-        if (imagem) {
-            URL.revokeObjectURL(imagem.url);
-        }
-
-        navigate("../concursos/listagem");
-    }
-
-    function proximaEtapa() {
-        setEtapaAtual((etapa) =>
-            Math.min(etapa + 1, etapas.length - 1)
-        );
-    }
+    const categoriasSelecionadas = c.categorias.filter((categoria) =>
+        c.categoriasSelecionadas.includes(categoria.id),
+    );
 
     return (
-        <div className="criar-concurso">
+        <main className="criar-concurso">
             <header className="criacao-header">
-                <h1>Publicação do concurso</h1>
+                <div>
+                    <h1>Criar concurso</h1>
+                    <p>Preencha as informações para publicar seu concurso literário.</p>
+                </div>
             </header>
 
-            <nav
-                className="criacao-etapas"
-                aria-label="Etapas da criação do concurso"
-            >
-                {etapas.map((etapa, index) => (
+            <nav className="criacao-etapas" aria-label="Etapas da criação">
+                {c.etapas.map((etapa, indice) => (
                     <div
-                        className={`criacao-etapa ${index === etapaAtual ? "ativa" : ""
-                            } ${index < etapaAtual ? "concluida" : ""
-                            }`}
                         key={etapa}
+                        className={`criacao-etapa ${indice === c.etapaAtual ? "ativa" : ""
+                            } ${indice < c.etapaAtual ? "concluida" : ""}`}
                     >
-                        <div className="etapa-indicador">
-                            {index < etapaAtual ? "✓" : index + 1}
-                        </div>
-
+                        <span className="etapa-indicador">
+                            {indice < c.etapaAtual ? "✓" : indice + 1}
+                        </span>
                         <span>{etapa}</span>
                     </div>
                 ))}
             </nav>
 
-            <main className="criacao-conteudo">
-                {etapaAtual === 0 ? (
+            <section className="criacao-conteudo">
+                {c.etapaAtual === 0 && (
                     <>
+                        <div className="criacao-introducao">
+                            <h2>Identidade do concurso</h2>
+                            <p>Apresente seu concurso aos participantes.</p>
+                        </div>
 
                         <section className="identidade-grid">
                             <div className="criacao-card dados-card">
@@ -185,46 +69,38 @@ export default function CriarConcursoPortal() {
 
                                 <div className="campo">
                                     <label htmlFor="titulo-concurso">
-                                        Título <span>*</span>
+                                        Título <span className="obrigatorio">*</span>
                                     </label>
 
                                     <input
                                         id="titulo-concurso"
                                         type="text"
-                                        value={titulo}
-                                        onChange={(event) =>
-                                            setTitulo(event.currentTarget.value)
-                                        }
+                                        value={c.titulo}
+                                        onChange={(event) => c.setTitulo(event.currentTarget.value)}
                                         placeholder="Ex.: Prêmio Panorama de Poesia 2026"
-                                        maxLength={100}
+                                        maxLength={180}
+                                        required
                                     />
 
-                                    <div className="contador">
-                                        {titulo.length}/100
-                                    </div>
+                                    <div className="contador">{c.titulo.length}/180</div>
                                 </div>
 
                                 <div className="campo">
                                     <label htmlFor="descricao-concurso">
-                                        Descrição <span>*</span>
+                                        Descrição <span className="obrigatorio">*</span>
                                     </label>
 
                                     <textarea
                                         id="descricao-concurso"
-                                        value={descricao}
-                                        onChange={(event) =>
-                                            setDescricao(
-                                                event.currentTarget.value
-                                            )
-                                        }
+                                        value={c.descricao}
+                                        onChange={(event) => c.setDescricao(event.currentTarget.value)}
                                         placeholder="Apresente seu concurso, seus objetivos e o que espera dos participantes."
-                                        maxLength={500}
+                                        maxLength={5000}
                                         rows={5}
+                                        required
                                     />
 
-                                    <div className="contador">
-                                        {descricao.length}/500
-                                    </div>
+                                    <div className="contador">{c.descricao.length}/5000</div>
                                 </div>
                             </div>
 
@@ -234,26 +110,16 @@ export default function CriarConcursoPortal() {
                                     <h3>Imagem de capa</h3>
                                 </div>
 
-
                                 <div className="imagem-layout">
                                     <button
                                         type="button"
                                         className="imagem-upload"
-                                        onClick={() =>
-                                            inputImagemRef.current?.click()
-                                        }
-                                        onDragOver={arrastarImagem}
-                                        onDrop={soltarImagem}
+                                        onClick={() => c.inputImagemRef.current?.click()}
+                                        onDragOver={c.arrastarImagem}
+                                        onDrop={c.soltarImagem}
                                     >
-                                        <input
-                                            ref={inputImagemRef}
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={selecionarImagem}
-                                            hidden
-                                        />
-
                                         <CloudUpload />
+
                                         <strong>
                                             Clique para enviar
                                             <br />
@@ -267,18 +133,26 @@ export default function CriarConcursoPortal() {
                                         </small>
                                     </button>
 
+                                    <input
+                                        ref={c.inputImagemRef}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={c.selecionarImagem}
+                                        hidden
+                                    />
+
                                     <div className="imagem-preview">
-                                        {imagem ? (
+                                        {c.imagem ? (
                                             <>
                                                 <img
-                                                    src={imagem.url}
+                                                    src={c.imagem.url}
                                                     alt="Pré-visualização da imagem do concurso"
                                                 />
 
                                                 <button
                                                     type="button"
                                                     className="imagem-remover"
-                                                    onClick={removerImagem}
+                                                    onClick={c.removerImagem}
                                                     aria-label="Remover imagem"
                                                     title="Remover imagem"
                                                 >
@@ -288,32 +162,27 @@ export default function CriarConcursoPortal() {
                                         ) : (
                                             <div className="imagem-vazia">
                                                 <span>▧</span>
-                                                <p>
-                                                    A imagem selecionada
-                                                    aparecerá aqui.
-                                                </p>
+                                                <p>A imagem selecionada aparecerá aqui.</p>
                                             </div>
                                         )}
                                     </div>
                                 </div>
 
-                                {erroImagem && (
+                                {c.erroImagem && (
                                     <p className="erro-imagem" role="alert">
-                                        {erroImagem}
+                                        {c.erroImagem}
                                     </p>
                                 )}
 
-                                {imagem && (
+                                {c.imagem && (
                                     <div className="imagem-arquivo">
-                                        <span title={imagem.arquivo.name}>
-                                            {imagem.arquivo.name}
+                                        <span title={c.imagem.arquivo.name}>
+                                            {c.imagem.arquivo.name}
                                         </span>
 
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                inputImagemRef.current?.click()
-                                            }
+                                            onClick={() => c.inputImagemRef.current?.click()}
                                         >
                                             Substituir imagem
                                         </button>
@@ -322,366 +191,438 @@ export default function CriarConcursoPortal() {
                             </div>
                         </section>
                     </>
-                ) : etapaAtual === 1 ? (
+                )}
+
+                {c.etapaAtual === 1 && (
                     <>
-                        
-
+                        <div className="criacao-introducao">
+                            <h2>Regras e inscrições</h2>
+                            <p>Informe como os participantes poderão se inscrever.</p>
+                        </div>
                         <section className="regras-grid">
-                            <div className="criacao-card">
-                                <div className="card-titulo">
-                                    <BookText/>
-                                    <h3>Edital do concurso</h3>
-                                </div>
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                                <BookText/>
+                                <h3>Edital</h3>
+                            </div>
+                            <p className="card-descricao">
+                                Informe o link do edital ou envie o documento em PDF.
+                            </p>
 
-                                <div className="campo">
-                                    <label>Como deseja disponibilizar o edital?</label>
-
-                                    <div className="opcoes-edital">
-                                        <button
-                                            type="button"
-                                            className={
-                                                tipoEdital === "link" ? "selecionada" : ""
-                                            }
-                                            onClick={() => {
-                                                setTipoEdital("link");
-                                                setErroEdital("");
-                                            }}
-                                        >
-                                            Link externo
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className={
-                                                tipoEdital === "pdf" ? "selecionada" : ""
-                                            }
-                                            onClick={() => {
-                                                setTipoEdital("pdf");
-                                                setErroEdital("");
-                                            }}
-                                        >
-                                            Arquivo PDF
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {tipoEdital === "link" ? (
-                                    <div className="campo">
-                                        <label htmlFor="edital-link">
-                                            Link do edital
-                                        </label>
-
-                                        <input
-                                            id="edital-link"
-                                            type="url"
-                                            value={editalLink}
-                                            onChange={(event) =>
-                                                setEditalLink(event.currentTarget.value)
-                                            }
-                                            placeholder="https://exemplo.com/edital"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="campo">
-                                        <label htmlFor="edital-pdf">
-                                            Arquivo do edital
-                                        </label>
-
-                                        <label
-                                            className="edital-upload"
-                                            htmlFor="edital-pdf"
-                                        >
-                                            
-                                            <Upload className="upload-icone"/>
-
-                                            <strong>
-                                                {editalArquivo
-                                                    ? "Selecionar outro PDF"
-                                                    : "Clique para selecionar o PDF"}
-                                            </strong>
-                                        </label>
-
-                                        <input
-                                            id="edital-pdf"
-                                            className="input-arquivo-oculto"
-                                            type="file"
-                                            accept=".pdf,application/pdf"
-                                            onChange={selecionarEditalPdf}
-                                        />
-
-                                        {editalArquivo && (
-                                            <div className="edital-arquivo-selecionado">
-                                                <span title={editalArquivo.name}>
-                                                    {editalArquivo.name}
-                                                </span>
-
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setEditalArquivo(null)}
-                                                >
-                                                    Remover
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-
-                                {erroEdital && (
-                                    <p className="erro-imagem" role="alert">
-                                        {erroEdital}
-                                    </p>
-                                )}
+                            <div className="opcoes-edital">
+                                <button
+                                    type="button"
+                                    className={c.tipoEdital === "link" ? "selecionada" : ""}
+                                    onClick={() => {
+                                        c.setTipoEdital("link");
+                                        c.setErroEdital("");
+                                    }}
+                                >
+                                    Inserir link
+                                </button>
+                                <button
+                                    type="button"
+                                    className={c.tipoEdital === "pdf" ? "selecionada" : ""}
+                                    onClick={() => {
+                                        c.setTipoEdital("pdf");
+                                        c.setErroEdital("");
+                                    }}
+                                >
+                                    Enviar PDF
+                                </button>
                             </div>
 
-                            <div className="criacao-card">
-                                <div className="card-titulo">
-                                    <ClipboardPen/>
-                                    <h3>Formulário de inscrição</h3>
-                                </div>
-
-                            
-
+                            {c.tipoEdital === "link" ? (
                                 <div className="campo">
-                                    <label htmlFor="formulario-inscricao">
-                                        Link do formulário
-                                    </label>
-
+                                    <label htmlFor="edital-link">Link do edital</label>
                                     <input
-                                        id="formulario-inscricao"
+                                        id="edital-link"
                                         type="url"
-                                        value={formularioInscricao}
-                                        onChange={(event) =>
-                                            setFormularioInscricao(
-                                                event.currentTarget.value
-                                            )
-                                        }
-                                        placeholder="https://exemplo.com/inscricao"
+                                        value={c.editalLink}
+                                        onChange={(e) => c.setEditalLink(e.currentTarget.value)}
+                                        placeholder="https://..."
                                     />
-
-                                    <p className="campo-ajuda">
-                                        Pode ser um formulário externo, como Google Forms,
-                                        ou uma página própria de inscrição.
-                                    </p>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="campo">
+                                    <label htmlFor="edital-pdf">Arquivo do edital</label>
+                                    <input
+                                        ref={c.inputEditalRef}
+                                        id="edital-pdf"
+                                        type="file"
+                                        accept=".pdf,application/pdf"
+                                        onChange={c.selecionarEditalPdf}
+                                    />
+                                    {c.editalArquivo && (
+                                        <div className="edital-arquivo-selecionado">
+                                            <span>{c.editalArquivo.name}</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => c.setEditalArquivo(null)}
+                                            >
+                                                Remover
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
+                            {c.erroEdital && (
+                                <p className="campo-erro">{c.erroEdital}</p>
+                            )}
+                        </div>
+
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                                <ClipboardPen/>
+                                <h3>Formulário de inscrição</h3>
+                            </div>
+                            <div className="campo">
+                                <label htmlFor="formulario-inscricao">
+                                    Link do formulário
+                                </label>
+                                <input
+                                    id="formulario-inscricao"
+                                    type="url"
+                                    value={c.formularioInscricao}
+                                    onChange={(e) =>
+                                        c.setFormularioInscricao(e.currentTarget.value)
+                                    }
+                                    placeholder="https://..."
+                                />
+                            </div>
+                        </div>
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                               <SquareDashedText/>
+                                <h3>Limites da obra</h3>
+                            </div>
+                            <p className="card-descricao">
+                                Descreva livremente os limites de extensão. Você pode definir
+                                regras diferentes para cada categoria.
+                            </p>
+                            <div className="campo">
+                                <label htmlFor="limites-obra">Limites e especificações</label>
+                                <textarea
+                                    id="limites-obra"
+                                    value={c.limitesObra}
+                                    onChange={(e) => c.setLimitesObra(e.currentTarget.value)}
+                                    placeholder={
+                                        "Ex.: Poesias: até 40 versos.\nContos: entre 1.000 e 5.000 palavras.\nCrônicas: até 3.000 caracteres."
+                                    }
+                                    rows={5}
+                                    maxLength={2000}
+                                />
+                                <div className="contador">{c.limitesObra.length}/2000</div>
+                            </div>
+                        </div>
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                                <Ban />
+                                <h3>Restrições</h3>
+                            </div>
+                            <div className="campo">
+                                <label htmlFor="restricoes">Regras para participação</label>
+                                <textarea
+                                    id="restricoes"
+                                    value={c.restricoes}
+                                    onChange={(e) => c.setRestricoes(e.currentTarget.value)}
+                                    placeholder="Ex.: Apenas residentes do estado de São Paulo."
+                                    rows={4}
+                                    maxLength={3000}
+                                />
+                            </div>
+                        </div>
+                        <div className="regras-grid">
                             <div className="criacao-card">
                                 <div className="card-titulo">
-                                    <FileText/>
-                                    <h3>Limite de obras por participante</h3>
+                                    <FileText />
+                                    <h3>Limite de obras</h3>
                                 </div>
-
                                 <div className="campo">
                                     <label htmlFor="limite-obras">
-                                        Quantidade máxima de obras
+                                        Obras por participante
                                     </label>
-
                                     <input
                                         id="limite-obras"
                                         type="number"
-                                        min={1}
-                                        step={1}
-                                        inputMode="numeric"
-                                        value={limiteObras}
-                                        onChange={(event) => {
-                                            const valor = event.currentTarget.value;
-
-                                            if (/^\d*$/.test(valor)) {
-                                                setLimiteObras(valor);
-                                            }
-                                        }}
-                                        onBlur={() => {
-                                            if (
-                                                !limiteObras ||
-                                                Number(limiteObras) < 1
-                                            ) {
-                                                setLimiteObras("1");
-                                            }
-                                        }}
-                                        onKeyDown={(event) => {
-                                            if (["-", "+", "e", "E", "."].includes(event.key)) {
-                                                event.preventDefault();
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="criacao-card">
-                                <div className="card-titulo">
-                                    <Ban />
-                                    <h3>Restrições do concurso</h3>
-                                </div>
-
-                                <div className="campo">
-                                    <label htmlFor="restricoes-concurso">
-                                        Restrições e requisitos
-                                    </label>
-
-                                    <textarea
-                                        id="restricoes-concurso"
-                                        value={restricoes}
-                                        onChange={(event) =>
-                                            setRestricoes(event.currentTarget.value)
+                                        min="1"
+                                        step="1"
+                                        value={c.limiteObras}
+                                        onChange={(e) =>
+                                            c.setLimiteObras(e.currentTarget.value.replace(/\D/g, ""))
                                         }
-                                        placeholder="Ex.: Permitida a participação apenas de residentes do estado de São Paulo."
-                                        maxLength={1000}
-                                        rows={5}
                                     />
-
-                                    <div className="contador">
-                                        {restricoes.length}/1000
-                                    </div>
                                 </div>
                             </div>
 
-                            <div className="criacao-card">
-                                <div className="card-titulo">
-                                    <SquareDashedText/>
-                                    <h3>Limites das obras</h3>
-                                </div>
-
-                                <div className="campo">
-                                    <label htmlFor="limites-obra">
-                                        Limites e especificações
-                                    </label>
-
-                                    <textarea
-                                        id="limites-obra"
-                                        value={limitesObra}
-                                        onChange={(event) =>
-                                            setLimitesObra(event.currentTarget.value)
-                                        }
-                                        placeholder={"Ex.: Poesias: até 40 versos.\nContos: entre 1.000 e 5.000 palavras.\nCrônicas: até 3.000 caracteres."}
-                                        maxLength={2000}
-                                        rows={5}
-                                    />
-
-                                    <div className="contador">
-                                        {limiteObras.length}/2000
-                                    </div>
-
-                                    <p className="campo-ajuda">
-                                        Informe livremente as quantidades, unidades de medida
-                                        e regras específicas de cada categoria.
-                                    </p>
-                                </div>
-                            </div>
-
-        
                             <div className="criacao-card taxa-card">
                                 <div className="card-titulo">
-                                    <CircleDollarSign/>
+                                    <CircleDollarSign />
                                     <h3>Taxa de inscrição</h3>
                                 </div>
-
                                 <div className="campo">
-                                    <label htmlFor="taxa-inscricao">
-                                        Valor da taxa (R$)
-                                    </label>
-
+                                    <label htmlFor="taxa-inscricao">Valor</label>
                                     <input
                                         id="taxa-inscricao"
-                                        type="text"
                                         inputMode="numeric"
-                                        value={formatarMoeda(taxaInscricao)}
-                                        onChange={(event) =>
-                                            atualizarTaxaInscricao(
-                                                event.currentTarget.value
-                                            )
+                                        value={c.formatarMoeda(c.taxaInscricao)}
+                                        onChange={(e) =>
+                                            c.atualizarTaxaInscricao(e.currentTarget.value)
                                         }
                                         placeholder="R$ 0,00"
                                     />
-
-                                    <p className="campo-ajuda">
-                                        Deixar em branco se não houver.
-                                    </p>
                                 </div>
                             </div>
+                        </div>    
                         </section>
                     </>
-                ) : (
-                    <section className="criacao-card etapa-futura">
-                        <h2>
-                            {etapaAtual + 1}. {etapas[etapaAtual]}
-                        </h2>
-
-                        <p>Esta etapa será implementada posteriormente.</p>
-                    </section>
                 )}
-            </main>
 
-            <footer className="criacao-footer">
-                <button
-                    type="button"
-                    className="botao-cancelar"
-                    onClick={() => setModalCancelarAberto(true)}
-                >
-                    Cancelar
-                </button>
+                {c.etapaAtual === 2 && (
+                    <>
+                        <div className="criacao-introducao">
+                            <h2>Estrutura do concurso</h2>
+                            <p>
+                                Selecione todas as categorias literárias aceitas no concurso.
+                            </p>
+                        </div>
 
-                <div className="footer-direita">
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                               <Search/>
+                                <h3>
+                                    Categorias aceitas<span className="obrigatorio">*</span>
+                                </h3>
+                            </div>
+                            <p className="card-descricao">
+                                Pesquise e selecione uma ou mais categorias.
+                            </p>
+
+                            <div className="seletor-categorias">
+                                <label htmlFor="busca-categoria">Buscar categoria</label>
+                                {c.categoriasSelecionadas.length > 0 && (
+                                    <div className="categorias-selecionadas">
+                                        {categoriasSelecionadas.map((categoria) => (
+                                            <span className="categoria-tag" key={categoria.id}>
+                                                {categoria.nome}
+                                                <button
+                                                    className='remove-categoria'
+                                                    type="button"
+                                                    aria-label={`Remover ${categoria.nome}`}
+                                                    onClick={() => c.removerCategoria(categoria.id)}
+                                                >
+                                                    <CircleX/>
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                                <input
+                                    id="busca-categoria"
+                                    type="search"
+                                    value={c.buscaCategoria}
+                                    onFocus={() => c.setListaCategoriasAberta(true)}
+                                    onChange={(e) => {
+                                        c.setBuscaCategoria(e.currentTarget.value);
+                                        c.setListaCategoriasAberta(true);
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Escape") {
+                                            c.setListaCategoriasAberta(false);
+                                        }
+                                    }}
+                                    placeholder="Digite para pesquisar..."
+                                    autoComplete="off"
+                                />
+
+                                {c.listaCategoriasAberta && (
+                                    <div className="lista-categorias-concurso">
+                                        {c.carregandoCategorias ? (
+                                            <p>Carregando categorias...</p>
+                                        ) : c.categoriasFiltradas.length > 0 ? (
+                                            c.categoriasFiltradas.map((categoria) => (
+                                                <button
+                                                    type="button"
+                                                    key={categoria.id}
+                                                    onClick={() => c.alternarCategoria(categoria.id)}
+                                                >
+                                                    <span>{categoria.nome}</span>
+                                                    <Plus/>
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <p>Nenhuma categoria encontrada.</p>
+                                        )}
+                                    </div>
+                                )}
+                                <button
+                                    type="button"
+                                    className="botao-secundario"
+                                    onClick={() =>
+                                        c.setListaCategoriasAberta((aberta) => !aberta)
+                                    }
+                                >
+                                    {c.listaCategoriasAberta
+                                        ? <ChevronDown/>
+                                        : <ChevronUp/>}
+                                </button>
+
+                                
+
+                                
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {c.etapaAtual === 3 && (
+                    <>
+                        <div className="criacao-introducao">
+                            <h2>Premiação</h2>
+                            <p>Explique o que os participantes poderão receber.</p>
+                        </div>
+
+                        <div className="criacao-card">
+                            <div className="card-titulo">
+                                <Trophy/>
+                                <h3>
+                                    Premiação <span className="obrigatorio">*</span>
+                                </h3>
+                            </div>
+
+                            <div className="campo">
+                                <label htmlFor="premiacao">
+                                    Descrição da premiação
+                                </label>
+                                <textarea
+                                    id="premiacao"
+                                    value={c.premiacao}
+                                    onChange={(e) => c.setPremiacao(e.currentTarget.value)}
+                                    placeholder="Descreva os prêmios, certificados, publicações ou outras formas de reconhecimento..."
+                                    rows={6}
+                                    maxLength={5000}
+                                    required
+                                />
+                                <div className="contador">{c.premiacao.length}/5000</div>
+                            </div>
+
+                            <label className="check-premiacao-dinheiro">
+                                <input
+                                    type="checkbox"
+                                    checked={c.premiacaoEmDinheiro}
+                                    onChange={(e) =>
+                                        c.setPremiacaoEmDinheiro(e.currentTarget.checked)
+                                    }
+                                />
+                                <span>Inclui premiação em dinheiro?</span>
+                            </label>
+                        </div>
+
+                        <div className="resumo-categorias">
+                            <strong>Categorias selecionadas</strong>
+                            <div className="categorias-selecionadas">
+                                {categoriasSelecionadas.map((categoria) => (
+                                    <span className="categoria-tag" key={categoria.id}>
+                                        {categoria.nome}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {c.erroValidacao && (
+                    <p className="mensagem-erro" role="alert">
+                        {c.erroValidacao}
+                    </p>
+                )}
+
+                {c.erroRequisicao && (
+                    <p className="mensagem-erro" role="alert">
+                        {c.erroRequisicao}
+                    </p>
+                )}
+
+                <footer className="criacao-footer">
                     <button
                         type="button"
-                        className="botao-proximo"
-                        onClick={proximaEtapa}
-                        disabled={etapaAtual === etapas.length - 1}
+                        className="botao-cancelar"
+                        onClick={() => c.setModalCancelarAberto(true)}
+                        disabled={c.enviando}
                     >
-                        Próximo passo
-                        <ArrowBigRight />
+                        Cancelar
                     </button>
-                </div>
-            </footer>
 
-            {modalCancelarAberto && (
-                <div
-                    className="modal-overlay"
-                    onMouseDown={(event) => {
-                        if (event.target === event.currentTarget) {
-                            setModalCancelarAberto(false);
-                        }
-                    }}
-                >
-                    <section
+                    <div className="footer-direita">
+                        {c.etapaAtual > 0 && (
+                            <button
+                                type="button"
+                                className="botao-voltar"
+                                onClick={c.etapaAnterior}
+                                disabled={c.enviando}
+                            >
+                                <ArrowBigLeft />
+                                Voltar
+                            </button>
+                        )}
+
+                        {c.etapaAtual < c.etapas.length - 1 ? (
+                            <button
+                                type="button"
+                                className="botao-proximo"
+                                onClick={c.proximaEtapa}
+                            >
+                                Próximo
+                                <ArrowBigRight />
+                            </button>
+                        ) : (
+                            <button
+                                type="button"
+                                className="botao-principal"
+                                onClick={c.confirmarCriacao}
+                                disabled={c.enviando}
+                            >
+                                {c.enviando ? "Publicando..." : "Publicar"}
+                                <Megaphone/>
+                            </button>
+                        )}
+                    </div>
+                </footer>
+            </section>
+
+            {c.modalCancelarAberto && (
+                <div className="modal-overlay">
+                    <div
                         className="modal-cancelar"
                         role="dialog"
                         aria-modal="true"
-                        aria-labelledby="modal-cancelar-titulo"
+                        aria-labelledby="titulo-modal-cancelar"
                     >
-                        <div className="modal-alerta-icone">!</div>
-
-                        <h2 id="modal-cancelar-titulo">
-                            Cancelar criação do concurso?
-                        </h2>
-
+                        <h2 id="titulo-modal-cancelar">Cancelar publicação?</h2>
                         <p>
-                            Todo o progresso realizado será perdido. Os dados
-                            preenchidos e a imagem selecionada não serão
-                            salvos.
+                            Se você sair agora, as informações preenchidas serão perdidas.
+                            Deseja realmente cancelar?
                         </p>
-
                         <div className="modal-acoes">
                             <button
                                 type="button"
-                                className="botao-manter"
-                                onClick={() =>
-                                    setModalCancelarAberto(false)
-                                }
+                                className="botao-principal"
+                                onClick={() => c.setModalCancelarAberto(false)}
                             >
                                 Continuar editando
                             </button>
-
                             <button
                                 type="button"
-                                className="botao-confirmar-cancelamento"
-                                onClick={cancelarCriacao}
+                                className="botao-cancelar"
+                                onClick={c.cancelarCriacao}
                             >
                                 Sim, cancelar
                             </button>
                         </div>
-                    </section>
+                    </div>
                 </div>
             )}
-        </div>
+        </main>
     );
 }

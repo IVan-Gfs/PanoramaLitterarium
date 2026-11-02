@@ -18,3 +18,8 @@ export const apiGetConcursoById = async (idConcurso: number) => {
     const response = await api.get(`${ROTA.CONCURSO.POR_ID}${idConcurso}`);
     return response;
 }
+
+export const apiPostConcurso = async (data: any) => {
+    const response = await api.post(ROTA.CONCURSO.CRIAR, data);
+    return response;
+}
