@@ -32,8 +32,9 @@
       };
     }
 
-    static toDTO<T>(DtoClass: ClassConstructor<T>, concurso: Partial<Concurso>): T {
-      return plainToInstance(DtoClass, concurso, {
+    static toDTO<T>(DtoClass: ClassConstructor<T>, concurso: any): T {
+      const concursoDTO = {...concurso, categorias: concurso.categoria?.map((catCon: any) => catCon.categoria)}
+      return plainToInstance(DtoClass, concursoDTO, {
         excludeExtraneousValues: true,
         enableImplicitConversion: true
       });

@@ -1,6 +1,8 @@
 import { OrganizacaoResumoDto } from "src/organizacao/dto/organizacao.resumo";
 import { ConcursoBaseReponseDTO } from "./consurso.base.dto";
-import { Expose, Transform } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
+import { Categoria } from "@prisma/client";
+import { CategoriaResponseDTO } from "src/categoria/dto/categoria.response.dto";
 
 //DADOS DETALHADOS DO CONCURSO (PARTICIPANTE)
 export class ConcursoDetailDTO extends ConcursoBaseReponseDTO { 
@@ -45,4 +47,8 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
 
     @Expose()
     grupoCriterio?: string | null;
+
+    // @Expose()
+    // @Type(() => CategoriaResponseDTO)
+    // categorias!: CategoriaResponseDTO[] | null;
 }

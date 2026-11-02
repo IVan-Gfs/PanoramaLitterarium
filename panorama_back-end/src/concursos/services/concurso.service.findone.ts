@@ -13,7 +13,12 @@ export class concursoServiceFindOne {
         try{
             const concurso = await this.prismaService.concurso.findUniqueOrThrow({
                 where: {id: BigInt(id)},
-                include: {organizacao: true}
+                include: {
+                    organizacao: true, 
+                    categoria: {
+                        include: {categoria: true}
+                    }
+                }
             })
 
             return ConcursoMapper.toDTO(ConcursoDetailDTO, concurso);
