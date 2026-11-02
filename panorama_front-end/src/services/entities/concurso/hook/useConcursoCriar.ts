@@ -283,63 +283,95 @@ export function useCriarConcurso() {
     navigate("../concursos/listagem");
   }
 
-  async function confirmarCriacao() {
-    if (!validarEtapa(3) || enviando) return;
+ 
+async function confirmarCriacao() {
+  if (!validarEtapa(3) || enviando) return;
 
-    setEnviando(true);
-    setErroRequisicao("");
+  if (tipoEdital === "pdf" && !editalArquivo) {
+    setErroEdital("Selecione o arquivo PDF do edital.");
+    return;
+  }
 
-    try {
-        const concurso: ConcursoCreate = {
-            titulo: titulo.trim(),
-            descricao: descricao.trim(),
-            premiacao: premiacao.trim(),
-            prazoInscricao: new Date(`${prazoInscricao}T12:00:00`).toISOString(),
-            tema: tema.trim() || undefined,
-            limiteObras: Number(limiteObras),
-            taxaInscricao: taxaInscricao
-                ? Number(taxaInscricao) / 100
-                : 0,
-            restricao: restricoes.trim(),
-            linkEdital: tipoEdital === "link" ? editalLink.trim() : undefined,
-            linkInscricao: formularioInscricao.trim(),
-            categorias: categoriasSelecionadas.map(Number),
-        };
+  if (
+    limiteObras.trim() === "" ||
+    !Number.isInteger(Number(limiteObras)) ||
+    Number(limiteObras) < 1
+  ) {
+    setErroValidacao("Informe um limite de obras válido.");
+    return;
+  }
 
-        const data = new FormData();
+  setEnviando(true);
+  setErroRequisicao("");
 
-        Object.entries(concurso).forEach(([chave, valor]) => {
-            if (valor !== undefined) {
-                data.append(
-                    chave,
-                    Array.isArray(valor) ? JSON.stringify(valor) : String(valor)
-                );
-            }
-        });
+  try {
+    // Dados tipados conforme ConcursoCreate
+    const concurso: ConcursoCreate = {
+      titulo: titulo.trim(),
+      descricao: descricao.trim(),
+      premiacao: premiacao.trim(),
+      prazoInscricao: new Date(
+        `${prazoInscricao}T12:00:00`
+      ).toISOString(),
+      tema: tema.trim(),
+      limiteObras: Number(limiteObras),
+      taxaInscricao: taxaInscricao
+        ? Number(taxaInscricao) / 100
+        : 0,
+      restricao: restricoes.trim(),
+      linkInscricao: formularioInscricao.trim(),
+      categorias: categoriasSelecionadas.map(Number),
 
-        if (tema.trim()) {
-            data.append("tema", tema.trim());
-        }
-        if (imagem) {
-            data.append("imgCapa", imagem.url);
-        }
+      ...(tipoEdital === "link" && editalLink.trim()
+        ? { linkEdital: editalLink.trim() }
+        : {}),
+    };
 
-        if (tipoEdital === "pdf" && editalArquivo) {
-            data.append("pdfEdital", editalArquivo);
-        }
+    // Transporte multipart/form-data
+    const data = new FormData();
 
-        await apiPostConcurso(data);
+    Object.entries(concurso).forEach(([chave, valor]) => {
+      data.append(
+        chave,
+        Array.isArray(valor)
+          ? JSON.stringify(valor)
+          : String(valor)
+      );
+    });
 
-        navigate("../concursos/listagem");
-    } catch (erro: any) {
-        setErroRequisicao(
-            erro?.response?.data?.message ??
-            "Não foi possível criar o concurso. Verifique os dados e tente novamente."
-        );
-    } finally {
-        setEnviando(false);
+    // Arquivos originais
+    if (imagem) {
+      data.append("imgCapa", imagem.url);
     }
+
+    if (tipoEdital === "pdf" && editalArquivo) {
+      data.append("pdfEdital", editalArquivo);
+    }
+
+    await apiPostConcurso(data);
+
+    navigate("../concursos/listagem");
+
+  } catch (erro: any) {
+    console.error(
+      "Erro ao criar concurso:",
+      erro?.response?.data ?? erro
+    );
+
+    const mensagem = erro?.response?.data?.message;
+
+    setErroRequisicao(
+      Array.isArray(mensagem)
+        ? mensagem.join(" | ")
+        : mensagem ??
+          "Não foi possível criar o concurso. Verifique os dados e tente novamente."
+    );
+
+  } finally {
+    setEnviando(false);
+  }
 }
+
 
   return {
     etapas,
