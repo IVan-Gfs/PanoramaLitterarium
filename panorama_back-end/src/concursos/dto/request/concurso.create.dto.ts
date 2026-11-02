@@ -104,7 +104,7 @@ export class ConcursoCreateDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  organizacao?: number;
+  organizacao!: number;
 
   @IsOptional()
   @Type(() => Number)

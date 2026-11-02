@@ -25,7 +25,7 @@
           : undefined,
 
         organizacao: {
-          connect: { id: BigInt(dto.organizacao) },
+          connect: { id: BigInt(dto.organizacao)  },
         },
         
         grupoCriterio:  grupoCriterioConnect
