@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ROTA } from '../../services/router/url';
 import { apiGetConcursos, type SearchParams } from '../../services/entities/concurso/api/api.concurso';
 import type { Concurso, ConcursoPaginado } from '../../services/entities/concurso/type/Concurso';
-import { REST_CONFIG, STORAGE_CONFIG } from '../../services/constants/sistema.constants';
+import { STORAGE_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import { FiltroConcursos } from '../../components/search/filtroConcursos';
 import Pagination from '../../components/pagination/Pagination';
