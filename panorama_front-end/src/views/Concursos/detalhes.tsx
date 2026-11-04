@@ -59,8 +59,8 @@ export default function DetalhesConcurso() {
     }, [id]);
 
     const dados = detalhesConcurso?.dados as any;
-
-    console.log("Detalhes do concurso:", dados);
+    const prazoInscricao = new Date(dados?.prazoInscricao)
+    const inscricaoAberta = dados?.prazoInscricao && prazoInscricao >= new Date();
 
 
     return (
@@ -111,17 +111,22 @@ export default function DetalhesConcurso() {
                                 <span className="boxValorGrande">{formatarData(dados?.prazoInscricao)}</span>
                             </div>
 
-                            {dados?.linkInscricao ? (
-                                <a
-                                    href={dados.linkInscricao}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="btnInscreva btnInscrevaLink"
-                                >
-                                    Inscreva-se
-                                </a>
+                            {inscricaoAberta  ? (
+
+                                <button className="btnInscreva">
+                                    <a
+                                        href={dados.linkInscricao}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Inscreva-se
+                                    </a>
+                                </button>
+                                
                             ) : (
-                                <button className="btnInscreva">Inscreva-se</button>
+                                <button className="btnInscreva enderrado" disabled>
+                                    Inscrições encerradas
+                                </button>
                             )}
                         </div>
                     </div>
@@ -180,7 +185,7 @@ export default function DetalhesConcurso() {
                             </div>
                         </div>
 
-                        {dados?.linkInscricao && (
+                        {(dados?.limitesTexto && dados?.limitesTexto !== "Sem limites") && (
                             <div className="itemDetalhe">
                                 <span className="itemIcone"><Type /></span>
                                 <div>

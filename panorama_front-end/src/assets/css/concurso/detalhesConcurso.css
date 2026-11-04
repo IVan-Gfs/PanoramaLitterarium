@@ -122,11 +122,29 @@
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.enderrado{
+    background-color: #eb0e0e;
+    color: #fff;
+}
+
+.btnInscreva a {
+    color: #fff;
+    text-decoration: none;
+}
+.btnInscreva.enderrado:hover {
+    background-color: #a50e0e;
 }
 
 .btnInscreva:hover {
     background-color: #1e40af;
 }
+
+
 
 .divisor {
     border: none;
