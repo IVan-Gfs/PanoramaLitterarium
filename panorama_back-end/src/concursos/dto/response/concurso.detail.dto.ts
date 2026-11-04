@@ -48,7 +48,13 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
     @Expose()
     grupoCriterio?: string | null;
 
-    // @Expose()
-    // @Type(() => CategoriaResponseDTO)
-    // categorias!: CategoriaResponseDTO[] | null;
+    @Expose()
+    @Transform(({value})=> (value == null ? null : Number(value.toString())))
+    custoSelecionados?: number | null;
+
+    @Expose()
+    linkInscricao?: string | null;
+
+    @Expose()
+    limitesTexto?: string | null;
 }

@@ -266,4 +266,12 @@
         width: 100%;
         height: 260px;
     }
+
+    a.btnInscreva {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-sizing: border-box;
+}
 }
