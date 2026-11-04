@@ -40,6 +40,13 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
     linkEdital?: string | null;
 
     @Expose()
+    pdfEdital?: string | null;
+
+    @Expose()
+    @Transform(({value})=> (value instanceof Date ? value.toISOString() : value))
+    dataFinalizacao?: string | null;
+
+    @Expose()
     restricao?: string | null;
 
     @Expose()
@@ -51,6 +58,10 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
     @Expose()
     @Transform(({value})=> (value == null ? null : Number(value.toString())))
     custoSelecionados?: number | null;
+
+    @Expose()
+    @Transform(({value})=> (value == null ? null : Number(value.toString())))
+    valorTotalPremios?: number | null;
 
     @Expose()
     linkInscricao?: string | null;

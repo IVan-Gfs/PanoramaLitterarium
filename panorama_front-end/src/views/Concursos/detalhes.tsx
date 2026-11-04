@@ -2,13 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { apiGetConcursoById } from '../../services/entities/concurso/api/api.concurso';
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import type { DetalhesConcurso } from '../../services/entities/concurso/type/Concurso';
-import { ROTA } from '../../services/router/url';
-import { REST_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import '../../assets/css/concurso/detalhesConcurso.css';
-import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag, Type, Coins } from 'lucide-react';
+import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag, Type, Coins, ExternalLink, Star } from 'lucide-react';
 import setaVoltar from '../../../public/imgs/arrow-back.png';
 import type { Categoria } from '../../services/entities/categoria/type/Categoria';
+import { STORAGE_CONFIG } from '../../services/constants/sistema.constants';
 
 // Converte o valor (número ou string decimal vindo do Prisma) para moeda brasileira.
 function formatarMoeda(valor: number | string | null | undefined): string {
@@ -22,7 +21,7 @@ export default function DetalhesConcurso() {
 
     const [detalhesConcurso, setDetalhesConcurso] = useState<DetalhesConcurso | null>(null);
 
-    const img_path = `${REST_CONFIG.BASE_URL}${ROTA.CONCURSO.IMAGE_PATH}`;
+    const file_path = `${STORAGE_CONFIG.BASE_URL}/`;
 
     const buscarConcursoPorId = useCallback(
         async (id: number): Promise<DetalhesConcurso | null> => {
@@ -61,6 +60,8 @@ export default function DetalhesConcurso() {
 
     const dados = detalhesConcurso?.dados as any;
 
+    console.log("Detalhes do concurso:", dados);
+
 
     return (
         <div className="paginaDetalhes">
@@ -80,7 +81,7 @@ export default function DetalhesConcurso() {
                 <div className="topo">
                     <div className="imagem">
                         <img
-                            src={dados?.imgCapa ? img_path + dados.imgCapa : "/logo_default.svg"}
+                            src={dados?.imgCapa ? file_path + dados.imgCapa : "/logo.svg"}
                             alt="Imagem do concurso"
                             onError={(e) => {
                                 e.currentTarget.onerror = null;
@@ -133,10 +134,10 @@ export default function DetalhesConcurso() {
                     <p className="descricaoTexto">{dados?.descricao}</p>
                 </section>
 
-                {dados?.linkEdital && (
-                    <a href={dados.linkEdital} target="_blank" rel="noreferrer" className="cardEdital">
-                        <span className="editalNome"><FileText size={20} /> Link do edital (PDF)</span>
-                        <span className="editalAcao">Visualizar / Baixar ↗</span>
+                {(dados?.linkEdital || dados?.pdfEdital) && (
+                    <a href={dados.linkEdital ? dados.linkEdital : file_path + dados.pdfEdital} target="_blank" rel="noreferrer" className="cardEdital">
+                        <span className="editalNome"><FileText size={20} /> Link do Edital (PDF)</span>
+                        <span className="editalAcao"> Visualizar <ExternalLink /></span>
                     </a>
                 )}
 
@@ -146,41 +147,49 @@ export default function DetalhesConcurso() {
                             <span className="itemIcone"><Tag /></span>
                             <div>
                                 <p className="itemLabel">Tema</p>
-                                <p className="itemValor">{dados?.tema}</p>
+                                <p className="itemValor">{dados?.tema ? dados?.tema : "Livre"}</p>
                             </div>
                         </div>
 
-                        <div className="itemDetalhe">
-                            <span className="itemIcone"><Trophy /></span>
-                            <div>
-                                <p className="itemLabel">Quantidade de vencedores</p>
-                                <p className="itemValor">{dados?.qtdVencedores}</p>
+                        {(dados?.qtdVencedores || dados?.qtdVencedores === 0) && (
+                            <div className="itemDetalhe">
+                                <span className="itemIcone"><Trophy /></span>
+                                <div>
+                                    <p className="itemLabel">Quantidade de premiados</p>
+                                    <p className="itemValor">{dados?.qtdVencedores}</p>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="itemDetalhe">
-                            <span className="itemIcone"><LockKeyhole /></span>
-                            <div>
-                                <p className="itemLabel">Restrições</p>
-                                <p className="itemValor">{dados?.restricao || "Não há"}</p>
+                        {dados?.prazoInscricao && (
+                            <div className="itemDetalhe">
+                                <span className="itemIcone"><LockKeyhole /></span>
+                                <div>
+                                    <p className="itemLabel">Restrições</p>
+                                    <p className="itemValor">{dados?.restricao || "Não há"}</p>
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        
 
                         <div className="itemDetalhe">
                             <span className="itemIcone"><ScrollText /></span>
                             <div>
-                                <p className="itemLabel">Limite de obras</p>
+                                <p className="itemLabel">Obras por categoria</p>
                                 <p className="itemValor">{dados?.limiteObras ?? "Não há"}</p>
                             </div>
                         </div>
 
-                        <div className="itemDetalhe">
-                            <span className="itemIcone"><Type /></span>
-                            <div>
-                                <p className="itemLabel">Limites textuais</p>
-                                <p className="itemValor">{dados?.limitesTexto || "Não há"}</p>
+                        {dados?.linkInscricao && (
+                            <div className="itemDetalhe">
+                                <span className="itemIcone"><Type /></span>
+                                <div>
+                                    <p className="itemLabel">Limites textuais</p>
+                                    <p className="itemValor">{dados?.limitesTexto || "Não há"}</p>
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        
 
                         {/*
                           TODO: campos ainda não presentes na resposta da API:
@@ -190,14 +199,16 @@ export default function DetalhesConcurso() {
                     </div>
 
                     <div className="colunaDetalhes">
+
                         <div className="itemDetalhe">
                             <span className="itemIcone"><DollarSign /></span>
                             <div>
                                 <p className="itemLabel">Taxa de inscrição</p>
-                                <p className="itemValor">{dados?.taxaInscricao || "Não há"}</p>
+                                <p className="itemValor">{dados?.taxaInscricao ? formatarMoeda(dados?.taxaInscricao) : "Gratuíta"}</p>
                             </div>
                         </div>
 
+                        {dados?.custoSelecionados && (
                         <div className="itemDetalhe">
                             <span className="itemIcone"><Coins /></span>
                             <div>
@@ -205,6 +216,8 @@ export default function DetalhesConcurso() {
                                 <p className="itemValor">{formatarMoeda(dados?.custoSelecionados)}</p>
                             </div>
                         </div>
+                        )}
+                        
 
                         <div className="itemDetalhe">
                             <span className="itemIcone"><Medal /></span>
@@ -216,7 +229,7 @@ export default function DetalhesConcurso() {
 
                         {dados?.grupoCriterio?.length > 0 && (
                             <div className="criteriosBox">
-                                <p className="itemLabel criteriosTitulo">⭐ Critérios avaliativos</p>
+                                <p className="itemLabel criteriosTitulo"><Star /> Critérios avaliativos</p>
                                 <table className="tabelaCriterios">
                                     <thead>
                                         <tr>
@@ -242,7 +255,7 @@ export default function DetalhesConcurso() {
                     <span className="itemIcone"><MapPinned /></span>
                     <div>
                         <p className="itemLabel">Localidade</p>
-                        <p className="itemValor">{dados?.municipio} - {dados?.uf}, Brasil</p>
+                        <p className="itemValor">{dados?.municipio ? `${dados.municipio} - ${dados.uf}, Brasil` : 'Brasil'}</p>
                     </div>
                 </div>
 

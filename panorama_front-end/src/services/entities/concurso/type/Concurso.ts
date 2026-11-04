@@ -48,6 +48,11 @@ export interface DetalhesConcurso {
     categorias: Categoria[];
     organizacao: Organizacao[];
     linkEdital: string | null;
+    linkInscricao: string | null;
+    pdfEdital: string | null;
+    dataFinalizacao: string | null;
+    valorTotalPremios: number | null;
+    custoSelecionados: number | null;
     restricao: string | null;
     limiteObras: number | null;
     grupoCriterio: GrupoCriterio[];
