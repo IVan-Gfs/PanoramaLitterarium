@@ -6,9 +6,17 @@ import { ROTA } from '../../services/router/url';
 import { REST_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import '../../assets/css/concurso/detalhesConcurso.css';
-import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag } from 'lucide-react';
+import { Trophy, FileText, LockKeyhole, ScrollText, DollarSign, Medal, MapPinned, Tag, Type, Coins } from 'lucide-react';
 import setaVoltar from '../../../public/imgs/arrow-back.png';
 import type { Categoria } from '../../services/entities/categoria/type/Categoria';
+
+// Converte o valor (número ou string decimal vindo do Prisma) para moeda brasileira.
+function formatarMoeda(valor: number | string | null | undefined): string {
+    if (valor === null || valor === undefined || valor === "") return "Não há";
+    const numero = Number(valor);
+    if (Number.isNaN(numero)) return "Não há";
+    return numero.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
 export default function DetalhesConcurso() {
 
@@ -51,10 +59,6 @@ export default function DetalhesConcurso() {
         buscarDetalhes();
     }, [id]);
 
-    // A API retorna campos (tema, qtdVencedores, municipio, uf, taxaInscricao,
-    // premiacao, organizacao como objeto) que ainda não estão declarados na
-    // interface DetalhesConcurso. Usamos "any" aqui só pra liberar o acesso
-    // a esses campos extras sem mexer no type compartilhado.
     const dados = detalhesConcurso?.dados as any;
 
 
@@ -106,7 +110,18 @@ export default function DetalhesConcurso() {
                                 <span className="boxValorGrande">{formatarData(dados?.prazoInscricao)}</span>
                             </div>
 
-                            <button className="btnInscreva">Inscreva-se</button>
+                            {dados?.linkInscricao ? (
+                                <a
+                                    href={dados.linkInscricao}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="btnInscreva btnInscrevaLink"
+                                >
+                                    Inscreva-se
+                                </a>
+                            ) : (
+                                <button className="btnInscreva">Inscreva-se</button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -159,9 +174,17 @@ export default function DetalhesConcurso() {
                             </div>
                         </div>
 
+                        <div className="itemDetalhe">
+                            <span className="itemIcone"><Type /></span>
+                            <div>
+                                <p className="itemLabel">Limites textuais</p>
+                                <p className="itemValor">{dados?.limitesTexto || "Não há"}</p>
+                            </div>
+                        </div>
+
                         {/*
                           TODO: campos ainda não presentes na resposta da API:
-                          limites de caracteres, público-alvo, faixa etária.
+                          público-alvo, faixa etária.
                           Reativar quando existirem no back-end.
                         */}
                     </div>
@@ -172,6 +195,14 @@ export default function DetalhesConcurso() {
                             <div>
                                 <p className="itemLabel">Taxa de inscrição</p>
                                 <p className="itemValor">{dados?.taxaInscricao || "Não há"}</p>
+                            </div>
+                        </div>
+
+                        <div className="itemDetalhe">
+                            <span className="itemIcone"><Coins /></span>
+                            <div>
+                                <p className="itemLabel">Custo para obras selecionadas</p>
+                                <p className="itemValor">{formatarMoeda(dados?.custoSelecionados)}</p>
                             </div>
                         </div>
 

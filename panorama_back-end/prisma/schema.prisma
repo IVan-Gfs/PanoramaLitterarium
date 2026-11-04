@@ -72,7 +72,7 @@ model Concurso {
   linkEdital      String?
   pdfEdital       String?
   dataFinalizacao DateTime?
-  CustoSelecionados Decimal?     @db.Decimal(10, 2)
+  custoSelecionados Decimal?     @db.Decimal(10, 2)
   gratuito        Boolean       @default(true)
   premioEmDinheiro Boolean      @default(false)
   valorTotalPremios Decimal?    @db.Decimal(10, 2)
