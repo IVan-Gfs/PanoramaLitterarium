@@ -1,5 +1,6 @@
 import api from "../../../axios/config.axios";
 import { ROTA } from "../../../router/url";
+import type { ConcursoCreate } from "../type/Concurso";
 
 export interface SearchParams {
     page?: number;
@@ -19,7 +20,7 @@ export const apiGetConcursoById = async (idConcurso: number) => {
     return response;
 }
 
-export const apiPostConcurso = async (data: any) => {
+export const apiPostConcurso = async (data: ConcursoCreate) => {
     const response = await api.post(ROTA.CONCURSO.CRIAR, data);
     return response;
-}
+};

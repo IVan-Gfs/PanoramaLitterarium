@@ -37,7 +37,7 @@ function gerarRotasSistema(entity: string){
           CREATE: `/${CREATE}`,
           BY_ID: `/${BY_ID}/ `,
           UPDATE: `${UPDATE}`,
-          DELETE: `${DELETE}`
+          DELETE: `${DELETE}`,
     }
 }
 
@@ -51,9 +51,19 @@ function gerarRotasAuth(){
     }
 }
 
+function gerarRotasUpload(entity: string){
+    const base = `/${ROTA_SISTEMA}/${entity}`;
+    return {
+        BASE: base,
+        UPLOAD_URL: `/upload-url`,
+        DOWNLOAD: `/download`
+    }
+}
+
 export const ROTA = {
 
   AUTH: gerarRotasAuth(),
+  STORAGE: gerarRotasUpload('storage'),
 
   USUARIO: gerarRotasSistema(USUARIO),
   PESSOA: gerarRotasSistema(PESSOA),

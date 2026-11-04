@@ -47,10 +47,19 @@ function gerarRotaAuth(){
     }
 }
 
+function gerarRotasStorage(){
+  const base = `${ROTA_SISTEMA}/storage`;
+  return {
+    UPLOAD_URL: `/${base}/upload-url`,
+    DOWNLOAD_URL: `/${base}/download-url`,
+  }
+}
+
 export const ROTA = {
   CONCURSO: gerarRotaSistema(CONCURSO.ALIAS, CONCURSO.UPLOAD_FOLDER),
   CATEGORIA: gerarRotaSistema(CATEGORIA.ALIAS),
   USUARIO: gerarRotaSistema(USUARIO.ALIAS),
   GRUPO_CRITERIO: rotaSistema(CRITERIO.ALIAS_GROUPS),
+  STORAGE: gerarRotasStorage(),
   AUTH: gerarRotaAuth()
 };

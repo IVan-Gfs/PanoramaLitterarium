@@ -7,6 +7,7 @@ import { ROTA } from "../../../router/url";
 import { apiPostConcurso } from "../api/api.concurso";
 import type { CategoriaReponse } from "../../categoria/type/Categoria";
 import type { ConcursoCreate } from "../type/Concurso";
+import {apiGerarUploadUrl, apiEnviarArquivo} from "../../../storage/api.storage";
 
 
 // Ajuste estes caminhos para os arquivos existentes no seu projeto.
@@ -283,95 +284,108 @@ export function useCriarConcurso() {
     navigate("../concursos/listagem");
   }
 
- 
-async function confirmarCriacao() {
-  if (!validarEtapa(3) || enviando) return;
+  async function confirmarCriacao() {
+    if (!validarEtapa(3) || enviando) return;
 
-  if (tipoEdital === "pdf" && !editalArquivo) {
-    setErroEdital("Selecione o arquivo PDF do edital.");
-    return;
-  }
-
-  if (
-    limiteObras.trim() === "" ||
-    !Number.isInteger(Number(limiteObras)) ||
-    Number(limiteObras) < 1
-  ) {
-    setErroValidacao("Informe um limite de obras válido.");
-    return;
-  }
-
-  setEnviando(true);
-  setErroRequisicao("");
-
-  try {
-    // Dados tipados conforme ConcursoCreate
-    const concurso: ConcursoCreate = {
-      titulo: titulo.trim(),
-      descricao: descricao.trim(),
-      premiacao: premiacao.trim(),
-      prazoInscricao: new Date(
-        `${prazoInscricao}T12:00:00`
-      ).toISOString(),
-      tema: tema.trim(),
-      limiteObras: Number(limiteObras),
-      taxaInscricao: taxaInscricao
-        ? Number(taxaInscricao) / 100
-        : 0,
-      restricao: restricoes.trim(),
-      linkInscricao: formularioInscricao.trim(),
-      categorias: categoriasSelecionadas.map(Number),
-
-      ...(tipoEdital === "link" && editalLink.trim()
-        ? { linkEdital: editalLink.trim() }
-        : {}),
-    };
-
-    // Transporte multipart/form-data
-    const data = new FormData();
-
-    Object.entries(concurso).forEach(([chave, valor]) => {
-      data.append(
-        chave,
-        Array.isArray(valor)
-          ? JSON.stringify(valor)
-          : String(valor)
-      );
-    });
-
-    // Arquivos originais
-    if (imagem) {
-      data.append("imgCapa", imagem.url);
+    if (tipoEdital === "pdf" && !editalArquivo) {
+        setErroEdital("Selecione o arquivo PDF do edital.");
+        return;
     }
 
-    if (tipoEdital === "pdf" && editalArquivo) {
-      data.append("pdfEdital", editalArquivo);
+    if (
+        limiteObras.trim() === "" ||
+        !Number.isInteger(Number(limiteObras)) ||
+        Number(limiteObras) < 1
+    ) {
+        setErroValidacao("Informe um limite de obras válido.");
+        return;
     }
 
-    await apiPostConcurso(data);
+    setEnviando(true);
+    setErroRequisicao("");
 
-    navigate("../concursos/listagem");
+    try {
+        let imgCapa: string | undefined;
+        let pdfEdital: string | undefined;
 
-  } catch (erro: any) {
-    console.error(
-      "Erro ao criar concurso:",
-      erro?.response?.data ?? erro
-    );
+        if (imagem) {
+            const { uploadUrl, fileKey } = await apiGerarUploadUrl({
+                fileName: imagem.arquivo.name,
+                contentType: imagem.arquivo.type,
+                fileSize: imagem.arquivo.size,
+                type: "capa",
+            });
 
-    const mensagem = erro?.response?.data?.message;
+            await apiEnviarArquivo(uploadUrl, imagem.arquivo);
 
-    setErroRequisicao(
-      Array.isArray(mensagem)
-        ? mensagem.join(" | ")
-        : mensagem ??
-          "Não foi possível criar o concurso. Verifique os dados e tente novamente."
-    );
+            imgCapa = fileKey;
+        }
 
-  } finally {
-    setEnviando(false);
-  }
+        if (tipoEdital === "pdf" && editalArquivo) {
+            const { uploadUrl, fileKey } = await apiGerarUploadUrl({
+                fileName: editalArquivo.name,
+                contentType: "application/pdf",
+                fileSize: editalArquivo.size,
+                type: "edital",
+            });
+
+            await apiEnviarArquivo(uploadUrl, editalArquivo);
+
+            pdfEdital = fileKey;
+        }
+
+        const concurso: ConcursoCreate = {
+            titulo: titulo.trim(),
+            descricao: descricao.trim(),
+            premiacao: premiacao.trim(),
+            prazoInscricao: new Date(
+                `${prazoInscricao}T12:00:00`
+            ).toISOString(),
+            tema: tema.trim(),
+            limiteObras: Number(limiteObras),
+            limitesTexto: limitesObra.trim(),
+            taxaInscricao: taxaInscricao
+                ? Number(taxaInscricao) / 100
+                : 0,
+            restricao: restricoes.trim(),
+            linkInscricao: formularioInscricao.trim(),
+            categorias: categoriasSelecionadas
+                .map(Number)
+                .filter((item) => !isNaN(item) && item > 0),
+
+            ...(imgCapa ? { imgCapa } : {}),
+
+            ...(tipoEdital === "link" && editalLink.trim()
+                ? { linkEdital: editalLink.trim() }
+                : {}),
+
+            ...(pdfEdital ? { pdfEdital } : {}),
+        };
+
+        await apiPostConcurso(concurso);
+
+        navigate("../concursos/listagem");
+
+    } catch (erro: any) {
+        console.error(
+            "Erro ao criar concurso:",
+            erro?.response?.data ?? erro
+        );
+
+        const mensagem = erro?.response?.data?.message;
+
+        setErroRequisicao(
+            Array.isArray(mensagem)
+                ? mensagem.join(" | ")
+                : mensagem ??
+                    erro?.message ??
+                    "Não foi possível criar o concurso. Verifique os dados e tente novamente."
+        );
+
+    } finally {
+        setEnviando(false);
+    }
 }
-
 
   return {
     etapas,

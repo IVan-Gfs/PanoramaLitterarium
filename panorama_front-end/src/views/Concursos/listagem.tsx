@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ROTA } from '../../services/router/url';
 import { apiGetConcursos, type SearchParams } from '../../services/entities/concurso/api/api.concurso';
 import type { Concurso, ConcursoPaginado } from '../../services/entities/concurso/type/Concurso';
-import { REST_CONFIG } from '../../services/constants/sistema.constants';
+import { REST_CONFIG, STORAGE_CONFIG } from '../../services/constants/sistema.constants';
 import { formatarData } from '../../utils/date';
 import { FiltroConcursos } from '../../components/search/filtroConcursos';
 import Pagination from '../../components/pagination/Pagination';
@@ -42,7 +42,7 @@ export default function ConsultarConcursos ( ){
 
   const [loading, setLoading] = useState(true);
 
-  const img_path = `${REST_CONFIG.BASE_URL}${ROTA.CONCURSO.IMAGE_PATH}`;
+  const img_path = `${STORAGE_CONFIG.BASE_URL}/`;
 
   const buscarTodosConcursos = useCallback(
     async (params: SearchParams): Promise<ConcursoPaginado| null> => {
@@ -154,7 +154,7 @@ export default function ConsultarConcursos ( ){
                 <Link key={c.id} to={`./detalhes/?id=${c.id}`} className='item-concurso'>
                     <h2 className='titulo-concurso'>{c.titulo}</h2>
                     <img
-                        src={img_path+c.imgCapa || "/logo.svg"}
+                        src={img_path+c.imgCapa ? img_path+c.imgCapa : "/logo.svg"}
                         alt="capa-concurso"
                         className='capa-concurso'
                         onError={(e) => {

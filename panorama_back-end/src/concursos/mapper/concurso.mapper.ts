@@ -6,9 +6,9 @@
   export class ConcursoMapper{
 
     
-    static toCreateInput(dto: ConcursoCreateDto): Prisma.ConcursoCreateInput {
+    static toCreateInput(dto: ConcursoCreateDto, organizacaoId: number): Prisma.ConcursoCreateInput {
 
-      const {categoria, ...rest} = dto;
+      const {categorias, ...rest} = dto;
         const grupoCriterioConnect = dto.grupoCriterio
           ? {
               connect: {
@@ -25,7 +25,7 @@
           : undefined,
 
         organizacao: {
-          connect: { id: BigInt(dto.organizacao)  },
+          connect: { id: BigInt(organizacaoId)  },
         },
         
         grupoCriterio:  grupoCriterioConnect
