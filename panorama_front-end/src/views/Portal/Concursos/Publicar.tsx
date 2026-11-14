@@ -11,7 +11,6 @@ import {
     Image,
     Info,
     SquareDashedText,
-    Search,
     ArrowBigLeft,
     Plus,
     CircleX,
@@ -20,9 +19,9 @@ import {
     Trophy,
     Megaphone,
     ClipboardClock,
-    Sparkle,
     Sparkles,
     ChartColumnStacked,
+    Feather,
 } from "lucide-react";
 import '../../../assets/css/concurso/criarConcurso.css';
 export default function CriarConcursoPortal() {
@@ -602,14 +601,26 @@ export default function CriarConcursoPortal() {
                 )}
 
                 <footer className="criacao-footer">
-                    <button
-                        type="button"
-                        className="botao-cancelar"
-                        onClick={() => c.setModalCancelarAberto(true)}
-                        disabled={c.enviando}
-                    >
-                        Cancelar
-                    </button>
+
+                    <div className='footer-esquerda'>
+                        <button
+                            type="button"
+                            className="botao-cancelar"
+                            onClick={() => c.setModalCancelarAberto(true)}
+                            disabled={c.enviando}
+                            >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            className="botao-salvar-rascunho"
+                            onClick={() => c.confirmarCriacao("RASCUNHO")}
+                            disabled={c.enviando}
+                            >
+                            Salvar rascunho <Feather/>
+                        </button>
+                    </div>
+                    
 
                     <div className="footer-direita">
                         {c.etapaAtual > 0 && (
@@ -637,7 +648,7 @@ export default function CriarConcursoPortal() {
                             <button
                                 type="button"
                                 className="botao-principal"
-                                onClick={c.confirmarCriacao}
+                                onClick={()=> c.confirmarCriacao("PUBLICADO")}
                                 disabled={c.enviando}
                             >
                                 {c.enviando ? "Publicando..." : "Publicar"}

@@ -1,15 +1,15 @@
 import { Controller, Get, HttpStatus, Param, Req } from "@nestjs/common";
 import { ROTA } from "src/commons/constants/url.sistema";
 import { ConcursoDetailDTO } from "../dto/response/concurso.detail.dto";
-import { concursoServiceFindOne } from "../services/concurso.service.findone";
+import { ConcursoServiceFindOne } from "../services/concurso.service.findone";
 import { MensagemSistema } from "src/commons/mensagem/mensagem.sistema";
 import { Request } from "express";
 import { Result } from "src/commons/mensagem/mensagem";
 
 @Controller(ROTA.CONCURSO.BASE)
-export class concursoControllerFindOne{
+export class ConcursoControllerFindOne{
 
-    constructor(private readonly concursoServiceFindOne: concursoServiceFindOne){}
+    constructor(private readonly concursoServiceFindOne: ConcursoServiceFindOne){}
 
     
     @Get(':id')

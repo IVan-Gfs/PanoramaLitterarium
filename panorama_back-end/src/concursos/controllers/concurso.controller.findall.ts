@@ -1,7 +1,6 @@
-import { Controller, Get, HttpStatus, Query, Req } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Query, Req, UseGuards } from "@nestjs/common";
 import { ConcursoServiceFindAll } from "../services/concurso.service.findall";
 import { ROTA } from "src/commons/constants/url.sistema";
-
 import { MensagemSistema } from "src/commons/mensagem/mensagem.sistema";
 import { Request } from "express";
 import { Result } from "src/commons/mensagem/mensagem";
@@ -43,4 +42,5 @@ export class ConcursoControllerFindAll {
 
         return MensagemSistema.showMensagem(HttpStatus.OK, mensagem, response, res.path, null)
     }
+
 }

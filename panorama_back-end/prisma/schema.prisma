@@ -68,6 +68,7 @@ model Concurso {
   limitesTexto    String?       @default("Sem limites")
   restricao       String?       @default("Nenhuma restrição")
   etapaAtual      Int?          @default(1)
+  status          StatusConcurso?   @default(RASCUNHO)
   linkInscricao   String?
   linkEdital      String?
   pdfEdital       String?
@@ -330,7 +331,10 @@ enum InscricaoStatusPagamento {
   ISENTO
 }
 
-enum Tipoperfil {
-  PF
-  PJ
+enum StatusConcurso {
+  RASCUNHO
+  PUBLICADO
+  PAUSADO
+  ENCERRADO
+  CANCELADO
 }

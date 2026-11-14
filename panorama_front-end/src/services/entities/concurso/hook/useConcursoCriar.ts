@@ -284,7 +284,7 @@ export function useCriarConcurso() {
     navigate("../concursos/listagem");
   }
 
-  async function confirmarCriacao() {
+  async function confirmarCriacao(status: "RASCUNHO" | "PUBLICADO") {
     if (!validarEtapa(3) || enviando) return;
 
     if (tipoEdital === "pdf" && !editalArquivo) {
@@ -360,6 +360,7 @@ export function useCriarConcurso() {
                 : {}),
 
             ...(pdfEdital ? { pdfEdital } : {}),
+            status
         };
 
         await apiPostConcurso(concurso);

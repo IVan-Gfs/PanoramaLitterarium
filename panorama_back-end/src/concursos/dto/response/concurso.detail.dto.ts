@@ -8,6 +8,8 @@ import { CategoriaResponseDTO } from "src/categoria/dto/categoria.response.dto";
 export class ConcursoDetailDTO extends ConcursoBaseReponseDTO { 
 
     @Expose()
+    status?: string | null;
+    @Expose()
     descricao?: string | null;
 
     @Expose()

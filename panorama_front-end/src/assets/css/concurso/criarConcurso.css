@@ -391,6 +391,11 @@
     border-top: 1px solid #edf0f5;
 }
 
+.footer-esquerda  {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 .footer-direita {
     display: flex;
     align-items: center;
@@ -403,6 +408,7 @@
 .botao-principal,
 .botao-voltar,
 .botao-manter,
+.botao-salvar-rascunho,
 .botao-confirmar-cancelamento {
     display: inline-flex;
     align-items: center;
@@ -471,6 +477,30 @@
 
 .botao-proximo span {
     font-size: 18px;
+}
+.botao-salvar-rascunho {
+    background-color: #e5e7eb;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 0px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.botao-salvar-rascunho:hover {
+    background-color: #d1d5db;
+    border-color: #9ca3af;
+}
+
+.botao-salvar-rascunho:active {
+    background-color: #cbd5e1;
+}
+
+.botao-salvar-rascunho:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .modal-overlay {

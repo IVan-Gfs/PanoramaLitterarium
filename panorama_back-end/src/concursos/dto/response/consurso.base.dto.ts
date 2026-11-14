@@ -14,8 +14,6 @@ export class ConcursoBaseReponseDTO {
   @Expose()
   imgCapa?: string | null;
 
-  @Expose()
-  generoLiterario?: string | null;
 
   @Expose()
   @Type(() => CategoriaResponseDTO)

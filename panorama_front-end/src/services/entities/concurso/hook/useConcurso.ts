@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import type { Concurso, ConcursoPaginado } from "../type/Concurso";
-import { apiGetConcursos, type SearchParams } from "../api/api.concurso";
+import type {ConcursoOrganizacao, ConcursoOrganizacaoPaginado } from "../type/Concurso";
+import { apiGetConcursos, apiPutConcurso, type SearchParams } from "../api/api.concurso";
 import { ROTA } from "../../../router/url";
 
 export const useConcurso = () => {
-    const [concursos, setConcursos] = useState<Concurso[]>([]);
+    const [concursos, setConcursos] = useState<ConcursoOrganizacao[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     //Paginação
@@ -26,40 +26,57 @@ export const useConcurso = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
 
 
+
+    const atualizarConcurso = useCallback(
+        async (
+            payload: Partial<ConcursoOrganizacao>,
+            id: number
+        ): Promise<ConcursoOrganizacao | null> => {
+            try {
+                const response = await apiPutConcurso(id, payload);
+                return response.data.dados;
+            } catch (error) {
+                console.error("Erro ao atualizar concurso", error);
+                return null;
+            }
+        }
+
+        , [])
     const buscarConcurso = useCallback(
         async (
             params: SearchParams
-        ): Promise<ConcursoPaginado | null> =>{
-            
+        ): Promise<ConcursoOrganizacaoPaginado | null> => {
             try {
-                const response = await apiGetConcursos(ROTA.CONCURSO.LISTAR, params);
+                const response = await apiGetConcursos(ROTA.CONCURSO.LISTAR + '/organization', params);
                 return response.data;
             } catch (error) {
                 console.error(
-                    "Erro ao buscar grupos de critérios:",
+                    "Erro ao buscar Concurso:",
                     error
                 );
 
                 return null;
             }
+
         }
-    ,[])
+        , [])
 
     const fetchConcursos = useCallback(async () => {
-    
-            setLoading(true);
-    
+
+        setLoading(true);
+
+        try {
             const params: SearchParams = {
                 page: currentPage,
                 pageSize,
                 props,
                 order,
             };
-    
+
             const data = await buscarConcurso(params);
-    
+
             if (data) {
-    
+
                 const {
                     content,
                     page,
@@ -67,35 +84,34 @@ export const useConcurso = () => {
                     totalPages,
                     totalElements,
                 } = data.dados;
-    
+
                 setConcursos(content);
-    
                 setCurrentPage(page);
-    
                 setPageSize(responsePageSize);
-    
                 setTotalPages(totalPages);
-    
                 setTotalElements(totalElements);
             }
-    
+        }catch(error){
+            console.error("Erro ao carregar concursos:", error);
+        }finally {
             setLoading(false);
-    
-        }, [
-            currentPage,
-            pageSize,
-            props,
-            order,
-            orderBy,
-            searchTerm,
-            buscarConcurso,
-        ]);
+        }
 
-        useEffect(() => {
-                fetchConcursos();
-        }, [fetchConcursos]);
+    }, [
+        currentPage,
+        pageSize,
+        props,
+        order,
+        orderBy,
+        searchTerm,
+        buscarConcurso,
+    ]);
 
-        const handlePageChange = (page: number) => {
+    useEffect(() => {
+        fetchConcursos();
+    }, [fetchConcursos]);
+
+    const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
@@ -109,6 +125,23 @@ export const useConcurso = () => {
         setPageSize(value);
 
         setCurrentPage(1);
+    };
+
+    const handleTogglePause = async (concurso: ConcursoOrganizacao) => {
+
+        const novoStatus = concurso.status === "PUBLICADO" ? "PAUSADO" : "PUBLICADO"
+
+        const response = await atualizarConcurso({status: novoStatus}, concurso.id)
+
+        if (response) {
+            setConcursos((prev) =>
+                prev.map((item) =>
+                    item.id === concurso.id
+                        ? response
+                        : item
+                )
+            );
+        }
     };
 
 
@@ -162,6 +195,8 @@ export const useConcurso = () => {
         handleSearchChange,
         handleOrderChange,
         handleOrderByChange,
+
+        handleTogglePause,
 
         refetch: fetchConcursos,
     };

@@ -14,10 +14,21 @@ export type ListagemColumn<T> = {
 
     render?: (item: T) => ReactNode;
 };
+export type ListagemAction<T> = {
+    key: string;
+    label: string;
+    icon: ReactNode;
+    className?: string;
+    onClick: (item: T) => void;
+    visible?: (item: T) => boolean;
+    disabled?: (item: T) => boolean;
+};
 
 type ListagemProps<T> = {
     data: T[];
     columns: ListagemColumn<T>[];
+
+    actions?: ListagemAction<T>[];
 
     loading?: boolean;
     emptyMessage?: string;
@@ -32,31 +43,22 @@ type ListagemProps<T> = {
         event: React.ChangeEvent<HTMLSelectElement>
     ) => void;
 
-    /**
-     * Clique em qualquer lugar da linha.
-     */
     onRowClick?: (item: T) => void;
-
-    /**
-     * Clique no botão de editar.
-     */
     onEdit?: (item: T) => void;
-
-    /**
-     * Clique no botão de excluir.
-     */
     onDelete?: (item: T) => void;
 
-    /**
-     * Define se a coluna de ações será exibida.
-     * Por padrão é true.
-     */
+    // Controle de visibilidade
+    showEdit?: (item: T) => boolean;
+    showDelete?: (item: T) => boolean;
+
     showActions?: boolean;
 };
+
 
 const Listagem = <T,>({
     data,
     columns,
+    actions = [],
 
     loading = false,
     emptyMessage = 'Nenhum registro encontrado.',
@@ -72,9 +74,11 @@ const Listagem = <T,>({
     onEdit,
     onDelete,
 
+    showEdit,
+    showDelete,
+
     showActions = true,
 }: ListagemProps<T>) => {
-
     const handleEdit = (
         event: React.MouseEvent,
         item: T
@@ -92,6 +96,7 @@ const Listagem = <T,>({
 
         onDelete?.(item);
     };
+
 
     return (
         <div className="listagem">
@@ -197,51 +202,68 @@ const Listagem = <T,>({
                                     {showActions && (
                                         <td className="listagem-actions">
 
-                                            {onEdit && (
+                                            {/* Editar */}
+                                            {onEdit && showEdit?.(item) !== false && (
                                                 <button
                                                     type="button"
                                                     className="listagem-action-button listagem-action-edit"
                                                     title="Editar"
                                                     aria-label="Editar"
-                                                    onClick={(event) =>
-                                                        handleEdit(
-                                                            event,
-                                                            item
-                                                        )
-                                                    }
+                                                    onClick={(event) => handleEdit(event, item)}
                                                 >
-                                                    <Pencil
-                                                        size={17}
-                                                        strokeWidth={2}
-                                                    />
+                                                    <Pencil size={17} strokeWidth={2} />
                                                 </button>
                                             )}
 
-                                            {onDelete && (
+                                            {/* Excluir */}
+                                            {onDelete && showDelete?.(item) !== false && (
                                                 <button
                                                     type="button"
                                                     className="listagem-action-button listagem-action-delete"
                                                     title="Excluir"
                                                     aria-label="Excluir"
-                                                    onClick={(event) =>
-                                                        handleDelete(
-                                                            event,
-                                                            item
-                                                        )
-                                                    }
+                                                    onClick={(event) => handleDelete(event, item)}
                                                 >
-                                                    <Trash2
-                                                        size={17}
-                                                        strokeWidth={2}
-                                                    />
+                                                    <Trash2 size={17} strokeWidth={2} />
                                                 </button>
                                             )}
+
+                                            {/* Ações adicionais */}
+                                            {actions.map((action) => {
+                                                const visible = action.visible?.(item) ?? true;
+                                                if (!visible) return null;
+                                                const disabled = action.disabled?.(item) ?? false;
+                                                
+
+                                                return (
+                                                    <button
+                                                        key={action.key}
+                                                        type="button"
+                                                        className={`listagem-action-button ${action.className ?? ''}`}
+                                                        title={disabled ? `${action.label} indisponível` : action.label}
+                                                        aria-label={action.label}
+                                                        aria-disabled={disabled}
+                                                        disabled={disabled}
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+
+                                                            if (!disabled) {
+                                                                action.onClick(item);
+                                                            }
+                                                        }}
+                                                    >
+                                                        {action.icon}
+                                                    </button>
+                                                );
+                                            })}
 
                                         </td>
                                     )}
 
                                 </tr>
                             ))}
+
+
 
                     </tbody>
 

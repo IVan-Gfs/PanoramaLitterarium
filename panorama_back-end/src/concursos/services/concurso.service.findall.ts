@@ -7,6 +7,7 @@ import { searchFieldsConcurso, orderFieldsConcurso } from "../constants/concurso
 import { Page } from "src/commons/pagination/page.sistema";
 
 
+
 @Injectable()
 export class ConcursoServiceFindAll {
 
@@ -29,7 +30,9 @@ export class ConcursoServiceFindAll {
     const pageable = new Pageable(page, pageSize, props, order, orderBy, searchFieldsConcurso, orderFieldsConcurso); 
 
     //Prepara a cláusula WHERE para busca, usando o campo especificado em pageable.props
-    const where: any = {}
+    const where: any = {
+        status: 'PUBLICADO'
+    }
     const categoriasArray = categorias ? categorias.split(',').map(id => Number(id)).filter(id => !isNaN(id)) : []; 
     const listBooleanFlags = Object.entries(booleanFlags ?? {});
 

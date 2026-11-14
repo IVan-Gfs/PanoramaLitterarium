@@ -9,6 +9,18 @@ export interface Concurso {
     categorias: Categoria[]; 
 }
 
+export interface ConcursoOrganizacao {
+    id: number;
+    titulo: string;
+    descricao: string;
+    prazoInscricao: string;
+    dataFinalizacao: string;
+    status: string;
+    etapaAtual: number;
+    imgCapa: string;
+    categorias: Categoria[]; 
+}
+
 export interface ConcursoCreate {
     titulo: string;
     imgCapa?: string;
@@ -31,6 +43,7 @@ export interface ConcursoCreate {
     valorTotalPremios?: number;
     custoSelecionados?: number;
     grupoCriterio?: number;
+    status?: string;
     categorias: Number[];
 }
 
@@ -67,6 +80,15 @@ export interface GrupoCriterio {
 export interface ConcursoPaginado {
   dados: {
     content: Concurso[];
+    page: number;
+    pageSize: number;
+    totalPages: number;
+    totalElements: number;
+  }
+}
+export interface ConcursoOrganizacaoPaginado {
+  dados: {
+    content: ConcursoOrganizacao[];
     page: number;
     pageSize: number;
     totalPages: number;

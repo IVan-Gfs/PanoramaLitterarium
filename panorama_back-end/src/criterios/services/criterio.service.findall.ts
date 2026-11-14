@@ -38,7 +38,7 @@ export class CriterioServiceFindAll {
             where[pageable.props] = {
                 contains: search,
             };
-        } // ← estava faltando
+        } 
 
         const [criterios, totalitems] = await Promise.all([
             this.prismaService.grupoCriterio.findMany({

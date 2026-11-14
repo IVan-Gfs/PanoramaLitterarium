@@ -2,21 +2,26 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConcursoDetailDTO } from "../dto/response/concurso.detail.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ConcursoMapper } from "../mapper/concurso.mapper";
-import { Concurso } from "@prisma/client";
+
 
 @Injectable()
-export class concursoServiceFindOne {
+export class ConcursoServiceFindOne {
     constructor(private readonly prismaService: PrismaService){}
 
     async findOne(id: number): Promise<ConcursoDetailDTO>{
         
         try{
             const concurso = await this.prismaService.concurso.findUniqueOrThrow({
-                where: {id: BigInt(id)},
+                where: {
+                    id: BigInt(id),
+                    status: {
+                        in: ["PUBLICADO", "ENCERRADO", "CANCELADO"]
+                    }
+                },
                 include: {
                     organizacao: true, 
                     categoria: {
-                        include: {categoria: true}
+                        include: {categoria: true},
                     }
                 }
             })

@@ -1,3 +1,4 @@
+import { data } from "react-router-dom";
 import api from "../../../axios/config.axios";
 import { ROTA } from "../../../router/url";
 import type { ConcursoCreate } from "../type/Concurso";
@@ -16,7 +17,7 @@ export const apiGetConcursos = async (url: string, params: SearchParams) =>{
 }
 
 export const apiGetConcursoById = async (idConcurso: number) => {
-    const response = await api.get(`${ROTA.CONCURSO.POR_ID}${idConcurso}`);
+    const response = await api.get(ROTA.CONCURSO.POR_ID + idConcurso);
     return response;
 }
 
@@ -24,3 +25,12 @@ export const apiPostConcurso = async (data: ConcursoCreate) => {
     const response = await api.post(ROTA.CONCURSO.CRIAR, data);
     return response;
 };
+
+export const apiPutConcurso = async (idConcurso: number, data: any) => {
+    const response = await api.patch(ROTA.CONCURSO.ATUALIZAR + idConcurso, data)
+    return response;
+}
+
+export const apiDeleteConcurso = async (idConcurso: number) => {
+    await api.delete(ROTA.CONCURSO.EXCLUIR + idConcurso)
+}

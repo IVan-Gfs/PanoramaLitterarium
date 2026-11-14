@@ -23,8 +23,8 @@ function gerarRotaSistema(entity: string, folder?: string) {
     LISTAR: `/${base}/${LISTAR}`,
     CRIAR: `/${base}`,
     POR_ID: `/${base}/`,
-    ATUALIZAR: `/${base}/${ATUALIZAR}`,
-    EXCLUIR: `/${base}/${EXCLUIR}`,
+    ATUALIZAR: `/${base}/`,
+    EXCLUIR: `/${base}/`,
     IMAGE_PATH: `/${base_path}/`,
   };
 }
