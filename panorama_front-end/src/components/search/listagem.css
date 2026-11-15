@@ -1,17 +1,33 @@
+
+/* =========================================
+   LISTAGEM
+========================================= */
+
 .listagem {
     width: 100%;
-    margin-top: 100px;
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
 }
+
+/* TABELA */
 
 .listagem-table-container {
     width: 100%;
-    overflow-x: auto;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+
+    overflow: auto;
 
     border: 1px solid #dce5ef;
     border-radius: 6px;
 
     background-color: #ffffff;
-    margin-bottom: 80px;
 }
 
 .listagem-table {
@@ -25,13 +41,11 @@
 
 .listagem-table th {
     height: 48px;
-
     padding: 0 16px;
 
     border-bottom: 1px solid #dce5ef;
 
     color: #172b4d;
-
     font-size: 14px;
     font-weight: 600;
 
@@ -40,13 +54,11 @@
 
 .listagem-table td {
     height: 52px;
-
     padding: 0 16px;
 
     border-bottom: 1px solid #edf1f5;
 
     color: #334e68;
-
     font-size: 14px;
 }
 
@@ -60,20 +72,27 @@
 
 .listagem-message {
     height: 160px !important;
-
     text-align: center !important;
-
     color: #718096 !important;
 }
 
+/* FOOTER */
+
 .listagem-footer {
     display: flex;
+   
+    justify-content:space-evenly;
 
-    align-items: center;
-    justify-content: space-between;
+    gap: 55vw;
 
-    margin-top: 16px;
+    flex-shrink: 0;
+
+    margin-top: auto;
+    padding-top: 16px;
+    
 }
+
+/* LINHAS */
 
 .listagem-row-clickable {
     cursor: pointer;
@@ -83,17 +102,16 @@
     background-color: #f5f8fc;
 }
 
+/* AÇÕES */
+
 .listagem-actions-header {
     width: 120px;
-
     text-align: center !important;
 }
 
 .listagem-actions {
     width: 120px;
-
     text-align: left;
-
     white-space: nowrap;
 }
 
@@ -102,6 +120,7 @@
     align-items: center;
     justify-content: center;
     vertical-align: middle;
+
     width: 34px;
     height: 34px;
 
@@ -111,15 +130,14 @@
     border-radius: 5px;
 
     background: transparent;
-
     cursor: pointer;
 
     transition: background-color 0.15s ease, color 0.15s ease;
 }
+
 .listagem-action-button:disabled {
     opacity: 0.25;
     cursor: not-allowed;
-    pointer-events: auto;
 }
 
 .listagem-action-button:disabled:hover {
@@ -147,43 +165,42 @@
     color: #a52f2f;
 }
 
+/* STATUS */
 
 .item-listagem-status {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 20px;
     padding: 4px 10px;
+
     font-size: 12px;
     font-weight: 500;
     line-height: 1.3;
+
     white-space: nowrap;
     border: 1px solid transparent;
 }
 
-
-/* Rascunho */
 .STATUS-RASCUNHO {
     background-color: #dadcdf;
     color: #475569;
     border-color: #dadcdf;
 }
 
-/* Publicado */
 .STATUS-PUBLICADO {
     background-color: #DCFCE7;
     color: #166534;
     border-color: #BBF7D0;
 }
 
-/* Pausado */
 .STATUS-PAUSADO {
     background-color: #FEF3C7;
     color: #92400E;
     border-color: #FDE68A;
 }
 
-/* Encerrado */
 .STATUS-ENCERRADO {
     background-color: #DBEAFE;
     color: #1E40AF;
@@ -196,6 +213,7 @@
     border-color: #FECACA;
 }
 
+/* AÇÕES ADICIONAIS */
 
 .listagem-action-pause {
     color: #D97706;
@@ -206,7 +224,6 @@
     color: #92400E;
 }
 
-
 .listagem-action-play {
     color: #16A34A;
 }
@@ -216,4 +233,12 @@
     color: #166534;
 }
 
+/* RESPONSIVIDADE */
 
+@media (max-width: 600px) {
+    .listagem-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

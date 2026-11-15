@@ -1,17 +1,61 @@
-/* LayoutPortal.css */
+/* =========================================
+   LAYOUT PRINCIPAL DO PORTAL
+========================================= */
 
 .portal-layout-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden; /* Evita barras de rolagem duplas na tela inteira */
+    display: flex;
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
 }
 
+/* Área principal */
+
 .portal-main-content {
-  flex: 1; /* Ocupa 100% do espaço restante ao lado do menu */
-  height: 100vh;
-  overflow-y: auto; /* A rolagem vertical acontece apenas aqui dentro se o conteúdo crescer */
-  padding: 40px; /* Espaçamento opcional para as suas páginas respirarem */
-  background-color: #ffffff; /* Cor de fundo da área de conteúdo */
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+/* Área onde as páginas são renderizadas */
+
+.portal-page-content {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    padding: 32px 40px 24px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+/* Responsividade */
+
+@media (max-width: 1024px) {
+    .portal-page-content {
+        padding: 28px 24px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .portal-page-content {
+        padding: 20px 16px;
+    }
 }

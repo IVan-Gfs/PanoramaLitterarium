@@ -9,6 +9,8 @@ import { ConcursoControllerOrgFindAll } from "./controllers/concurso.controller.
 import { ConcursoServiceOrgFindAll } from "./services/concurso.service.org.findall";
 import { ConcursoControllerUpdate } from "./controllers/concurso.controller.update";
 import { ConcursoServiceUpdate } from "./services/concurso.service.update";
+import { ConcursoControllerDelete } from "./controllers/concurso.controller.delete";
+import { ConcursoServiceDelete } from "./services/concurso.service.delete";
 
 
 const controllers = [
@@ -16,14 +18,16 @@ const controllers = [
     ConcursoControllerFindAll, 
     ConcursoControllerFindOne,
     ConcursoControllerOrgFindAll,
-    ConcursoControllerUpdate
+    ConcursoControllerUpdate,
+    ConcursoControllerDelete
 ]
 const services = [
     ConcursoServiceCreate,
     ConcursoServiceFindAll, 
     ConcursoServiceFindOne,
     ConcursoServiceOrgFindAll,
-    ConcursoServiceUpdate
+    ConcursoServiceUpdate,
+    ConcursoServiceDelete
 ]
 @Module({
     controllers: [...controllers],

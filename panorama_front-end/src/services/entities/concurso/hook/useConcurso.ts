@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import type {ConcursoOrganizacao, ConcursoOrganizacaoPaginado } from "../type/Concurso";
-import { apiGetConcursos, apiPutConcurso, type SearchParams } from "../api/api.concurso";
+import type { ConcursoOrganizacao, ConcursoOrganizacaoPaginado } from "../type/Concurso";
+import { apiDeleteConcurso, apiGetConcursos, apiPutConcurso, type SearchParams } from "../api/api.concurso";
 import { ROTA } from "../../../router/url";
 
 export const useConcurso = () => {
@@ -25,6 +25,8 @@ export const useConcurso = () => {
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
+    const [concursoParaExcluir, setConcursoParaExcluir] = useState<ConcursoOrganizacao | null>(null);
+
 
 
     const atualizarConcurso = useCallback(
@@ -41,6 +43,18 @@ export const useConcurso = () => {
             }
         }
 
+        , [])
+
+    const deletarConcurso = useCallback(
+        async (id: number): Promise<Boolean> => {
+            try {
+                await apiDeleteConcurso(id);
+                return true;
+            } catch (error) {
+                console.error("Erro ao deletar concurso", error);
+                return false;
+            }
+        }
         , [])
     const buscarConcurso = useCallback(
         async (
@@ -91,9 +105,9 @@ export const useConcurso = () => {
                 setTotalPages(totalPages);
                 setTotalElements(totalElements);
             }
-        }catch(error){
+        } catch (error) {
             console.error("Erro ao carregar concursos:", error);
-        }finally {
+        } finally {
             setLoading(false);
         }
 
@@ -131,7 +145,7 @@ export const useConcurso = () => {
 
         const novoStatus = concurso.status === "PUBLICADO" ? "PAUSADO" : "PUBLICADO"
 
-        const response = await atualizarConcurso({status: novoStatus}, concurso.id)
+        const response = await atualizarConcurso({ status: novoStatus }, concurso.id)
 
         if (response) {
             setConcursos((prev) =>
@@ -142,6 +156,45 @@ export const useConcurso = () => {
                 )
             );
         }
+    };
+    const handleDelete = async (
+        concurso: ConcursoOrganizacao
+    ) => {
+
+        const sucesso = await deletarConcurso(concurso.id);
+
+        if (!sucesso) return false;
+
+        setConcursos((prev) =>
+            prev.filter((item) => item.id !== concurso.id)
+        );
+
+        const novoTotal = totalElements - 1;
+        setTotalElements(novoTotal);
+
+        const novasPaginas = Math.ceil(novoTotal / pageSize);
+
+        if (currentPage > novasPaginas && novasPaginas > 0) {
+            setCurrentPage(novasPaginas);
+        }
+
+        return true;
+
+    };
+    const handleRequestDelete = (concurso: ConcursoOrganizacao) => {
+        setConcursoParaExcluir(concurso);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setConcursoParaExcluir(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!concursoParaExcluir) return false;
+
+        const sucesso = await handleDelete(concursoParaExcluir);
+
+        return sucesso;
     };
 
 
@@ -197,6 +250,11 @@ export const useConcurso = () => {
         handleOrderByChange,
 
         handleTogglePause,
+        handleDelete,
+        handleRequestDelete,
+        handleCloseDeleteModal,
+        handleConfirmDelete,
+        concursoParaExcluir,
 
         refetch: fetchConcursos,
     };

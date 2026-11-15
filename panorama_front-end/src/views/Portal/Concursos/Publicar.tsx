@@ -33,12 +33,6 @@ export default function CriarConcursoPortal() {
 
     return (
         <main className="criar-concurso">
-            <header className="criacao-header">
-                <div>
-                    <h1>Criar concurso</h1>
-                    <p>Preencha as informações para publicar seu concurso literário.</p>
-                </div>
-            </header>
 
             <nav className="criacao-etapas" aria-label="Etapas da criação">
                 {c.etapas.map((etapa, indice) => (

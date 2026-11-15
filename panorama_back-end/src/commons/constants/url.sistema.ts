@@ -37,7 +37,7 @@ function gerarRotasSistema(entity: string){
           CREATE: `/${CREATE}`,
           BY_ID: `/${BY_ID}/ `,
           UPDATE: `${UPDATE}`,
-          DELETE: `${DELETE}`,
+          DELETE: `/${DELETE}`,
     }
 }
 

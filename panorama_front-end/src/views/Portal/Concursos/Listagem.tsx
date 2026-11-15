@@ -7,6 +7,9 @@ import Listagem, {
 import ModalEditarGrupoCriterio from "../../../components/modal/modalGrupoCriterio";
 import { formatarData } from "../../../utils/date";
 import { Ban, ClipboardList, Pause, Play } from "lucide-react";
+import ModalConfirmacao from "../../../components/modal/modalConfimacao";
+import "../../../assets/css/concurso/listagemPortal.css";
+
 
 const ListagemConcursoPortal: React.FC = () => {
 
@@ -20,12 +23,16 @@ const ListagemConcursoPortal: React.FC = () => {
         totalPages,
         handlePageChange,
         handlePageSizeChange,
-        handleTogglePause
-
+        handleTogglePause,
+        handleRequestDelete,
+        handleCloseDeleteModal,
+        handleConfirmDelete,
+        concursoParaExcluir,
 
     } = useConcurso();
 
     const [concursoSelecionado, setConcursoSelecionado] = useState<ConcursoOrganizacao | null>(null);
+    
 
     const handleEdit = (
         concurso: ConcursoOrganizacao
@@ -39,15 +46,7 @@ const ListagemConcursoPortal: React.FC = () => {
         setConcursoSelecionado(null);
     };
 
-    const handleDelete = (
-        concurso: ConcursoOrganizacao
-    ) => {
-
-        console.log(
-            "Excluir concurso:",
-            concurso
-        );
-    };
+    
 
     const handleTriagem = () => { }
     const handleCancel = () => { }
@@ -103,19 +102,10 @@ const ListagemConcursoPortal: React.FC = () => {
 
 
     return (
-        <div className="criterios-biblioteca">
-
-            <header className="criterios-biblioteca__header">
-
-                <h1>
-                    Concursos e Seleções
-                </h1>
+        <div className="pagina-concursos__content">
 
 
-            </header>
-
-
-            <section className="criterios-biblioteca__content">
+            <section className="concursos__content">
 
                 <Listagem
                     data={concursos}
@@ -131,13 +121,9 @@ const ListagemConcursoPortal: React.FC = () => {
 
                     onRowClick={handleEdit}
                     onEdit={handleEdit}
-                    onDelete={handleDelete}
+                    onDelete={handleRequestDelete}
                     showEdit={(concurso) => concurso.status !== "CANCELADO"}
-
-                    // Excluir somente rascunhos
-                    showDelete={(concurso) =>
-                        concurso.status === "RASCUNHO"
-                    }
+                    showDelete={(concurso) => concurso.status === "RASCUNHO"}
 
                     // Ações adicionais
                     actions={[
@@ -192,6 +178,19 @@ const ListagemConcursoPortal: React.FC = () => {
                     onClose={handleCloseModal}
                 />
             )} */}
+
+            <ModalConfirmacao
+                isOpen={!!concursoParaExcluir}
+                titulo="Confirmar exclusão"
+                mensagem={
+                    `Tem certeza que deseja excluir o concurso "${concursoParaExcluir?.titulo}"?`
+                }
+                descricao="Essa ação não poderá ser desfeita."
+                textoConfirmar="Excluir"
+                textoCancelar="Cancelar"
+                onConfirm={handleConfirmDelete}
+                onClose={handleCloseDeleteModal}
+            />
 
         </div>
     );

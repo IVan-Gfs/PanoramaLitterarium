@@ -1,3 +1,4 @@
+
 import type { ReactNode } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 
@@ -11,9 +12,9 @@ export type ListagemColumn<T> = {
     label: string;
     width?: string;
     align?: 'left' | 'center' | 'right';
-
     render?: (item: T) => ReactNode;
 };
+
 export type ListagemAction<T> = {
     key: string;
     label: string;
@@ -27,7 +28,6 @@ export type ListagemAction<T> = {
 type ListagemProps<T> = {
     data: T[];
     columns: ListagemColumn<T>[];
-
     actions?: ListagemAction<T>[];
 
     loading?: boolean;
@@ -47,13 +47,11 @@ type ListagemProps<T> = {
     onEdit?: (item: T) => void;
     onDelete?: (item: T) => void;
 
-    // Controle de visibilidade
     showEdit?: (item: T) => boolean;
     showDelete?: (item: T) => boolean;
 
     showActions?: boolean;
 };
-
 
 const Listagem = <T,>({
     data,
@@ -79,12 +77,12 @@ const Listagem = <T,>({
 
     showActions = true,
 }: ListagemProps<T>) => {
+
     const handleEdit = (
         event: React.MouseEvent,
         item: T
     ) => {
         event.stopPropagation();
-
         onEdit?.(item);
     };
 
@@ -93,10 +91,8 @@ const Listagem = <T,>({
         item: T
     ) => {
         event.stopPropagation();
-
         onDelete?.(item);
     };
-
 
     return (
         <div className="listagem">
@@ -113,8 +109,7 @@ const Listagem = <T,>({
                                     key={column.key}
                                     style={{
                                         width: column.width,
-                                        textAlign:
-                                            column.align ?? 'left',
+                                        textAlign: column.align ?? 'left',
                                     }}
                                 >
                                     {column.label}
@@ -122,9 +117,7 @@ const Listagem = <T,>({
                             ))}
 
                             {showActions && (
-                                <th
-                                    className="listagem-actions-header"
-                                >
+                                <th className="listagem-actions-header">
                                     Ações
                                 </th>
                             )}
@@ -137,10 +130,7 @@ const Listagem = <T,>({
                         {loading && (
                             <tr>
                                 <td
-                                    colSpan={
-                                        columns.length +
-                                        (showActions ? 1 : 0)
-                                    }
+                                    colSpan={columns.length + (showActions ? 1 : 0)}
                                     className="listagem-message"
                                 >
                                     Carregando...
@@ -151,10 +141,7 @@ const Listagem = <T,>({
                         {!loading && data.length === 0 && (
                             <tr>
                                 <td
-                                    colSpan={
-                                        columns.length +
-                                        (showActions ? 1 : 0)
-                                    }
+                                    colSpan={columns.length + (showActions ? 1 : 0)}
                                     className="listagem-message"
                                 >
                                     {emptyMessage}
@@ -162,108 +149,95 @@ const Listagem = <T,>({
                             </tr>
                         )}
 
-                        {!loading &&
-                            data.map((item, index) => (
-                                <tr
-                                    key={index}
-                                    className={
-                                        onRowClick
-                                            ? 'listagem-row-clickable'
-                                            : ''
-                                    }
-                                    onClick={() =>
-                                        onRowClick?.(item)
-                                    }
-                                >
+                        {!loading && data.map((item, index) => (
+                            <tr
+                                key={index}
+                                className={
+                                    onRowClick
+                                        ? 'listagem-row-clickable'
+                                        : ''
+                                }
+                                onClick={() => onRowClick?.(item)}
+                            >
 
-                                    {columns.map((column) => (
-                                        <td
-                                            key={column.key}
-                                            style={{
-                                                textAlign:
-                                                    column.align ??
-                                                    'left',
-                                            }}
-                                        >
-                                            {column.render
-                                                ? column.render(item)
-                                                : String(
-                                                    (
-                                                        item as Record<
-                                                            string,
-                                                            unknown
-                                                        >
-                                                    )[column.key] ??
-                                                    '-'
-                                                )}
-                                        </td>
-                                    ))}
-
-                                    {showActions && (
-                                        <td className="listagem-actions">
-
-                                            {/* Editar */}
-                                            {onEdit && showEdit?.(item) !== false && (
-                                                <button
-                                                    type="button"
-                                                    className="listagem-action-button listagem-action-edit"
-                                                    title="Editar"
-                                                    aria-label="Editar"
-                                                    onClick={(event) => handleEdit(event, item)}
-                                                >
-                                                    <Pencil size={17} strokeWidth={2} />
-                                                </button>
+                                {columns.map((column) => (
+                                    <td
+                                        key={column.key}
+                                        style={{
+                                            textAlign: column.align ?? 'left',
+                                        }}
+                                    >
+                                        {column.render
+                                            ? column.render(item)
+                                            : String(
+                                                (
+                                                    item as Record<string, unknown>
+                                                )[column.key] ?? '-'
                                             )}
+                                    </td>
+                                ))}
 
-                                            {/* Excluir */}
-                                            {onDelete && showDelete?.(item) !== false && (
+                                {showActions && (
+                                    <td className="listagem-actions">
+
+                                        {onEdit && showEdit?.(item) !== false && (
+                                            <button
+                                                type="button"
+                                                className="listagem-action-button listagem-action-edit"
+                                                title="Editar"
+                                                aria-label="Editar"
+                                                onClick={(event) => handleEdit(event, item)}
+                                            >
+                                                <Pencil size={17} strokeWidth={2} />
+                                            </button>
+                                        )}
+
+                                        {onDelete && showDelete?.(item) !== false && (
+                                            <button
+                                                type="button"
+                                                className="listagem-action-button listagem-action-delete"
+                                                title="Excluir"
+                                                aria-label="Excluir"
+                                                onClick={(event) => handleDelete(event, item)}
+                                            >
+                                                <Trash2 size={17} strokeWidth={2} />
+                                            </button>
+                                        )}
+
+                                        {actions.map((action) => {
+                                            const visible = action.visible?.(item) ?? true;
+                                            if (!visible) return null;
+
+                                            const disabled = action.disabled?.(item) ?? false;
+
+                                            return (
                                                 <button
+                                                    key={action.key}
                                                     type="button"
-                                                    className="listagem-action-button listagem-action-delete"
-                                                    title="Excluir"
-                                                    aria-label="Excluir"
-                                                    onClick={(event) => handleDelete(event, item)}
+                                                    className={`listagem-action-button ${action.className ?? ''}`}
+                                                    title={disabled
+                                                        ? `${action.label} indisponível`
+                                                        : action.label}
+                                                    aria-label={action.label}
+                                                    disabled={disabled}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+
+                                                        if (!disabled) {
+                                                            action.onClick(item);
+                                                        }
+                                                    }}
                                                 >
-                                                    <Trash2 size={17} strokeWidth={2} />
+                                                    {action.icon}
                                                 </button>
-                                            )}
+                                            );
+                                        })}
 
-                                            {/* Ações adicionais */}
-                                            {actions.map((action) => {
-                                                const visible = action.visible?.(item) ?? true;
-                                                if (!visible) return null;
-                                                const disabled = action.disabled?.(item) ?? false;
-                                                
+                                    </td>
+                                )}
 
-                                                return (
-                                                    <button
-                                                        key={action.key}
-                                                        type="button"
-                                                        className={`listagem-action-button ${action.className ?? ''}`}
-                                                        title={disabled ? `${action.label} indisponível` : action.label}
-                                                        aria-label={action.label}
-                                                        aria-disabled={disabled}
-                                                        disabled={disabled}
-                                                        onClick={(event) => {
-                                                            event.stopPropagation();
-
-                                                            if (!disabled) {
-                                                                action.onClick(item);
-                                                            }
-                                                        }}
-                                                    >
-                                                        {action.icon}
-                                                    </button>
-                                                );
-                                            })}
-
-                                        </td>
-                                    )}
-
-                                </tr>
-                            ))}
-
-
+                            </tr>
+                        ))}
 
                     </tbody>
 

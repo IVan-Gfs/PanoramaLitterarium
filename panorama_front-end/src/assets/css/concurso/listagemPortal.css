@@ -1,0 +1,31 @@
+
+
+.pagina-portal {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    width: 100%;
+}
+
+.pagina-concursos {
+    width: 100%;
+}
+
+.concursos__content{
+    height: 100%;
+}
+
+.pagina-concursos__content {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    width: 100%;
+}
