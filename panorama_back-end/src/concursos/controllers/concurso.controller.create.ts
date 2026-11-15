@@ -23,6 +23,7 @@ export class ConcursoControllerCreate {
 
         const organizacaoId = res.user.perfil?.organizacao?.id;
 
+        console.log(concursoRequest.status)
         if (!organizacaoId) {
             throw new Error('Apenas usuários vinculados a uma Organização podem cadastrar concursos');
         }

@@ -24,14 +24,14 @@ export interface ConcursoOrganizacao {
 export interface ConcursoCreate {
     titulo: string;
     imgCapa?: string;
-    descricao: string;
+    descricao?: string;
     qtdVencedores?: number;
     taxaInscricao?: number;
     tema?: string;
     municipio?: string;
     uf?: string;
-    premiacao: string;
-    prazoInscricao: string;
+    premiacao?: string;
+    prazoInscricao?: string;
     limiteObras?: number;
     restricao?: string;
     etapaAtual?: number;
@@ -44,7 +44,7 @@ export interface ConcursoCreate {
     custoSelecionados?: number;
     grupoCriterio?: number;
     status?: string;
-    categorias: Number[];
+    categorias?: Number[];
 }
 
 export interface Organizacao {

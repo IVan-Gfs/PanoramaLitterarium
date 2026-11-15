@@ -228,7 +228,7 @@ export function useCriarConcurso() {
     );
   }
 
-  function validarEtapa(etapa: number): boolean {
+  function validarEtapa(etapa: number, status?: string): boolean {
     setErroValidacao("");
 
     if (etapa === 0) {
@@ -237,30 +237,30 @@ export function useCriarConcurso() {
         return false;
       }
 
-      if (!descricao.trim()) {
+      if (!descricao.trim() && status != "RASCUNHO") {
         setErroValidacao("Informe a descrição do concurso.");
         return false;
       }
     }
 
     if (etapa === 1) {
-    if (!prazoInscricao) {
-        setErroValidacao("Informe o prazo de inscrição.");
-        return false;
-    }
+      if (!prazoInscricao && status != "RASCUNHO") {
+          setErroValidacao("Informe o prazo de inscrição.");
+          return false;
+      }
 
-    if (new Date(`${prazoInscricao}T23:59:59`) < new Date()) {
-        setErroValidacao("O prazo de inscrição não pode estar no passado.");
-        return false;
-    }
-}
+      if (prazoInscricao && new Date(`${prazoInscricao}T23:59:59`) < new Date()) {
+          setErroValidacao("O prazo de inscrição não pode estar no passado.");
+          return false;
+      }
+  }
 
-    if (etapa === 2 && categoriasSelecionadas.length === 0) {
+    if (etapa === 2 && categoriasSelecionadas.length === 0 && status != "RASCUNHO") {
       setErroValidacao("Selecione pelo menos uma categoria.");
       return false;
     }
 
-    if (etapa === 3 && !premiacao.trim()) {
+    if (etapa === 3 && !premiacao.trim() && status != "RASCUNHO") {
       setErroValidacao("Descreva a premiação do concurso.");
       return false;
     }
@@ -285,7 +285,7 @@ export function useCriarConcurso() {
   }
 
   async function confirmarCriacao(status: "RASCUNHO" | "PUBLICADO") {
-    if (!validarEtapa(3) || enviando) return;
+    if (!validarEtapa(3, status) || enviando) return;
 
     if (tipoEdital === "pdf" && !editalArquivo) {
         setErroEdital("Selecione o arquivo PDF do edital.");
@@ -338,9 +338,13 @@ export function useCriarConcurso() {
             titulo: titulo.trim(),
             descricao: descricao.trim(),
             premiacao: premiacao.trim(),
-            prazoInscricao: new Date(
-                `${prazoInscricao}T12:00:00`
-            ).toISOString(),
+            ...(prazoInscricao
+                ? {
+                    prazoInscricao: new Date(
+                        `${prazoInscricao}T12:00:00`
+                    ).toISOString(),
+                }
+                : {}),
             tema: tema.trim(),
             limiteObras: Number(limiteObras),
             limitesTexto: limitesObra.trim(),

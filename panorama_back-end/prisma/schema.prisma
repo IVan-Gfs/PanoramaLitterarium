@@ -59,7 +59,7 @@ model Concurso {
   generoLiterario String?       @default("DIVERSOS")
   qtdVencedores   Int?
   taxaInscricao   Decimal?
-  tema            String?       @default("Livre")
+  tema            String?       @db.Text @default("Livre")
   municipio       String?
   uf              String?       @db.Char(2)
   premiacao       String?

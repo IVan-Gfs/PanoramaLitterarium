@@ -13,18 +13,15 @@ export class ConcursoServiceCreate {
         organizacaoId: number 
     ): Promise<ConcursoDetailDTO> {
 
-        if(!ConcursoRequest.categorias || ConcursoRequest.categorias.length === 0) {
-            throw new Error('É obrigatório informar ao menos uma categoria para o concurso');
-        }
         const createInput = ConcursoMapper.toCreateInput(ConcursoRequest, organizacaoId);
 
         const concurso = await this.prismaService.concurso.create({
             data: createInput,
         })
-
-        const categoriaConnect = ConcursoRequest.categorias.map(
+        
+        const categoriaConnect = ConcursoRequest.categorias ? ConcursoRequest.categorias.map(
             categoriaId => ({ id: categoriaId })
-        )
+        ) : []
 
         await this.prismaService.categoriaConcurso.createMany({
             data: categoriaConnect.map(categoria => ({
