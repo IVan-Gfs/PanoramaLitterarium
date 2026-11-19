@@ -64,7 +64,7 @@ export class ConcursoServiceOrgFindAll {
             this.prismaService.concurso.findMany({
                 skip: pageable.offset,
                 take: pageable.limit,
-                include: { categoria: { include: { categoria: true } } },
+                include: { categoriaConcurso: { include: { categoria: true } } },
                 where,
                 orderBy: { 
                     [pageable.orderBy]: pageable.order.toLowerCase(),

@@ -1,3 +1,4 @@
+
 generator client {
   provider     = "prisma-client-js"
   moduleFormat = "cjs"
@@ -8,16 +9,16 @@ datasource db {
 }
 
 model AnaliseAvaliacao {
-  id            BigInt                    @id @default(autoincrement())
+  id            BigInt                 @id @default(autoincrement())
   anotacaoGeral String?
   fase          Int
-  status        AnaliseAvaliacaoStatus   @default(PENDENTE)
+  status        AnaliseAvaliacaoStatus @default(PENDENTE)
   submissaoId   BigInt
   bancaId       BigInt
-  createdAt     DateTime                 @default(now())
-  updatedAt     DateTime                 @updatedAt
-  banca         Banca                    @relation(fields: [bancaId], references: [id], map: "AnaliseAvaliacao_bancaId_fkey")
-  submissao     Submissao                @relation(fields: [submissaoId], references: [id], map: "AnaliseAvaliacao_submissaoId_fkey")
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  banca         Banca                  @relation(fields: [bancaId], references: [id], map: "AnaliseAvaliacao_bancaId_fkey")
+  submissao     Submissao              @relation(fields: [submissaoId], references: [id], map: "AnaliseAvaliacao_submissaoId_fkey")
   anotacao      Anotacao[]
   nota          Nota[]
 
@@ -26,94 +27,94 @@ model AnaliseAvaliacao {
 }
 
 model Anotacao {
-  id               BigInt            @id @default(autoincrement())
+  id               BigInt           @id @default(autoincrement())
   texto            String
   inicio           Int
   fim              Int
   analiseId        BigInt
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  analiseavaliacao AnaliseAvaliacao  @relation(fields: [analiseId], references: [id], map: "Anotacao_analiseId_fkey")
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  analiseAvaliacao AnaliseAvaliacao @relation(fields: [analiseId], references: [id], map: "Anotacao_analiseId_fkey")
 
   @@index([analiseId], map: "Anotacao_analiseId_fkey")
 }
 
 model Banca {
-  id               BigInt              @id @default(autoincrement())
+  id               BigInt             @id @default(autoincrement())
   juradoId         BigInt
   concursoId       BigInt
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-  analiseavaliacao AnaliseAvaliacao[]
-  concurso         Concurso            @relation(fields: [concursoId], references: [id], map: "Banca_concursoId_fkey")
-  jurado           Jurado              @relation(fields: [juradoId], references: [id], map: "Banca_juradoId_fkey")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  analiseAvaliacao AnaliseAvaliacao[]
+  concurso         Concurso           @relation(fields: [concursoId], references: [id], map: "Banca_concursoId_fkey")
+  jurado           Jurado             @relation(fields: [juradoId], references: [id], map: "Banca_juradoId_fkey")
 
   @@unique([juradoId, concursoId], map: "Banca_juradoId_concursoId_key")
   @@index([concursoId], map: "Banca_concursoId_fkey")
 }
 
-model Concurso {
-  id              BigInt        @id @default(autoincrement())
-  titulo          String?
-  imgCapa         String?
-  generoLiterario String?       @default("DIVERSOS")
-  qtdVencedores   Int?
-  taxaInscricao   Decimal?
-  tema            String?       @db.Text
-  municipio       String?
-  uf              String?       @db.Char(2)
-  premiacao       String?
-  prazoInscricao  DateTime?
-  limiteObras     Int?          @default(1)
-  limitesTexto    String?       @default("Sem limites")
-  restricao       String?       @default("Nenhuma restrição")
-  etapaAtual      Int?          @default(1)
-  status          StatusConcurso?   @default(RASCUNHO)
-  linkInscricao   String?
-  linkEdital      String?
-  pdfEdital       String?
-  dataFinalizacao DateTime?
-  custoSelecionados Decimal?     @db.Decimal(10, 2)
-  gratuito        Boolean       @default(true)
-  premioEmDinheiro Boolean      @default(false)
-  valorTotalPremios Decimal?    @db.Decimal(10, 2)
-  organizacaoId   BigInt
-  grupoCriterioId BigInt?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  descricao       String? @db.Text
-  banca           Banca[]
-  grupoCriterio   GrupoCriterio? @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
-  organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
-  inscricao       Inscricao[]
-  categoria       CategoriaConcurso[]
-
-  @@index([grupoCriterioId], map: "Concurso_grupoCriterioId_fkey")
-  @@index([organizacaoId], map: "Concurso_organizacaoId_fkey")
-}
-
-model  Categoria {
-  id          BigInt      @id @default(autoincrement())
-  nome        String      @unique
-  descricao   String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  imgCapaCategoria     String?
-  concurso     CategoriaConcurso[]
+model Categoria {
+  id                BigInt              @id @default(autoincrement())
+  nome              String              @unique(map: "Categoria_nome_key")
+  descricao         String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  imgCapaCategoria  String?
+  categoriaConcurso CategoriaConcurso[]
 }
 
 model CategoriaConcurso {
-  id          BigInt      @id @default(autoincrement())
-  concursoId   BigInt
-  categoriaId  BigInt
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  concurso     Concurso    @relation(fields: [concursoId], references: [id], map: "CategoriaConcurso_concursoId_fkey")
-  categoria    Categoria   @relation(fields: [categoriaId], references: [id], map: "CategoriaConcurso_categoriaId_fkey")
+  id          BigInt    @id @default(autoincrement())
+  concursoId  BigInt
+  categoriaId BigInt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  categoria   Categoria @relation(fields: [categoriaId], references: [id], map: "CategoriaConcurso_categoriaId_fkey")
+  concurso    Concurso  @relation(fields: [concursoId], references: [id])
 
   @@unique([concursoId, categoriaId], map: "CategoriaConcurso_concursoId_categoriaId_key")
-  @@index([concursoId], map: "CategoriaConcurso_concursoId_fkey")
   @@index([categoriaId], map: "CategoriaConcurso_categoriaId_fkey")
+  @@index([concursoId], map: "CategoriaConcurso_concursoId_fkey")
+}
+
+model Concurso {
+  id                BigInt          @id @default(autoincrement())
+  titulo            String?
+  imgCapa           String?
+  generoLiterario   String?         @default("DIVERSOS")
+  qtdVencedores     Int?
+  taxaInscricao     Decimal?
+  tema              String?         @default("Livre")
+  municipio         String?
+  uf                String?         @db.Char(2)
+  premiacao         String?
+  prazoInscricao    DateTime?
+  limiteObras       Int?            @default(1)
+  restricao         String?         @default("Nenhuma restrição")
+  etapaAtual        Int?            @default(1)
+  linkEdital        String?
+  pdfEdital         String?
+  dataFinalizacao   DateTime?
+  gratuito          Boolean         @default(true)
+  premioEmDinheiro  Boolean         @default(false)
+  valorTotalPremios Decimal?        @db.Decimal(10, 2)
+  organizacaoId     BigInt
+  grupoCriterioId   BigInt?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  descricao         String?         @db.Text
+  limitesTexto      String?         @default("Sem limites")
+  linkInscricao     String?
+  custoSelecionados Decimal?        @db.Decimal(10, 2)
+  status            StatusConcurso? @default(RASCUNHO)
+  banca             Banca[]
+  grupoCriterio     GrupoCriterio?  @relation(fields: [grupoCriterioId], references: [id], map: "Concurso_grupoCriterioId_fkey")
+  organizacao       Organizacao     @relation(fields: [organizacaoId], references: [id], map: "Concurso_organizacaoId_fkey")
+  inscricao         Inscricao[]
+  categoriaConcurso CategoriaConcurso[]
+
+  @@index([grupoCriterioId], map: "Concurso_grupoCriterioId_fkey")
+  @@index([organizacaoId], map: "Concurso_organizacaoId_fkey")
 }
 
 model Criterio {
@@ -144,109 +145,111 @@ model GrupoCriterio {
 }
 
 model Inscricao {
-  id               BigInt                     @id @default(autoincrement())
-  concursoId       BigInt
-  participanteId   BigInt
-  status           InscricaoStatus            @default(CONFIRMADA)
-  statusPagamento  InscricaoStatusPagamento   @default(ISENTO)
-  createdAt        DateTime                  @default(now())
-  updatedAt        DateTime                  @updatedAt
-  concurso         Concurso                  @relation(fields: [concursoId], references: [id], map: "Inscricao_concursoId_fkey")
-  participante     Participante              @relation(fields: [participanteId], references: [id], map: "Inscricao_participanteId_fkey")
-  submissao        Submissao[]
+  id              BigInt                   @id @default(autoincrement())
+  concursoId      BigInt
+  participanteId  BigInt
+  status          InscricaoStatus          @default(CONFIRMADA)
+  statusPagamento InscricaoStatusPagamento @default(ISENTO)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+  concurso        Concurso                 @relation(fields: [concursoId], references: [id], map: "Inscricao_concursoId_fkey")
+  participante    Participante             @relation(fields: [participanteId], references: [id], map: "Inscricao_participanteId_fkey")
+  submissao       Submissao[]
 
   @@unique([concursoId, participanteId], map: "Inscricao_concursoId_participanteId_key")
   @@index([participanteId], map: "Inscricao_participanteId_fkey")
 }
 
 model Jurado {
-  id         BigInt  @id @default(autoincrement())
-  profissao  String?
-  formacao   String?
-  biografia  String?
-  perfilId   BigInt  @unique(map: "Jurado_perfilId_key")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  banca      Banca[]
-  perfil     Perfil  @relation(fields: [perfilId], references: [id], map: "Jurado_perfilId_fkey")
+  id        BigInt   @id @default(autoincrement())
+  profissao String?
+  formacao  String?
+  biografia String?
+  perfilId  BigInt   @unique(map: "Jurado_perfilId_key")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  banca     Banca[]
+  perfil    Perfil   @relation(fields: [perfilId], references: [id], map: "Jurado_perfilId_fkey")
 }
 
 model Nota {
-  id               BigInt            @id @default(autoincrement())
+  id               BigInt           @id @default(autoincrement())
   justificativa    String?
-  valor            Decimal           @db.Decimal(5, 2)
+  valor            Decimal          @db.Decimal(5, 2)
   analiseId        BigInt
   criterioId       BigInt
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  analiseavaliacao AnaliseAvaliacao  @relation(fields: [analiseId], references: [id], map: "Nota_analiseId_fkey")
-  criterio         Criterio          @relation(fields: [criterioId], references: [id], map: "Nota_criterioId_fkey")
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  analiseAvaliacao AnaliseAvaliacao @relation(fields: [analiseId], references: [id], map: "Nota_analiseId_fkey")
+  criterio         Criterio         @relation(fields: [criterioId], references: [id], map: "Nota_criterioId_fkey")
 
   @@unique([analiseId, criterioId], map: "Nota_analiseId_criterioId_key")
   @@index([criterioId], map: "Nota_criterioId_fkey")
 }
 
 model Obra {
-  id              BigInt        @id @default(autoincrement())
-  titulo          String?
-  tema            String?
-  texto           String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  participanteId  BigInt?
-  participante    Participante? @relation(fields: [participanteId], references: [id], map: "Obra_participanteId_fkey")
-  submissao       Submissao[]
+  id             BigInt         @id @default(autoincrement())
+  titulo         String?
+  tema           String?
+  texto          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  participanteId BigInt?
+  participante   Participante?  @relation(fields: [participanteId], references: [id], map: "Obra_participanteId_fkey")
+  submissao      Submissao[]
 
   @@index([participanteId], map: "Obra_participanteId_fkey")
 }
 
 model Organizacao {
-  id             BigInt          @id @default(autoincrement())
-  nomeFantasia   String?
-  razaoSocial    String?
-  cnpj           String?            @unique(map: "Perfil_cpf_key")
-  tipo           String?
-  tipoPessoa     TipoPessoa?  
-  cep            BigInt?
-  endereco       String?
-  municipio      String?
-  uf             String?         @db.Char(2)
-  perfilId       BigInt          @unique(map: "Organizacao_perfilId_key")
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  concurso       Concurso[]
-  grupoCriterio  GrupoCriterio[]
-  perfil         Perfil          @relation(fields: [perfilId], references: [id], map: "Organizacao_perfilId_fkey")
+  id            BigInt      @id @default(autoincrement())
+  nomeFantasia  String?
+  razaoSocial   String?
+  cnpj          String?     @unique(map: "Perfil_cpf_key")
+  tipo          String?
+  tipoPessoa    TipoPessoa?
+  cep           BigInt?
+  endereco      String?
+  municipio     String?
+  uf            String?     @db.Char(2)
+  perfilId      BigInt      @unique(map: "Organizacao_perfilId_key")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  concurso      Concurso[]
+  grupoCriterio GrupoCriterio[]
+  perfil        Perfil      @relation(fields: [perfilId], references: [id], map: "Organizacao_perfilId_fkey")
 }
 
 model Participante {
-  id         BigInt      @id @default(autoincrement())
+  id         BigInt   @id @default(autoincrement())
   pseudonimo String?
-  perfilId   BigInt      @unique(map: "Participante_perfilId_key")
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-
+  perfilId   BigInt   @unique(map: "Participante_perfilId_key")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   inscricao  Inscricao[]
   obra       Obra[]
-  perfil     Perfil      @relation(fields: [perfilId], references: [id], map: "Participante_perfilId_fkey")
+  perfil     Perfil   @relation(fields: [perfilId], references: [id], map: "Participante_perfilId_fkey")
 }
 
 model Perfil {
-  id           BigInt             @id @default(autoincrement())
+  id           BigInt        @id @default(autoincrement())
   nome         String
   foto         String?
-  cpf    String?            @unique(map: "Perfil_cpf_key")
+  cpf          String?       @unique(map: "Perfil_cpf_key")
   tel          String?
-  
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
-
-  usuarioId    BigInt             @unique(map: "perfil_usuarioId_key")
-  usuario      Usuario            @relation(fields: [usuarioId], references: [id], map: "Perfil_usuarioId_fkey")
-
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  usuarioId    BigInt        @unique
   jurado       Jurado?
   organizacao  Organizacao?
   participante Participante?
+  usuario      Usuario       @relation(fields: [usuarioId], references: [id], map: "Perfil_usuarioId_fkey")
+}
+
+model Role {
+  id          BigInt        @id @default(autoincrement())
+  role        RoleUsuario   @unique(map: "Role_role_key")
+  usuarioRole UsuarioRole[]
 }
 
 model Submissao {
@@ -257,7 +260,7 @@ model Submissao {
   notaFinal        Decimal            @db.Decimal(5, 2)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  analiseavaliacao AnaliseAvaliacao[]
+  analiseAvaliacao AnaliseAvaliacao[]
   inscricao        Inscricao          @relation(fields: [inscricaoId], references: [id], map: "Submissao_inscricaoId_fkey")
   obra             Obra               @relation(fields: [obraId], references: [id], map: "Submissao_obraId_fkey")
 
@@ -266,35 +269,34 @@ model Submissao {
 }
 
 model Usuario {
-  id        BigInt       @id @default(autoincrement())
-  email     String       @unique(map: "Usuario_email_key")
-  senha     String
-  statusValidacao Boolean @default(false)
-  recovery_token String?  @unique(map: "Usuario_recovery_token_key")
-  token_expires DateTime?
-  
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  perfil    Perfil?
-  usuarioRole UsuarioRole[] 
+  id              BigInt       @id @default(autoincrement())
+  email           String       @unique(map: "Usuario_email_key")
+  senha           String
+  statusValidacao Boolean      @default(false)
+  recoveryToken   String?      @unique(map: "Usuario_recovery_token_key")
+  tokenExpires    DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  perfil          Perfil?
+  usuarioRole     UsuarioRole[]
 }
 
 model UsuarioRole {
-  id        BigInt       @id @default(autoincrement())
-  usuarioId BigInt 
-  roleId    BigInt  
+  id        BigInt  @id @default(autoincrement())
+  usuarioId BigInt
+  roleId    BigInt
+  role      Role    @relation(fields: [roleId], references: [id], map: "UsuarioRole_roleId_fkey")
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], map: "UsuarioRole_usuarioId_fkey")
 
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
-  role      Role    @relation(fields: [roleId], references: [id]) 
-
-  @@unique([usuarioId, roleId]) 
-
+  @@unique([usuarioId, roleId], map: "UsuarioRole_usuarioId_roleId_key")
+  @@index([roleId], map: "UsuarioRole_roleId_fkey")
 }
 
-model Role {
-  id        BigInt       @id @default(autoincrement())
-  role   RoleUsuario     @unique    
-  usuarioRole UsuarioRole[]
+enum RoleUsuario {
+  ADMIN
+  JURADO
+  PARTICIPANTE
+  ORGANIZACAO
 }
 
 enum AnaliseAvaliacaoStatus {
@@ -314,21 +316,15 @@ enum SubmissaoStatus {
   DESCLASSIFICADA
 }
 
-enum RoleUsuario {
-  ADMIN
-  JURADO
-  PARTICIPANTE
-  ORGANIZACAO
-}
-enum TipoPessoa {
-    PF
-    PJ
-}
-
 enum InscricaoStatusPagamento {
   PENDENTE
   PAGO
   ISENTO
+}
+
+enum TipoPessoa {
+  PF
+  PJ
 }
 
 enum StatusConcurso {

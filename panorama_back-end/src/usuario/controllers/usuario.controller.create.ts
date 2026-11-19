@@ -13,7 +13,7 @@ export class UsuarioControllerCreate {
 
     constructor(private readonly usuarioServiceCreate: UsuarioServiceCreate){}
     @HttpCode(HttpStatus.CREATED)
-    @Post(ROTA.USUARIO.CREATE)
+    @Post()
     async create(
         @Req() res: Request, 
         @Body() usuarioRequest: UsuarioCreateDTO

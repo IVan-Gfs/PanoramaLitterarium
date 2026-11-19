@@ -85,7 +85,7 @@ export default function DetalhesConcurso() {
                             alt="Imagem do concurso"
                             onError={(e) => {
                                 e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/logo_default.svg";
+                                e.currentTarget.src = "/logo.svg";
                             }}
                         />
                     </div>

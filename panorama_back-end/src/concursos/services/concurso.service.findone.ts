@@ -20,7 +20,7 @@ export class ConcursoServiceFindOne {
                 },
                 include: {
                     organizacao: true, 
-                    categoria: {
+                    categoriaConcurso: {
                         include: {categoria: true},
                     }
                 }

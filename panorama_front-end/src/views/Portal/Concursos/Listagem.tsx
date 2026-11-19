@@ -8,6 +8,7 @@ import ModalEditarGrupoCriterio from "../../../components/modal/modalGrupoCriter
 import { formatarData } from "../../../utils/date";
 import { Ban, ClipboardList, Pause, Play } from "lucide-react";
 import ModalConfirmacao from "../../../components/modal/modalConfimacao";
+import ModalCancelarConcurso from "../../../components/modal/modalCancelamento.tsx";
 import "../../../assets/css/concurso/listagemPortal.css";
 
 
@@ -28,6 +29,11 @@ const ListagemConcursoPortal: React.FC = () => {
         handleCloseDeleteModal,
         handleConfirmDelete,
         concursoParaExcluir,
+        handleRequestCancel,
+        handleCloseCancelModal,
+        handleConfirmCancel,
+        concursoParaCancelar,
+        cancelando,
 
     } = useConcurso();
 
@@ -49,7 +55,6 @@ const ListagemConcursoPortal: React.FC = () => {
     
 
     const handleTriagem = () => { }
-    const handleCancel = () => { }
 
     const columns: ListagemColumn<ConcursoOrganizacao>[] = [
 
@@ -150,16 +155,13 @@ const ListagemConcursoPortal: React.FC = () => {
                             className: "listagem-action-play",
                             onClick: handleTogglePause,
                             visible: (c) => c.status === "PAUSADO" ,
-                            
-
-                            
                         },
                         {
                             key: "cancelar",
                             label: "Cancelar concurso",
                             icon: <Ban size={17} />,
                             className: "listagem-action-cancel",
-                            onClick: handleCancel,
+                            onClick: handleRequestCancel,
                             disabled: (c) => !["PUBLICADO", "PAUSADO",].includes(c.status),
 
                         },
@@ -190,6 +192,14 @@ const ListagemConcursoPortal: React.FC = () => {
                 textoCancelar="Cancelar"
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
+            />
+
+            <ModalCancelarConcurso
+                isOpen={!!concursoParaCancelar}
+                tituloConcurso={concursoParaCancelar?.titulo}
+                loading={cancelando}
+                onConfirm={handleConfirmCancel}
+                onClose={handleCloseCancelModal}
             />
 
         </div>

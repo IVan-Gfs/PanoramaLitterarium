@@ -27,6 +27,10 @@ export const useConcurso = () => {
 
     const [concursoParaExcluir, setConcursoParaExcluir] = useState<ConcursoOrganizacao | null>(null);
 
+    // Cancelamento
+    const [concursoParaCancelar, setConcursoParaCancelar] = useState<ConcursoOrganizacao | null>(null);
+    const [cancelando, setCancelando] = useState<boolean>(false);
+
 
 
     const atualizarConcurso = useCallback(
@@ -157,6 +161,56 @@ export const useConcurso = () => {
             );
         }
     };
+
+
+    const handleCancel = async (
+        concurso: ConcursoOrganizacao,
+        motivo: string
+    ) => {
+
+        setCancelando(true);
+
+        const response = await atualizarConcurso(
+            { status: "CANCELADO", motivoCancelamento: motivo },
+            concurso.id
+        );
+
+        setCancelando(false);
+
+        if (!response) return false;
+
+        setConcursos((prev) =>
+            prev.map((item) =>
+                item.id === concurso.id
+                    ? response
+                    : item
+            )
+        );
+
+        return true;
+    };
+
+    const handleRequestCancel = (concurso: ConcursoOrganizacao) => {
+        setConcursoParaCancelar(concurso);
+    };
+
+    const handleCloseCancelModal = () => {
+        if (cancelando) return;
+        setConcursoParaCancelar(null);
+    };
+
+    const handleConfirmCancel = async (motivo: string) => {
+        if (!concursoParaCancelar) return false;
+
+        const sucesso = await handleCancel(concursoParaCancelar, motivo);
+
+        if (sucesso) setConcursoParaCancelar(null);
+
+        return sucesso;
+    };
+
+    // ---------- Exclusão ----------
+
     const handleDelete = async (
         concurso: ConcursoOrganizacao
     ) => {
@@ -255,6 +309,13 @@ export const useConcurso = () => {
         handleCloseDeleteModal,
         handleConfirmDelete,
         concursoParaExcluir,
+
+        handleCancel,
+        handleRequestCancel,
+        handleCloseCancelModal,
+        handleConfirmCancel,
+        concursoParaCancelar,
+        cancelando,
 
         refetch: fetchConcursos,
     };

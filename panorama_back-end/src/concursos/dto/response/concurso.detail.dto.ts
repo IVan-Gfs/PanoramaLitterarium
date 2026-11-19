@@ -70,4 +70,5 @@ export class ConcursoDetailDTO extends ConcursoBaseReponseDTO {
 
     @Expose()
     limitesTexto?: string | null;
+
 }
