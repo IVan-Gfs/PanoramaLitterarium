@@ -8,6 +8,7 @@ import Login from "../../views/Usuario/login";
 import LayoutAuth from "../../components/layouts/LayoutAuth";
 
 // CONCURSOS (ÁREA PÚBLICA)
+
 import ConsultarConcursos from "../../views/Concursos/listagem";
 import DetalhesConcurso from "../../views/Concursos/detalhes";
 
@@ -38,6 +39,7 @@ import MinhasObrasPortal from "../../views/Portal/Obras";
 import AvaliacoesPortal from "../../views/Portal/Avaliacoes";
 import ConfiguracoesPortal from "../../views/Portal/Configuracoes";
 import PerfilPortal from "../../views/Portal/Perfil";
+
 
 export const routes: RouteObject[] = [
     {

@@ -72,6 +72,11 @@ export class ConcursoServiceFindAll {
         }),
     this.prismaService.concurso.count({ where })
    ])
+
+   console.log(
+    "CATEGORIAS DO PRISMA:",
+    concursos[0]?.categoriaConcurso
+);
    //Converte os resultados obtidos para o formato DTO usando o mapper da listagens de concursos
    const concursosDTO = ConcursoMapper.toDTOList(ConcursoListParticDTO, concursos);
   
