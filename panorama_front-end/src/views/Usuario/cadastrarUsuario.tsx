@@ -94,7 +94,6 @@ export default function CadastrarUsuario() {
             onChange={(e) => {
               e.target.value = applyPhoneMask(e.target.value);
               const masked = applyPhoneMask(e.target.value);
-              console.log("Masked phone:", masked);
               handleChangeField(USUARIO.FIELDS.PERFIL.TEL, masked);
             }
               

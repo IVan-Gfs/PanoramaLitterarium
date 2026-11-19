@@ -47,7 +47,6 @@ export default function Login ( ){
 
         try {
             const response = await loginUsuario({ email, senha });
-            console.log("Login bem-sucedido:", response.data);
             localStorage.setItem("token", response.data.accessToken);
             login(response.data.user);
             navigate("/portal/visao-geral");
