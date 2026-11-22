@@ -53,7 +53,15 @@ export class ConcursoMapper {
   }
 
   static toDTO<T>(DtoClass: ClassConstructor<T>, concurso: any): T {
-    const concursoDTO = { ...concurso, categorias: concurso.categoria?.map((catCon: any) => catCon.categoria) }
+
+    const concursoDTO = {
+      ...concurso,
+
+      categorias: concurso.categoriaConcurso?.map(
+        (catCon: any) => catCon.categoria
+      ) ?? []
+    };
+
     return plainToInstance(DtoClass, concursoDTO, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true
@@ -61,10 +69,15 @@ export class ConcursoMapper {
   }
 
   static toDTOList<T>(DtoClass: ClassConstructor<T>, concursos: any[]): T[] {
+
     const concursosDTO = concursos.map(concurso => ({
       ...concurso,
-      categorias: concurso.categoria?.map((catCon: any) => catCon.categoria) // extrai as categorias reais
+
+      categorias: concurso.categoriaConcurso?.map(
+        (catCon: any) => catCon.categoria
+      ) ?? []
     }));
+
     return plainToInstance(DtoClass, concursosDTO, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,

@@ -64,7 +64,7 @@ export class ConcursoServiceFindAll {
         this.prismaService.concurso.findMany({
             skip: pageable.offset,
             take: pageable.limit,
-            include: { categoria: { include: { categoria: true } } },
+            include: { categoriaConcurso: { include: { categoria: true } } },
             where,
             orderBy: { 
                 [pageable.orderBy]: pageable.order.toLowerCase(),
@@ -72,6 +72,7 @@ export class ConcursoServiceFindAll {
         }),
     this.prismaService.concurso.count({ where })
    ])
+
    //Converte os resultados obtidos para o formato DTO usando o mapper da listagens de concursos
    const concursosDTO = ConcursoMapper.toDTOList(ConcursoListParticDTO, concursos);
   

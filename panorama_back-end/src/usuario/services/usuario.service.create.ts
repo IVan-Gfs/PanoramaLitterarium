@@ -6,9 +6,6 @@ import { UsuarioResponseDTO } from "../dto/usuario.response.dto";
 import { UsuarioMapper } from "../mapper/usuario.mapper";
 import * as bcrypt from 'bcrypt';
 import { PerfilMapper } from "src/perfil/mapper/perfil.mapper";
-import { connect } from "node:http2";
-import { RoleUsuario } from "@prisma/client";
-import { AuthService } from "src/auth/services/auth.service";
 import { EmailService } from "src/mail/services/email.service";
 import { JsonWebTokenService } from "src/auth/services/jwt.service";
 

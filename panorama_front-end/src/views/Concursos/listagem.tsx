@@ -165,9 +165,11 @@ export default function ConsultarConcursos ( ){
                     <div className="footer-concurso">
                         <legend className="prazo-inscricao">Inscrições até {formatarData(c.prazoInscricao)}</legend>
                         <div className='categorias'>
-                            {c.categorias.map((cat) => (
-                                <legend key={cat.id} className="categoria">{cat.nome.toLocaleUpperCase()}</legend>
-                            ))}
+                          {(c.categorias ?? []).map((cat) => (
+                            <legend key={cat.id} className="categoria">
+                              {cat.nome?.toLocaleUpperCase() ?? ''}
+                            </legend>
+                          ))}
                         </div>
                     </div>
                 </Link>

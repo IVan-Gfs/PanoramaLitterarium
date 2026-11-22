@@ -16,6 +16,7 @@ export interface ConcursoOrganizacao {
     prazoInscricao: string;
     dataFinalizacao: string;
     status: string;
+    motivoCancelamento: string | null;
     etapaAtual: number;
     imgCapa: string;
     categorias: Categoria[]; 

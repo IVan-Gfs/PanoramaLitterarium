@@ -14,6 +14,9 @@ export class ConcursoBaseReponseDTO {
   @Expose()
   imgCapa?: string | null;
 
+  @Expose()
+  motivoCancelamento?: string | null;
+
 
   @Expose()
   @Type(() => CategoriaResponseDTO)

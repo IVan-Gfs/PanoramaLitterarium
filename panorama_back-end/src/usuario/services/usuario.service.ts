@@ -18,7 +18,7 @@ export class UsuarioService{
         if (!token) return null;
 
         return this.prisma.usuario.findUnique({
-            where: { recovery_token: token },
+            where: { recoveryToken: token },
         });
     }
 
